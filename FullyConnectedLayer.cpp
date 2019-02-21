@@ -27,7 +27,7 @@ void FullyConnectedLayer::backward()
     unsigned neurons = numNeurons();
     for (unsigned i = 0; i < neurons; i++)
     {
-
+        // TODO compute gradients
     }
 }
 
