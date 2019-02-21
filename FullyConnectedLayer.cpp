@@ -1,7 +1,3 @@
-//
-// Created by luca on 21/02/19.
-//
-
 #include "FullyConnectedLayer.hpp"
 
 FullyConnectedLayer::FullyConnectedLayer(unsigned numNeurons)
