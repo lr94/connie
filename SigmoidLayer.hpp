@@ -51,7 +51,7 @@ protected:
 private:
     static inline float sigmoid(float x)
     {
-        return 1.0f / (1.0f + exp2f(-x));
+        return 1.0f / (1.0f + std::exp2f(-x));
     }
 };
 
