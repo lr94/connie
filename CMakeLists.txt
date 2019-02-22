@@ -3,4 +3,4 @@ project(cnn)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(cnn main.cpp Vol.hpp LayerBase.hpp FullyConnectedLayer.cpp FullyConnectedLayer.hpp InputLayer.hpp)
+add_executable(cnn main.cpp Vol.hpp LayerBase.hpp FullyConnectedLayer.cpp FullyConnectedLayer.hpp InputLayer.hpp SigmoidLayer.hpp)
