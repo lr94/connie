@@ -100,7 +100,6 @@ public:
         shape = original.shape;
         computeDataSize();
 
-        size_t size = size;
         w = new T[size];
 
         std::copy(original.w, original.w + size, w);
@@ -390,7 +389,95 @@ public:
         return result;
     }
 
-    // TODO implement +=, -, -=, *=, /, /=
+    friend Vol<T> operator*(const Vol &left, const T &right)
+    {
+        Vol<T> result = left;
+
+        size_t size = result.getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            result.w[i] *= right;
+
+        return result;
+    }
+
+    friend Vol operator*(Vol &&left, const T &right)
+    {
+        Vol<T> result = left;
+
+        size_t size = result.getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            result.w[i] *= right;
+
+        return result;
+    }
+
+    friend Vol operator*(const T &left, Vol &right)
+    {
+        return right * left;
+    }
+
+    friend Vol operator*(const T &left, Vol &&right)
+    {
+        return right * left;
+    }
+
+    Vol &operator*=(const T &right)
+    {
+        size_t size = getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            w[i] *= right;
+
+        return *this;
+    }
+
+    friend Vol<T> operator/(const Vol &left, const T &right)
+    {
+        Vol<T> result = left;
+
+        size_t size = result.getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            result.w[i] /= right;
+
+        return result;
+    }
+
+    friend Vol operator/(Vol &&left, const T &right)
+    {
+        Vol<T> result = left;
+
+        size_t size = result.getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            result.w[i] /= right;
+
+        return result;
+    }
+
+    friend Vol operator/(const T &left, Vol &right)
+    {
+        return right / left;
+    }
+
+    friend Vol operator/(const T &left, Vol &&right)
+    {
+        return right / left;
+    }
+
+    Vol &operator/=(const T &right)
+    {
+        size_t size = getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            w[i] /= right;
+
+        return *this;
+    }
+
+    // TODO try to improve operators
 
     Vol convolve(Vol &filter, unsigned stride)
     {
