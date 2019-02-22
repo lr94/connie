@@ -240,7 +240,8 @@ public:
         return out;
     }
 
-    // TODO extend and improve
+    // TODO extend and improve math operators
+
     friend Vol<T> operator+(Vol &left, const Vol &right)
     {
         Vol<T> result = left;
@@ -253,7 +254,6 @@ public:
         return result;
     }
 
-    // TODO extend and improve
     friend Vol<T> operator+(const Vol &left, const T &right)
     {
         Vol<T> result = left;
@@ -266,8 +266,7 @@ public:
         return result;
     }
 
-    // TODO extend and improve
-    friend Vol<T> operator+(Vol &&left, const T &right)
+    friend Vol operator+(Vol &&left, const T &right)
     {
         Vol<T> result = left;
 
@@ -279,16 +278,100 @@ public:
         return result;
     }
 
-    // TODO extend and improve
-    friend Vol<T> operator+(const T &left, Vol &right)
+    friend Vol operator+(const T &left, Vol &right)
     {
         return right + left;
     }
 
-    // TODO extend and improve
-    friend Vol<T> operator+(const T &left, Vol &&right)
+    friend Vol operator+(const T &left, Vol &&right)
     {
         return right + left;
+    }
+
+    Vol &operator+=(const Vol &right)
+    {
+        size_t size = getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            w[i] += right.w[i];
+
+        return *this;
+    }
+
+    Vol &operator+=(const T &right)
+    {
+        size_t size = getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            w[i] += right;
+
+        return *this;
+    }
+
+    friend Vol<T> operator-(Vol &left, const Vol &right)
+    {
+        Vol<T> result = left;
+
+        size_t size = result.getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            result.w[i] -= right.w[i];
+
+        return result;
+    }
+
+    friend Vol<T> operator-(const Vol &left, const T &right)
+    {
+        Vol<T> result = left;
+
+        size_t size = result.getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            result.w[i] -= right;
+
+        return result;
+    }
+
+    friend Vol operator-(Vol &&left, const T &right)
+    {
+        Vol<T> result = left;
+
+        size_t size = result.getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            result.w[i] -= right;
+
+        return result;
+    }
+
+    friend Vol operator-(const T &left, Vol &right)
+    {
+        return right - left;
+    }
+
+    friend Vol operator-(const T &left, Vol &&right)
+    {
+        return right - left;
+    }
+
+    Vol &operator-=(const Vol &right)
+    {
+        size_t size = getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            w[i] -= right.w[i];
+
+        return *this;
+    }
+
+    Vol &operator-=(const T &right)
+    {
+        size_t size = getDataSize();
+
+        for (size_t i = 0; i < size; i++)
+            w[i] -= right;
+
+        return *this;
     }
 
     friend T operator*(const Vol &left, const Vol &right)
