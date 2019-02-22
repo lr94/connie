@@ -26,5 +26,8 @@ private:
     // One tensor for neuron, each tensor has the same shape of the input tensor and contains all the weights
     std::vector<Vol<>> weights;
     std::vector<float> biases;
+
+    std::vector<Vol<>> dWeights;
+    std::vector<float> dBiases;
 };
 #endif //CNN_FULLYCONNECTEDLAYER_HPP

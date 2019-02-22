@@ -12,6 +12,9 @@ public:
     Vol<> *input;
     Vol<> *output;
 
+    Vol<> *dInput;
+    Vol<> *dOutput;
+
     virtual void forward() = 0;
     virtual void backward() = 0;
 
@@ -24,6 +27,7 @@ protected:
     virtual void prepend(LayerBase *previousLayer)
     {
         input = previousLayer->output;
+        dInput = previousLayer->dOutput;
     }
 };
 #endif

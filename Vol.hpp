@@ -86,6 +86,7 @@ public:
     Vol(unsigned depth, unsigned height, unsigned width)
     {
         shape = {depth, height, width};
+        computeDataSize()
 
         w = new T[depth * height * width];
     }
@@ -97,8 +98,9 @@ public:
     Vol(const Vol &original)
     {
         shape = original.shape;
+        computeDataSize();
 
-        size_t size = getDataSize();
+        size_t size = size;
         w = new T[size];
 
         std::copy(original.w, original.w + size, w);
@@ -107,6 +109,7 @@ public:
     Vol(Vol &&original) noexcept
     {
         shape = original.shape;
+        computeDataSize();
         w = original.w;
         original.w = nullptr;
     }
@@ -135,6 +138,7 @@ public:
         if (this != &source)
         {
             shape = source.shape;
+            computeDataSize();
 
             unsigned size = 1;
             for (auto iterator = this->shape.begin(); iterator != this->shape.end(); iterator++)
@@ -153,6 +157,7 @@ public:
         if (this != &old)
         {
             shape = old.shape;
+            computeDataSize();
 
             delete[] w;
             w = old.w;
@@ -450,16 +455,8 @@ public:
         std::fill_n(w, getDataSize(), 0);
     }
 
-private:
-    std::vector<unsigned> shape; // For possible future extension to generic n-dimensional tensors
-    T *w;
-
     inline size_t getDataSize() const
     {
-        size_t size = 1;
-        for (auto iterator = this->shape.begin(); iterator != this->shape.end(); iterator++)
-            size *= *iterator;
-
         return size;
     }
 
@@ -482,6 +479,34 @@ private:
         unsigned layerSize = width() * height(); // Layer size
         unsigned index = layer * layerSize + row * width() + column;
         w[index] += value;
+    }
+
+    inline T get(unsigned index) const
+    {
+        return w[index];
+    }
+
+    inline void set(unsigned index, T value)
+    {
+        w[index] = value;
+    }
+
+    inline void addAt(unsigned index, T value)
+    {
+        w[index] += value;
+    }
+
+private:
+    std::vector<unsigned> shape; // For possible future extension to generic n-dimensional tensors
+    T *w;
+
+    size_t size;
+
+    void computeDataSize()
+    {
+        size = 1;
+        for (auto iterator = this->shape.begin(); iterator != this->shape.end(); iterator++)
+            size *= *iterator;
     }
 };
 
