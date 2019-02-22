@@ -11,7 +11,9 @@ public:
     {
         // In the input layer the input tensor and the output tensor are the same
         input = new Vol<>(depth, height, width);
+        dInput = new Vol<>(depth, height, width);
         output = input;
+        dOutput = dInput;
     }
 
     ~InputLayer()

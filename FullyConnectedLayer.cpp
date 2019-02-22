@@ -48,7 +48,7 @@ void FullyConnectedLayer::backward()
     {
         float sum = 0;
         for (unsigned i = 0; i < neurons; i++)
-            sum += dOutput->get(i) * weights[i].get(j);
+            sum += dOutput->get(i) * weights[i].get(j); //dX = W * gradient
         dInput->set(j, sum);
     }
 }

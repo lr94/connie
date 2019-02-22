@@ -86,7 +86,7 @@ public:
     Vol(unsigned depth, unsigned height, unsigned width)
     {
         shape = {depth, height, width};
-        computeDataSize()
+        computeDataSize();
 
         w = new T[depth * height * width];
     }
