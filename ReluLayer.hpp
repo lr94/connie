@@ -51,7 +51,7 @@ protected:
 private:
     static inline float relu(float x)
     {
-        return std::fmax(0, x);
+        return std::fmaxf(0, x);
     }
 
     static inline float relu_derivative(float x)
