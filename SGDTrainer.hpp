@@ -10,8 +10,8 @@ public:
 
     float learningRate;
 
-    void changeParams(std::vector<float> &params, std::vector<float> &gradient) const override;
-    void changeParams(Vol<> &params, Vol<> &gradient) const override;
+    void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const override;
+    void updateLayerParams(Vol<> &params, Vol<> &gradient) const override;
 };
 
 

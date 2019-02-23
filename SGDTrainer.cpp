@@ -1,11 +1,11 @@
 #include "SGDTrainer.hpp"
 
-void SGDTrainer::changeParams(std::vector<float> &params, std::vector<float> &gradient) const
+void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const
 {
 
 }
 
-void SGDTrainer::changeParams(Vol<> &params, Vol<> &gradient) const
+void SGDTrainer::updateLayerParams(Vol<> &params, Vol<> &gradient) const
 {
 
 }
