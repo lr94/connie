@@ -2,7 +2,7 @@
 #define CNN_REGRESSIONLAYER_HPP
 
 #include <vector>
-#include "Vol.hpp"
+#include "Tensor.hpp"
 #include "LossLayerBase.hpp"
 
 class RegressionLayer : public LossLayerBase
@@ -16,13 +16,13 @@ public:
 
     void updateParams(const TrainerBase &trainer) override {}
 
-    Vol<> &target();
+    Tensor<> &target();
 
     float getLoss() override;
 
 protected:
     void prepend(LayerBase *previousLayer) override;
-    Vol<> *y;
+    Tensor<> *y;
     float loss;
 };
 

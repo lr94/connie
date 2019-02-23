@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "Vol.hpp"
+#include "Tensor.hpp"
 #include "LayerBase.hpp"
 
 class FullyConnectedLayer : public LayerBase
@@ -26,10 +26,10 @@ protected:
 
 private:
     // One tensor for neuron, each tensor has the same shape of the input tensor and contains all the weights
-    std::vector<Vol<>> weights;
+    std::vector<Tensor<>> weights;
     std::vector<float> biases;
 
-    std::vector<Vol<>> dWeights;
+    std::vector<Tensor<>> dWeights;
     std::vector<float> dBiases;
 };
 #endif //CNN_FULLYCONNECTEDLAYER_HPP

@@ -65,7 +65,7 @@ void SoftmaxLayer::prepend(LayerBase *previousLayer)
     delete output;
 
     // The output has the same shape of the input
-    output = new Vol<>(input->depth(), input->height(), input->width());
+    output = new Tensor<>(input->depth(), input->height(), input->width());
 
     numClasses = static_cast<unsigned>(output->getDataSize());
 }

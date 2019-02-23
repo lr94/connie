@@ -3,4 +3,4 @@ project(cnn)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(cnn main.cpp Vol.hpp LayerBase.hpp FullyConnectedLayer.cpp FullyConnectedLayer.hpp InputLayer.hpp SigmoidLayer.hpp ReluLayer.hpp SoftmaxLayer.cpp SoftmaxLayer.hpp RegressionLayer.cpp RegressionLayer.hpp Net.cpp Net.hpp LossLayerBase.hpp TrainerBase.hpp SGDTrainer.cpp SGDTrainer.hpp)
+add_executable(cnn main.cpp Tensor.hpp LayerBase.hpp FullyConnectedLayer.cpp FullyConnectedLayer.hpp InputLayer.hpp SigmoidLayer.hpp ReluLayer.hpp SoftmaxLayer.cpp SoftmaxLayer.hpp RegressionLayer.cpp RegressionLayer.hpp Net.cpp Net.hpp LossLayerBase.hpp TrainerBase.hpp SGDTrainer.cpp SGDTrainer.hpp)

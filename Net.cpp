@@ -35,12 +35,12 @@ void Net::train(TrainerBase &trainer)
         (*i)->updateParams(trainer);
 }
 
-Vol<> &Net::getInput()
+Tensor<> &Net::getInput()
 {
     return *input;
 }
 
-Vol<> &Net::getOutput()
+Tensor<> &Net::getOutput()
 {
     return *output;
 }

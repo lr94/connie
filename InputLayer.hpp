@@ -1,7 +1,7 @@
 #ifndef CNN_INPUTLAYER_HPP
 #define CNN_INPUTLAYER_HPP
 
-#include "Vol.hpp"
+#include "Tensor.hpp"
 #include "LayerBase.hpp"
 
 class InputLayer : public LayerBase
@@ -10,8 +10,8 @@ public:
     InputLayer(unsigned depth, unsigned height, unsigned width)
     {
         // In the input layer the input tensor and the output tensor are the same
-        input = new Vol<>(depth, height, width);
-        dInput = new Vol<>(depth, height, width);
+        input = new Tensor<>(depth, height, width);
+        dInput = new Tensor<>(depth, height, width);
         output = input;
         dOutput = dInput;
     }

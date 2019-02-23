@@ -1,5 +1,5 @@
-#ifndef CNN_VOL_HPP
-#define CNN_VOL_HPP
+#ifndef CNN_TENSOR_HPP
+#define CNN_TENSOR_HPP
 
 #include <vector>
 #include <iterator>
@@ -7,17 +7,17 @@
 #include <random>
 
 template <typename T>
-class SubVol
+class SubTensor
 {
 public:
     /**
-     * Initializes a sliced version of the Vol object (which could be a matrix or a vector)
+     * Initializes a sliced version of the Tensor object (which could be a matrix or a vector)
      *
      * @param w             Pointer to the data
      * @param w_offset      Data offset
-     * @param originalShape Shape of the Vol object that was sliced
+     * @param originalShape Shape of the Tensor object that was sliced
      */
-    SubVol(T *w, unsigned w_offset, std::vector<unsigned> originalShape)
+    SubTensor(T *w, unsigned w_offset, std::vector<unsigned> originalShape)
     {
         this->w = w;
         this->w_offset = w_offset;
@@ -25,14 +25,14 @@ public:
         std::copy(originalShape.begin() + 1, originalShape.end(), std::back_inserter(this->shape));
     }
 
-    SubVol operator [](unsigned i)
+    SubTensor operator [](unsigned i)
     {
         unsigned k = 1;
 
         for (auto iterator = shape.begin() + 1; iterator != shape.end(); iterator++)
             k *= *iterator;
 
-        return SubVol(w, w_offset + k * i, shape);
+        return SubTensor(w, w_offset + k * i, shape);
     }
 
     operator T&()
@@ -41,7 +41,7 @@ public:
         return w[w_offset];
     }
 
-    SubVol &operator =(T newValue)
+    SubTensor &operator =(T newValue)
     {
         // TODO check shape length: it must be 0
         w[w_offset] = newValue;
@@ -49,20 +49,20 @@ public:
         return *this;
     }
 
-    friend std::ostream &operator <<(std::ostream &out, SubVol subVol)
+    friend std::ostream &operator <<(std::ostream &out, SubTensor subTensor)
     {
-        if (subVol.shape.size() == 0)
+        if (subTensor.shape.size() == 0)
         {
-            out << subVol.w[subVol.w_offset];
+            out << subTensor.w[subTensor.w_offset];
             return out;
         }
 
         out << '{';
 
-        unsigned dimension = subVol.shape[0];
+        unsigned dimension = subTensor.shape[0];
         for (unsigned i = 0; i < dimension; i++)
         {
-            out << subVol[i];
+            out << subTensor[i];
 
             if (i < dimension - 1)
                 out << ", ";
@@ -80,10 +80,10 @@ private:
 };
 
 template <typename T = float>
-class Vol
+class Tensor
 {
 public:
-    Vol(unsigned depth, unsigned height, unsigned width)
+    Tensor(unsigned depth, unsigned height, unsigned width)
     {
         shape = {depth, height, width};
         computeDataSize();
@@ -91,11 +91,11 @@ public:
         w = new T[depth * height * width];
     }
 
-    Vol(unsigned height, unsigned width) : Vol(1u, height, width) {}
+    Tensor(unsigned height, unsigned width) : Tensor(1u, height, width) {}
 
-    explicit Vol(unsigned width) : Vol(1u, width) {}
+    explicit Tensor(unsigned width) : Tensor(1u, width) {}
 
-    Vol(const Vol &original)
+    Tensor(const Tensor &original)
     {
         shape = original.shape;
         computeDataSize();
@@ -105,7 +105,7 @@ public:
         std::copy(original.w, original.w + size, w);
     }
 
-    Vol(Vol &&original) noexcept
+    Tensor(Tensor &&original) noexcept
     {
         shape = original.shape;
         computeDataSize();
@@ -113,26 +113,26 @@ public:
         original.w = nullptr;
     }
 
-    ~Vol()
+    ~Tensor()
     {
         delete[] w;
     }
 
-    static Vol random(unsigned depth, unsigned height, unsigned width)
+    static Tensor random(unsigned depth, unsigned height, unsigned width)
     {
-        Vol vol(depth, height, width);
+        Tensor t(depth, height, width);
 
         std::default_random_engine generator;
         std::normal_distribution<T> distribution(0.0, 1.0);
 
-        size_t size = vol.getDataSize();
+        size_t size = t.getDataSize();
         for (size_t i = 0; i < size; i++)
-            vol.w[i] = distribution(generator);
+            t.w[i] = distribution(generator);
 
-        return vol;
+        return t;
     }
 
-    Vol &operator=(const Vol &source)
+    Tensor &operator=(const Tensor &source)
     {
         if (this != &source)
         {
@@ -151,7 +151,7 @@ public:
         return *this;
     }
 
-    Vol &operator=(Vol &&old) noexcept
+    Tensor &operator=(Tensor &&old) noexcept
     {
         if (this != &old)
         {
@@ -166,14 +166,14 @@ public:
         return *this;
     }
 
-    Vol &operator=(std::initializer_list<T> list)
+    Tensor &operator=(std::initializer_list<T> list)
     {
         std::copy(list.begin(), list.end(), w);
 
         return *this;
     }
 
-    Vol &operator=(std::initializer_list<std::initializer_list<T>> list)
+    Tensor &operator=(std::initializer_list<std::initializer_list<T>> list)
     {
         unsigned counter = 0;
 
@@ -184,7 +184,7 @@ public:
         return *this;
     }
 
-    Vol &operator=(std::initializer_list<std::initializer_list<std::initializer_list<T>>> list)
+    Tensor &operator=(std::initializer_list<std::initializer_list<std::initializer_list<T>>> list)
     {
         unsigned counter = 0;
 
@@ -211,30 +211,30 @@ public:
         return shape[2];
     }
 
-    SubVol<T> operator [](unsigned i)
+    SubTensor<T> operator [](unsigned i)
     {
         unsigned k = 1;
 
         for (auto iterator = shape.begin() + 1; iterator != shape.end(); iterator++)
             k *= *iterator;
 
-        return SubVol<T>(w, k * i, shape);
+        return SubTensor<T>(w, k * i, shape);
     }
 
-    friend std::ostream &operator <<(std::ostream &out, Vol &vol)
+    friend std::ostream &operator <<(std::ostream &out, Tensor &tensor)
     {
-        if (vol.shape.size() == 0)
+        if (tensor.shape.size() == 0)
         {
-            out << vol.w[0];
+            out << tensor.w[0];
             return out;
         }
 
         out << '{';
 
-        unsigned dimension = vol.shape[0];
+        unsigned dimension = tensor.shape[0];
         for (unsigned i = 0; i < dimension; i++)
         {
-            out << vol[i];
+            out << tensor[i];
 
             if (i < dimension - 1)
                 out << ", ";
@@ -246,9 +246,9 @@ public:
 
     // TODO extend and improve math operators
 
-    friend Vol<T> operator+(Vol &left, const Vol &right)
+    friend Tensor<T> operator+(Tensor &left, const Tensor &right)
     {
-        Vol<T> result = left;
+        Tensor<T> result = left;
 
         size_t size = result.getDataSize();
 
@@ -258,9 +258,9 @@ public:
         return result;
     }
 
-    friend Vol<T> operator+(const Vol &left, const T &right)
+    friend Tensor<T> operator+(const Tensor &left, const T &right)
     {
-        Vol<T> result = left;
+        Tensor<T> result = left;
 
         size_t size = result.getDataSize();
 
@@ -270,9 +270,9 @@ public:
         return result;
     }
 
-    friend Vol operator+(Vol &&left, const T &right)
+    friend Tensor operator+(Tensor &&left, const T &right)
     {
-        Vol<T> result = left;
+        Tensor<T> result = left;
 
         size_t size = result.getDataSize();
 
@@ -282,17 +282,17 @@ public:
         return result;
     }
 
-    friend Vol operator+(const T &left, Vol &right)
+    friend Tensor operator+(const T &left, Tensor &right)
     {
         return right + left;
     }
 
-    friend Vol operator+(const T &left, Vol &&right)
+    friend Tensor operator+(const T &left, Tensor &&right)
     {
         return right + left;
     }
 
-    Vol &operator+=(const Vol &right)
+    Tensor &operator+=(const Tensor &right)
     {
         size_t size = getDataSize();
 
@@ -302,7 +302,7 @@ public:
         return *this;
     }
 
-    Vol &operator+=(const T &right)
+    Tensor &operator+=(const T &right)
     {
         size_t size = getDataSize();
 
@@ -312,9 +312,9 @@ public:
         return *this;
     }
 
-    friend Vol<T> operator-(Vol &left, const Vol &right)
+    friend Tensor<T> operator-(Tensor &left, const Tensor &right)
     {
-        Vol<T> result = left;
+        Tensor<T> result = left;
 
         size_t size = result.getDataSize();
 
@@ -324,9 +324,9 @@ public:
         return result;
     }
 
-    friend Vol<T> operator-(const Vol &left, const T &right)
+    friend Tensor<T> operator-(const Tensor &left, const T &right)
     {
-        Vol<T> result = left;
+        Tensor<T> result = left;
 
         size_t size = result.getDataSize();
 
@@ -336,9 +336,9 @@ public:
         return result;
     }
 
-    friend Vol operator-(Vol &&left, const T &right)
+    friend Tensor operator-(Tensor &&left, const T &right)
     {
-        Vol<T> result = left;
+        Tensor<T> result = left;
 
         size_t size = result.getDataSize();
 
@@ -348,17 +348,17 @@ public:
         return result;
     }
 
-    friend Vol operator-(const T &left, Vol &right)
+    friend Tensor operator-(const T &left, Tensor &right)
     {
         return right - left;
     }
 
-    friend Vol operator-(const T &left, Vol &&right)
+    friend Tensor operator-(const T &left, Tensor &&right)
     {
         return right - left;
     }
 
-    Vol &operator-=(const Vol &right)
+    Tensor &operator-=(const Tensor &right)
     {
         size_t size = getDataSize();
 
@@ -368,7 +368,7 @@ public:
         return *this;
     }
 
-    Vol &operator-=(const T &right)
+    Tensor &operator-=(const T &right)
     {
         size_t size = getDataSize();
 
@@ -378,7 +378,7 @@ public:
         return *this;
     }
 
-    friend T operator*(const Vol &left, const Vol &right)
+    friend T operator*(const Tensor &left, const Tensor &right)
     {
         T result = 0;
         size_t dataSize = left.getDataSize();
@@ -389,9 +389,9 @@ public:
         return result;
     }
 
-    friend Vol<T> operator*(const Vol &left, const T &right)
+    friend Tensor<T> operator*(const Tensor &left, const T &right)
     {
-        Vol<T> result = left;
+        Tensor<T> result = left;
 
         size_t size = result.getDataSize();
 
@@ -401,9 +401,9 @@ public:
         return result;
     }
 
-    friend Vol operator*(Vol &&left, const T &right)
+    friend Tensor operator*(Tensor &&left, const T &right)
     {
-        Vol<T> result = left;
+        Tensor<T> result = left;
 
         size_t size = result.getDataSize();
 
@@ -413,17 +413,17 @@ public:
         return result;
     }
 
-    friend Vol operator*(const T &left, Vol &right)
+    friend Tensor operator*(const T &left, Tensor &right)
     {
         return right * left;
     }
 
-    friend Vol operator*(const T &left, Vol &&right)
+    friend Tensor operator*(const T &left, Tensor &&right)
     {
         return right * left;
     }
 
-    Vol &operator*=(const T &right)
+    Tensor &operator*=(const T &right)
     {
         size_t size = getDataSize();
 
@@ -433,9 +433,9 @@ public:
         return *this;
     }
 
-    friend Vol<T> operator/(const Vol &left, const T &right)
+    friend Tensor<T> operator/(const Tensor &left, const T &right)
     {
-        Vol<T> result = left;
+        Tensor<T> result = left;
 
         size_t size = result.getDataSize();
 
@@ -445,9 +445,9 @@ public:
         return result;
     }
 
-    friend Vol operator/(Vol &&left, const T &right)
+    friend Tensor operator/(Tensor &&left, const T &right)
     {
-        Vol<T> result = left;
+        Tensor<T> result = left;
 
         size_t size = result.getDataSize();
 
@@ -457,17 +457,17 @@ public:
         return result;
     }
 
-    friend Vol operator/(const T &left, Vol &right)
+    friend Tensor operator/(const T &left, Tensor &right)
     {
         return right / left;
     }
 
-    friend Vol operator/(const T &left, Vol &&right)
+    friend Tensor operator/(const T &left, Tensor &&right)
     {
         return right / left;
     }
 
-    Vol &operator/=(const T &right)
+    Tensor &operator/=(const T &right)
     {
         size_t size = getDataSize();
 
@@ -479,12 +479,12 @@ public:
 
     // TODO try to improve operators
 
-    Vol convolve(Vol &filter, unsigned stride)
+    Tensor convolve(Tensor &filter, unsigned stride)
     {
         unsigned resultHeight = (height() - filter.height()) / stride + 1;
         unsigned resultWidth = (width() - filter.width()) / stride + 1;
 
-        Vol result(1, resultHeight, resultWidth);
+        Tensor result(1, resultHeight, resultWidth);
 
         convolve(result, 0, filter, stride);
 
@@ -499,7 +499,7 @@ public:
      * @param filter
      * @param stride
      */
-    void convolve(Vol &result, unsigned resultLayer, Vol &filter, unsigned stride)
+    void convolve(Tensor &result, unsigned resultLayer, Tensor &filter, unsigned stride)
     {
         unsigned resultHeight = (height() - filter.height()) / stride + 1;
         unsigned resultWidth = (width() - filter.width()) / stride + 1;
@@ -597,4 +597,4 @@ private:
     }
 };
 
-#endif //CNN_VOL_HPP
+#endif //CNN_TENSOR_HPP

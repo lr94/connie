@@ -2,7 +2,7 @@
 #define CNN_NET_HPP
 
 #include <vector>
-#include "Vol.hpp"
+#include "Tensor.hpp"
 #include "LayerBase.hpp"
 #include "TrainerBase.hpp"
 
@@ -19,14 +19,14 @@ public:
     void backward();
     void train(TrainerBase &trainer);
 
-    Vol<> &getInput();
-    Vol<> &getOutput();
+    Tensor<> &getInput();
+    Tensor<> &getOutput();
     float getLoss();
 private:
     std::vector<LayerBase*> layers;
 
-    Vol<> *input;
-    Vol<> *output;
+    Tensor<> *input;
+    Tensor<> *output;
 };
 
 

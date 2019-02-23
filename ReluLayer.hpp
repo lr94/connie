@@ -2,7 +2,7 @@
 #define CNN_RELULAYER_HPP
 
 #include <cmath>
-#include "Vol.hpp"
+#include "Tensor.hpp"
 #include "LayerBase.hpp"
 
 class ReluLayer : public LayerBase
@@ -46,8 +46,8 @@ protected:
         delete dOutput;
 
         // The output has the same shape of the input
-        output = new Vol<>(input->depth(), input->height(), input->width());
-        dOutput = new Vol<>(input->depth(), input->height(), input->width());
+        output = new Tensor<>(input->depth(), input->height(), input->width());
+        dOutput = new Tensor<>(input->depth(), input->height(), input->width());
     }
 
 private:

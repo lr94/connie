@@ -2,7 +2,7 @@
 #define CNN_LAYER_HPP
 
 #include "TrainerBase.hpp"
-#include "Vol.hpp"
+#include "Tensor.hpp"
 
 /**
  * Each layer is responsible of its output tensor, the input one is the output tensor of the previous layer
@@ -10,11 +10,11 @@
 class LayerBase
 {
 public:
-    Vol<> *input;
-    Vol<> *output;
+    Tensor<> *input;
+    Tensor<> *output;
 
-    Vol<> *dInput;
-    Vol<> *dOutput;
+    Tensor<> *dInput;
+    Tensor<> *dOutput;
 
     virtual void forward() = 0;
     virtual void backward() = 0;

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Vol.hpp"
+#include "Tensor.hpp"
 
 #include "Net.hpp"
 #include "InputLayer.hpp"
@@ -27,9 +27,9 @@ int main()
            .appendLayer(fcc2)
            .appendLayer(r);
 
-    Vol<> &input = network.getInput();
-    Vol<> &output = network.getOutput();
-    Vol<> &target = r.target();
+    Tensor<> &input = network.getInput();
+    Tensor<> &output = network.getOutput();
+    Tensor<> &target = r.target();
 
     // Initialize the trainer
     SGDTrainer trainer(0.001f);

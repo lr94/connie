@@ -34,7 +34,7 @@ void RegressionLayer::backward()
     loss /= 2.0f;
 }
 
-Vol<> &RegressionLayer::target()
+Tensor<> &RegressionLayer::target()
 {
     return *(this->y);
 }
@@ -51,5 +51,5 @@ void RegressionLayer::prepend(LayerBase *previousLayer)
     output = input;
 
     delete y;
-    y = new Vol<>(output->depth(), output->height(), output->width());
+    y = new Tensor<>(output->depth(), output->height(), output->width());
 }

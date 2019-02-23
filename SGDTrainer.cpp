@@ -8,7 +8,7 @@ void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float
         params[i] -= learningRate * gradient[i];
 }
 
-void SGDTrainer::updateLayerParams(Vol<> &params, Vol<> &gradient) const
+void SGDTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient) const
 {
     size_t size = params.getDataSize();
 

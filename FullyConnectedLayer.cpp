@@ -2,8 +2,8 @@
 
 FullyConnectedLayer::FullyConnectedLayer(unsigned numNeurons)
 {
-    output = new Vol<>(numNeurons, 1, 1);
-    dOutput = new Vol<>(numNeurons, 1, 1);
+    output = new Tensor<>(numNeurons, 1, 1);
+    dOutput = new Tensor<>(numNeurons, 1, 1);
     input = nullptr;
 }
 
@@ -36,7 +36,7 @@ void FullyConnectedLayer::backward()
         // Compute gradient w.r.t. bias
         dBiases[i] = g_i; // dB = gradient
 
-        Vol<> &dNeuronWeights = dWeights[i];
+        Tensor<> &dNeuronWeights = dWeights[i];
 
         // Compute gradient w.r.t. weights
         for (unsigned j = 0; j < inputSize; j++) // dW = gradient * h
@@ -84,8 +84,8 @@ void FullyConnectedLayer::prepend(LayerBase *previousLayer)
     unsigned neurons = numNeurons();
     for (unsigned i = 0; i < neurons; i++)
     {
-        weights.emplace_back(Vol<>::random(input->depth(), input->height(), input->width()));
-        dWeights.emplace_back(Vol<>(input->depth(), input->height(), input->width()));
+        weights.emplace_back(Tensor<>::random(input->depth(), input->height(), input->width()));
+        dWeights.emplace_back(Tensor<>(input->depth(), input->height(), input->width()));
         biases.emplace_back(distribution(generator));
     }
 
