@@ -17,6 +17,7 @@ public:
 
     Vol<> &getInput();
     Vol<> &getOutput();
+    float getLoss();
 private:
     std::vector<LayerBase*> layers;
 

@@ -1,4 +1,5 @@
 #include "Net.hpp"
+#include "LossLayerBase.hpp"
 
 Net &Net::appendLayer(LayerBase *layer)
 {
@@ -33,4 +34,14 @@ Vol<> &Net::getInput()
 Vol<> &Net::getOutput()
 {
     return *output;
+}
+
+float Net::getLoss()
+{
+    auto lossLayer = dynamic_cast<LossLayerBase*>(layers.back());
+
+    if (lossLayer == nullptr)
+        throw std::runtime_error("Cannot get loss from an incomplete network (the last layer must be a LossLayer!)");
+
+    return lossLayer->getLoss();
 }
