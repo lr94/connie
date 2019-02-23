@@ -45,7 +45,7 @@ unsigned SoftmaxLayer::getNumClasses()
     return numClasses;
 }
 
-void SoftmaxLayer::setY(unsigned y)
+void SoftmaxLayer::setTargetClass(unsigned y)
 {
     if (y >= numClasses)
         throw std::runtime_error("Invalid class");

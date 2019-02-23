@@ -34,20 +34,9 @@ void RegressionLayer::backward()
     loss /= 2.0f;
 }
 
-void RegressionLayer::setY(const std::vector<float> &y)
+Vol<> &RegressionLayer::target()
 {
-    size_t size = y.size();
-
-    for (unsigned i = 0; i < size; i++)
-        this->y->set(i, y[i]);
-}
-
-void RegressionLayer::setY(const Vol<> &y)
-{
-    size_t size = y.getDataSize();
-
-    for (unsigned i = 0; i < size; i++)
-        this->y->set(i, y.get(i));
+    return *(this->y);
 }
 
 float RegressionLayer::getLoss()

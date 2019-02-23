@@ -15,7 +15,7 @@ public:
     void updateParams(const TrainerBase &trainer) override {}
 
     unsigned getNumClasses();
-    void setY(unsigned y);
+    void setTargetClass(unsigned y);
     float getLoss() override;
 
 protected:

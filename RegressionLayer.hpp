@@ -16,8 +16,8 @@ public:
 
     void updateParams(const TrainerBase &trainer) override {}
 
-    void setY(const std::vector<float> &y);
-    void setY(const Vol<> &y);
+    Vol<> &target();
+
     float getLoss() override;
 
 protected:
