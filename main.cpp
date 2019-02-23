@@ -16,7 +16,7 @@ int main()
     // Build the network
     InputLayer inputLayer(2, 1, 1);
     FullyConnectedLayer fcc1(4);
-    ReluLayer activationFunction;
+    SigmoidLayer activationFunction;
     FullyConnectedLayer fcc2(1);
     RegressionLayer r;
 
@@ -32,14 +32,14 @@ int main()
     Vol<> &target = r.target();
 
     // Initialize the trainer
-    SGDTrainer trainer(0.01f);
+    SGDTrainer trainer(0.001f);
 
     // Training data
-    int x[][2] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-    int y[] = {0, 1, 1, 0};
+    float x[][2] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+    float y[] = {0, 1, 1, 0};
     int n = 4;
 
-    for (unsigned i = 0; i < 100000; i++)
+    for (unsigned i = 0; i < 500000; i++)
     {
         input.set(0, x[i % n][0]);
         input.set(1, x[i % n][1]);
@@ -47,8 +47,11 @@ int main()
 
         network.train(trainer);
 
-        // std::cout << "{" << x[i % n][0] << ", " << x[i % n][1] << "} -> " << output.get(0) << std::endl;
-        std::cout << network.getLoss() << std::endl;
+        if (i % 1000 == 0)
+        {
+            // std::cout << "{" << x[i % n][0] << ", " << x[i % n][1] << "} -> " << output.get(0) << std::endl;
+            std::cout << network.getLoss() << std::endl;
+        }
     }
 
     for (unsigned i = 0; i < n; i++)
@@ -58,8 +61,6 @@ int main()
         network.forward();
         std::cout << "{" << x[i][0] << ", " << x[i][1] << "} -> " << output.get(0) << std::endl;
     }
-
-    std::cout << "Loss: " << network.getLoss() << std::endl;
 
     return 0;
 }
