@@ -9,8 +9,6 @@
 class Net
 {
 public:
-    friend class TrainerBase;
-
     Net() = default;
     ~Net() = default;
 
