@@ -17,7 +17,7 @@ public:
     float getLoss();
 
 protected:
-    void prepend(LayerBase *previousLayer);
+    void prepend(LayerBase *previousLayer) override;
     unsigned numClasses;
     unsigned y;
     float loss;
