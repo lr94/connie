@@ -14,7 +14,7 @@ SoftmaxLayer::~SoftmaxLayer()
 
 void SoftmaxLayer::forward()
 {
-    size_t inputSize = input->size();
+    size_t inputSize = input->getDataSize();
     float sum = 0;
 
     for (unsigned i = 0; i < inputSize; i++)
@@ -29,7 +29,7 @@ void SoftmaxLayer::forward()
 
 void SoftmaxLayer::backward()
 {
-    size_t inputSize = input->size();
+    size_t inputSize = input->getDataSize();
 
     for (unsigned i = 0; i < inputSize; i++)
     {
@@ -67,5 +67,5 @@ void SoftmaxLayer::prepend(LayerBase *previousLayer)
     // The output has the same shape of the input
     output = new Tensor<>(input->depth(), input->height(), input->width());
 
-    numClasses = static_cast<unsigned>(output->size());
+    numClasses = static_cast<unsigned>(output->getDataSize());
 }

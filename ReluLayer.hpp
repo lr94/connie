@@ -21,7 +21,7 @@ public:
 
     void forward() override
     {
-        size_t inputSize = input->size();
+        size_t inputSize = input->getDataSize();
 
         for (unsigned i = 0; i < inputSize; i++)
             output->set(i, relu(input->get(i)));
@@ -29,7 +29,7 @@ public:
 
     void backward() override
     {
-        size_t inputSize = input->size();
+        size_t inputSize = input->getDataSize();
 
         for (unsigned i = 0; i < inputSize; i++)
             dInput->set(i, dOutput->get(i) * relu_derivative(output->get(i)));

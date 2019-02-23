@@ -24,7 +24,7 @@ void RegressionLayer::backward()
 {
     loss = 0;
 
-    size_t size = y->size();
+    size_t size = y->getDataSize();
     for (unsigned i = 0; i < size; i++)
     {
         float delta = input->get(i) - y->get(i);
