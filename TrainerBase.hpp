@@ -2,7 +2,7 @@
 #define CNN_TRAINERBASE_HPP
 
 #include <vector>
-#include "Net.hpp"
+#include "Vol.hpp"
 
 class TrainerBase
 {
