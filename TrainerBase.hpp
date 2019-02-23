@@ -6,14 +6,8 @@
 
 class TrainerBase
 {
-public:
-    TrainerBase(Net &network) : net(network), networkLayers(network.layers) {}
-
-    virtual void train() = 0;
-
-private:
-    Net &net;
-    std::vector<LayerBase*> &networkLayers;
+    virtual void changeParams(std::vector<float> &params, std::vector<float> &gradient) = 0;
+    virtual void changeParams(Vol<> &params, Vol<> &gradient) = 0;
 };
 
 

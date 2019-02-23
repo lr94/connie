@@ -26,6 +26,15 @@ void Net::backward()
         (*i)->backward();
 }
 
+void Net::train(TrainerBase &trainer)
+{
+    forward();
+    backward();
+
+    for (auto i = layers.rbegin(); i != layers.rend(); i++)
+        ;
+}
+
 Vol<> &Net::getInput()
 {
     return *input;

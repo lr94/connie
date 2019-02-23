@@ -4,6 +4,7 @@
 #include <vector>
 #include "Vol.hpp"
 #include "LayerBase.hpp"
+#include "TrainerBase.hpp"
 
 class Net
 {
@@ -16,6 +17,7 @@ public:
     Net &appendLayer(LayerBase &layer);
     void forward();
     void backward();
+    void train(TrainerBase &trainer);
 
     Vol<> &getInput();
     Vol<> &getOutput();
