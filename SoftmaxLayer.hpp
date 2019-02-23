@@ -13,8 +13,15 @@ public:
     void forward() override;
     void backward() override;
 
+    unsigned getNumClasses();
+    void setY(unsigned y);
+    float getLoss();
+
 protected:
     void prepend(LayerBase *previousLayer);
+    unsigned numClasses;
+    unsigned y;
+    float loss;
 };
 
 

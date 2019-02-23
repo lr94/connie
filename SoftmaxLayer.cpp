@@ -30,7 +30,33 @@ void SoftmaxLayer::forward()
 
 void SoftmaxLayer::backward()
 {
+    size_t inputSize = input->getDataSize();
 
+    for (unsigned i = 0; i < inputSize; i++)
+    {
+        float indicator = (y == i) ? 1.0f : 0.0f;
+        dInput->set(i, output->get(i) - indicator);
+    }
+
+    loss = -std::log(output->get(y));
+}
+
+unsigned SoftmaxLayer::getNumClasses()
+{
+    return numClasses;
+}
+
+void SoftmaxLayer::setY(unsigned y)
+{
+    if (y >= numClasses)
+        throw std::runtime_error("Invalid class");
+
+    this->y = y;
+}
+
+float SoftmaxLayer::getLoss()
+{
+    return loss;
 }
 
 void SoftmaxLayer::prepend(LayerBase *previousLayer)
@@ -43,4 +69,6 @@ void SoftmaxLayer::prepend(LayerBase *previousLayer)
     // The output has the same shape of the input
     output = new Vol<>(input->depth(), input->height(), input->width());
     dOutput = new Vol<>(input->depth(), input->height(), input->width());
+
+    numClasses = static_cast<unsigned>(output->getDataSize());
 }
