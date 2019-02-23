@@ -5,6 +5,7 @@
 #include "InputLayer.hpp"
 #include "FullyConnectedLayer.hpp"
 #include "SigmoidLayer.hpp"
+#include "ReluLayer.hpp"
 #include "SoftmaxLayer.hpp"
 #include "RegressionLayer.hpp"
 
@@ -15,14 +16,14 @@ int main()
     // Build the network
     InputLayer inputLayer(2, 1, 1);
     FullyConnectedLayer fcc1(4);
-    SigmoidLayer sig1;
+    ReluLayer activationFunction;
     FullyConnectedLayer fcc2(1);
     RegressionLayer r;
 
     Net network;
     network.appendLayer(inputLayer)
            .appendLayer(fcc1)
-           .appendLayer(sig1)
+           .appendLayer(activationFunction)
            .appendLayer(fcc2)
            .appendLayer(r);
 
@@ -35,7 +36,7 @@ int main()
 
     // Training data
     int x[][2] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-    int y[] = {0, 1, 1, 1};
+    int y[] = {0, 1, 1, 0};
     int n = 4;
 
     for (unsigned i = 0; i < 100000; i++)
@@ -46,7 +47,7 @@ int main()
 
         network.train(trainer);
 
-        std::cout << "{" << x[i % n][0] << ", " << x[i % n][1] << "} -> " << output.get(0) << std::endl;
+        // std::cout << "{" << x[i % n][0] << ", " << x[i % n][1] << "} -> " << output.get(0) << std::endl;
         std::cout << network.getLoss() << std::endl;
     }
 
