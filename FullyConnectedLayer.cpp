@@ -26,7 +26,7 @@ void FullyConnectedLayer::forward()
 
 void FullyConnectedLayer::backward()
 {
-    size_t inputSize = input->getDataSize();
+    size_t inputSize = input->size();
     unsigned neurons = numNeurons();
 
     for (unsigned i = 0; i < neurons; i++)

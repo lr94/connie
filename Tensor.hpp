@@ -100,9 +100,9 @@ public:
         shape = original.shape;
         computeDataSize();
 
-        w = new T[size];
+        w = new T[totalSize];
 
-        std::copy(original.w, original.w + size, w);
+        std::copy(original.w, original.w + totalSize, w);
     }
 
     Tensor(Tensor &&original) noexcept
@@ -125,7 +125,7 @@ public:
         std::default_random_engine generator;
         std::normal_distribution<T> distribution(0.0, 1.0);
 
-        size_t size = t.getDataSize();
+        size_t size = t.size();
         for (size_t i = 0; i < size; i++)
             t.w[i] = distribution(generator);
 
@@ -250,7 +250,7 @@ public:
     {
         Tensor<T> result = left;
 
-        size_t size = result.getDataSize();
+        size_t size = result.size();
 
         for (size_t i = 0; i < size; i++)
             result.w[i] += right.w[i];
@@ -262,7 +262,7 @@ public:
     {
         Tensor<T> result = left;
 
-        size_t size = result.getDataSize();
+        size_t size = result.size();
 
         for (size_t i = 0; i < size; i++)
             result.w[i] += right;
@@ -274,7 +274,7 @@ public:
     {
         Tensor<T> result = left;
 
-        size_t size = result.getDataSize();
+        size_t size = result.size();
 
         for (size_t i = 0; i < size; i++)
             result.w[i] += right;
@@ -294,7 +294,7 @@ public:
 
     Tensor &operator+=(const Tensor &right)
     {
-        size_t size = getDataSize();
+        size_t size = size();
 
         for (size_t i = 0; i < size; i++)
             w[i] += right.w[i];
@@ -304,7 +304,7 @@ public:
 
     Tensor &operator+=(const T &right)
     {
-        size_t size = getDataSize();
+        size_t size = size();
 
         for (size_t i = 0; i < size; i++)
             w[i] += right;
@@ -316,7 +316,7 @@ public:
     {
         Tensor<T> result = left;
 
-        size_t size = result.getDataSize();
+        size_t size = result.size();
 
         for (size_t i = 0; i < size; i++)
             result.w[i] -= right.w[i];
@@ -328,7 +328,7 @@ public:
     {
         Tensor<T> result = left;
 
-        size_t size = result.getDataSize();
+        size_t size = result.size();
 
         for (size_t i = 0; i < size; i++)
             result.w[i] -= right;
@@ -340,7 +340,7 @@ public:
     {
         Tensor<T> result = left;
 
-        size_t size = result.getDataSize();
+        size_t size = result.size();
 
         for (size_t i = 0; i < size; i++)
             result.w[i] -= right;
@@ -360,7 +360,7 @@ public:
 
     Tensor &operator-=(const Tensor &right)
     {
-        size_t size = getDataSize();
+        size_t size = size();
 
         for (size_t i = 0; i < size; i++)
             w[i] -= right.w[i];
@@ -370,7 +370,7 @@ public:
 
     Tensor &operator-=(const T &right)
     {
-        size_t size = getDataSize();
+        size_t size = size();
 
         for (size_t i = 0; i < size; i++)
             w[i] -= right;
@@ -381,7 +381,7 @@ public:
     friend T operator*(const Tensor &left, const Tensor &right)
     {
         T result = 0;
-        size_t dataSize = left.getDataSize();
+        size_t dataSize = left.size();
 
         for (size_t i = 0; i < dataSize; i++)
             result += left.w[i] * right.w[i];
@@ -393,7 +393,7 @@ public:
     {
         Tensor<T> result = left;
 
-        size_t size = result.getDataSize();
+        size_t size = result.size();
 
         for (size_t i = 0; i < size; i++)
             result.w[i] *= right;
@@ -405,7 +405,7 @@ public:
     {
         Tensor<T> result = left;
 
-        size_t size = result.getDataSize();
+        size_t size = result.size();
 
         for (size_t i = 0; i < size; i++)
             result.w[i] *= right;
@@ -425,7 +425,7 @@ public:
 
     Tensor &operator*=(const T &right)
     {
-        size_t size = getDataSize();
+        size_t size = size();
 
         for (size_t i = 0; i < size; i++)
             w[i] *= right;
@@ -437,7 +437,7 @@ public:
     {
         Tensor<T> result = left;
 
-        size_t size = result.getDataSize();
+        size_t size = result.size();
 
         for (size_t i = 0; i < size; i++)
             result.w[i] /= right;
@@ -449,7 +449,7 @@ public:
     {
         Tensor<T> result = left;
 
-        size_t size = result.getDataSize();
+        size_t size = result.size();
 
         for (size_t i = 0; i < size; i++)
             result.w[i] /= right;
@@ -469,7 +469,7 @@ public:
 
     Tensor &operator/=(const T &right)
     {
-        size_t size = getDataSize();
+        size_t size = size();
 
         for (size_t i = 0; i < size; i++)
             w[i] /= right;
@@ -539,12 +539,12 @@ public:
 
     void zero()
     {
-        std::fill_n(w, getDataSize(), 0);
+        std::fill_n(w, size(), 0);
     }
 
-    inline size_t getDataSize() const
+    inline size_t size() const
     {
-        return size;
+        return totalSize;
     }
 
     inline T get(unsigned layer, unsigned row, unsigned column) const
@@ -587,13 +587,13 @@ private:
     std::vector<unsigned> shape; // For possible future extension to generic n-dimensional tensors
     T *w;
 
-    size_t size;
+    size_t totalSize;
 
     void computeDataSize()
     {
-        size = 1;
+        totalSize = 1;
         for (auto iterator = this->shape.begin(); iterator != this->shape.end(); iterator++)
-            size *= *iterator;
+            totalSize *= *iterator;
     }
 };
 
