@@ -3,9 +3,9 @@
 
 #include <vector>
 #include "Vol.hpp"
-#include "LayerBase.hpp"
+#include "LossLayerBase.hpp"
 
-class RegressionLayer : public LayerBase
+class RegressionLayer : public LossLayerBase
 {
 public:
     RegressionLayer();
@@ -16,7 +16,7 @@ public:
 
     void setY(const std::vector<float> &y);
     void setY(const Vol<> &y);
-    float getLoss();
+    float getLoss() override;
 
 protected:
     void prepend(LayerBase *previousLayer) override;

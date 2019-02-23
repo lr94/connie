@@ -1,9 +1,9 @@
 #ifndef CNN_SOFTMAXLAYER_HPP
 #define CNN_SOFTMAXLAYER_HPP
 
-#include "LayerBase.hpp"
+#include "LossLayerBase.hpp"
 
-class SoftmaxLayer : public LayerBase
+class SoftmaxLayer : public LossLayerBase
 {
 public:
     SoftmaxLayer();
@@ -14,7 +14,7 @@ public:
 
     unsigned getNumClasses();
     void setY(unsigned y);
-    float getLoss();
+    float getLoss() override;
 
 protected:
     void prepend(LayerBase *previousLayer) override;
