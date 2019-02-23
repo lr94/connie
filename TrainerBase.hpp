@@ -6,8 +6,8 @@
 
 class TrainerBase
 {
-    virtual void changeParams(std::vector<float> &params, std::vector<float> &gradient) = 0;
-    virtual void changeParams(Vol<> &params, Vol<> &gradient) = 0;
+    virtual void changeParams(std::vector<float> &params, std::vector<float> &gradient) const = 0;
+    virtual void changeParams(Vol<> &params, Vol<> &gradient) const = 0;
 };
 
 
