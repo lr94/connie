@@ -10,7 +10,6 @@ SoftmaxLayer::SoftmaxLayer()
 SoftmaxLayer::~SoftmaxLayer()
 {
     delete output;
-    delete dOutput;
 }
 
 void SoftmaxLayer::forward()
@@ -64,11 +63,9 @@ void SoftmaxLayer::prepend(LayerBase *previousLayer)
     LayerBase::prepend(previousLayer);
 
     delete output;
-    delete dOutput;
 
     // The output has the same shape of the input
     output = new Vol<>(input->depth(), input->height(), input->width());
-    dOutput = new Vol<>(input->depth(), input->height(), input->width());
 
     numClasses = static_cast<unsigned>(output->getDataSize());
 }
