@@ -19,6 +19,7 @@ public:
     ~InputLayer()
     {
         delete input;
+        delete dInput;
     }
 
     void forward() override {}
