@@ -1,15 +1,15 @@
 #include <iostream>
-#include "Tensor.hpp"
+#include "../main/Tensor.hpp"
 
-#include "Net.hpp"
-#include "InputLayer.hpp"
-#include "FullyConnectedLayer.hpp"
-#include "SigmoidLayer.hpp"
-#include "ReluLayer.hpp"
-#include "SoftmaxLayer.hpp"
-#include "RegressionLayer.hpp"
+#include "../main/Net.hpp"
+#include "../main/InputLayer.hpp"
+#include "../main/FullyConnectedLayer.hpp"
+#include "../main/SigmoidLayer.hpp"
+#include "../main/ReluLayer.hpp"
+#include "../main/SoftmaxLayer.hpp"
+#include "../main/RegressionLayer.hpp"
 
-#include "SGDTrainer.hpp"
+#include "../main/SGDTrainer.hpp"
 
 int main()
 {
