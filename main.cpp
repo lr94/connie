@@ -1,23 +1,45 @@
 #include <iostream>
 #include "Vol.hpp"
+
+#include "Net.hpp"
 #include "InputLayer.hpp"
 #include "FullyConnectedLayer.hpp"
+#include "SigmoidLayer.hpp"
+#include "SoftmaxLayer.hpp"
+#include "RegressionLayer.hpp"
 
 int main()
 {
-    Vol<> v(5, 1, 1);
-    v = {1, 2, 3, 4, 5};
+    Vol<> v(2, 1, 1);
+    v = {0.7, -9.6};
 
-    InputLayer inputLayer(5, 1, 1);
-    FullyConnectedLayer fcc(5);
+    InputLayer inputLayer(2, 1, 1);
+    FullyConnectedLayer fcc1(4);
+    FullyConnectedLayer fcc2(8);
+    FullyConnectedLayer fcc3(3);
+    SigmoidLayer s;
+    RegressionLayer r;
 
-    inputLayer.append(&fcc);
+    Net net;
+    net.appendLayer(&inputLayer)
+       .appendLayer(&fcc1)
+       .appendLayer(&fcc2)
+       .appendLayer(&fcc3)
+       .appendLayer(&s)
+       .appendLayer(&r);
 
-    (*inputLayer.input) = v;
+    Vol<> &input = net.getInput();
+    input[0][0][0] = 0.7;
+    input[1][0][0] = -9.6;
 
-    fcc.forward();
+    r.setY(std::vector<float>{0, 0, 0});
 
-    std::cout << (*fcc.output) << std::endl;
+    net.forward();
+    net.backward();
+
+    std::cout << net.getOutput() << std::endl;
+
+    std::cout << "Loss: " << net.getLoss() << std::endl;
 
     return 0;
 }
