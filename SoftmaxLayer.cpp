@@ -15,14 +15,23 @@ SoftmaxLayer::~SoftmaxLayer()
 void SoftmaxLayer::forward()
 {
     size_t inputSize = input->getDataSize();
-    float sum = 0;
+    float sum = 0, max_e = 0;
+    unsigned max_i = 0;
 
     for (unsigned i = 0; i < inputSize; i++)
     {
         float e = std::exp(input->get(i));
         output->set(i, e);
         sum += e;
+
+        if (e >= max_e)
+        {
+            max_e = e;
+            max_i = i;
+        }
     }
+
+    predictedClass = max_i;
 
     (*output) /= sum;
 }
@@ -51,6 +60,11 @@ void SoftmaxLayer::setTargetClass(unsigned y)
         throw std::runtime_error("Invalid class");
 
     this->y = y;
+}
+
+unsigned SoftmaxLayer::getPredictedClass()
+{
+    return predictedClass;
 }
 
 float SoftmaxLayer::getLoss()

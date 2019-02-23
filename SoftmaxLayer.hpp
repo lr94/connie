@@ -17,12 +17,14 @@ public:
     unsigned getNumClasses();
     void setTargetClass(unsigned y);
     float getLoss() override;
+    unsigned getPredictedClass();
 
 protected:
     void prepend(LayerBase *previousLayer) override;
     unsigned numClasses;
     unsigned y;
     float loss;
+    unsigned predictedClass;
 };
 
 
