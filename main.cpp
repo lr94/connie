@@ -17,11 +17,11 @@ int main()
     RegressionLayer r;
 
     Net network;
-    network.appendLayer(&inputLayer)
-           .appendLayer(&fcc1)
-           .appendLayer(&sig1)
-           .appendLayer(&fcc2)
-           .appendLayer(&r);
+    network.appendLayer(inputLayer)
+           .appendLayer(fcc1)
+           .appendLayer(sig1)
+           .appendLayer(fcc2)
+           .appendLayer(r);
 
     r.setY(std::vector<float>{0});
     network.forward();

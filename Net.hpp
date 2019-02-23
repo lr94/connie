@@ -11,7 +11,7 @@ public:
     Net() = default;
     ~Net() = default;
 
-    Net &appendLayer(LayerBase *layer);
+    Net &appendLayer(LayerBase &layer);
     void forward();
     void backward();
 
