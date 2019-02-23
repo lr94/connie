@@ -9,13 +9,15 @@
 class FullyConnectedLayer : public LayerBase
 {
 public:
-    FullyConnectedLayer(unsigned numNeurons);
+    explicit FullyConnectedLayer(unsigned numNeurons);
 
     ~FullyConnectedLayer();
 
     void forward() override;
 
     void backward() override;
+
+    void updateParams(const TrainerBase &trainer) override;
 
     inline unsigned numNeurons() const;
 

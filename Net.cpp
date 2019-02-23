@@ -32,7 +32,7 @@ void Net::train(TrainerBase &trainer)
     backward();
 
     for (auto i = layers.rbegin(); i != layers.rend(); i++)
-        ;
+        (*i)->updateParams(trainer);
 }
 
 Vol<> &Net::getInput()

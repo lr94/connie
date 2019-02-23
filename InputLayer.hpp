@@ -25,6 +25,8 @@ public:
     void forward() override {}
     void backward() override {}
 
+    void updateParams(const TrainerBase &trainer) override {}
+
 protected:
     void prepend(LayerBase *previousLayer) override
     {

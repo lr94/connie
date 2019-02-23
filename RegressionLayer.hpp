@@ -14,6 +14,8 @@ public:
     void forward() override;
     void backward() override;
 
+    void updateParams(const TrainerBase &trainer) override {}
+
     void setY(const std::vector<float> &y);
     void setY(const Vol<> &y);
     float getLoss() override;

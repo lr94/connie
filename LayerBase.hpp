@@ -1,6 +1,7 @@
 #ifndef CNN_LAYER_HPP
 #define CNN_LAYER_HPP
 
+#include "TrainerBase.hpp"
 #include "Vol.hpp"
 
 /**
@@ -17,6 +18,8 @@ public:
 
     virtual void forward() = 0;
     virtual void backward() = 0;
+
+    virtual void updateParams(const TrainerBase &trainer) = 0;
 
     void append(LayerBase *nextLayer)
     {

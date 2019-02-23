@@ -35,6 +35,8 @@ public:
             dInput->set(i, dOutput->get(i) * (1.0f - output->get(i)) * output->get(i));
     }
 
+    void updateParams(const TrainerBase &trainer) override {}
+
 protected:
     void prepend(LayerBase *previousLayer) override
     {
