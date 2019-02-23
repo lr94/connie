@@ -1,4 +1,3 @@
-
 #ifndef CNN_SOFTMAXLAYER_HPP
 #define CNN_SOFTMAXLAYER_HPP
 
