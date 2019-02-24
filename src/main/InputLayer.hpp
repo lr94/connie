@@ -1,6 +1,7 @@
 #ifndef CNN_INPUTLAYER_HPP
 #define CNN_INPUTLAYER_HPP
 
+#include <stdexcept>
 #include "Tensor.hpp"
 #include "LayerBase.hpp"
 

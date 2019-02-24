@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "Net.hpp"
 #include "LossLayerBase.hpp"
 
