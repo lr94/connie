@@ -51,12 +51,6 @@ protected:
         output = new Tensor<>(input->depth(), input->height(), input->width());
         dOutput = new Tensor<>(input->depth(), input->height(), input->width());
     }
-
-private:
-    static inline float sigmoid(float x)
-    {
-        return 1.0f / (1.0f + std::exp(-x));
-    }
 };
 
 
