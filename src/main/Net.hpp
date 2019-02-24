@@ -5,18 +5,18 @@
 #include <memory>
 #include "Tensor.hpp"
 #include "LayerBase.hpp"
-#include "TrainerBase.hpp"
 
 class Net
 {
 public:
+    friend class TrainerBase;
+
     Net() = default;
     ~Net() = default;
 
     Net &appendLayer(std::shared_ptr<LayerBase> layer);
     void forward();
     void backward();
-    void train(TrainerBase &trainer);
 
     Tensor<> &getInput();
     Tensor<> &getOutput();

@@ -28,15 +28,6 @@ void Net::backward()
         (*i)->backward();
 }
 
-void Net::train(TrainerBase &trainer)
-{
-    forward();
-    backward();
-
-    for (auto i = layers.rbegin(); i != layers.rend(); i++)
-        (*i)->updateParams(trainer);
-}
-
 Tensor<> &Net::getInput()
 {
     return *input;

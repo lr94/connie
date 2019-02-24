@@ -1,4 +1,5 @@
 #include "FullyConnectedLayer.hpp"
+#include "TrainerBase.hpp"
 
 FullyConnectedLayer::FullyConnectedLayer(unsigned numNeurons)
 {

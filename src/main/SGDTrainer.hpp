@@ -6,10 +6,11 @@
 class SGDTrainer : public TrainerBase
 {
 public:
-    explicit SGDTrainer(float learningRate) : learningRate(learningRate) { }
+    explicit SGDTrainer(Net &network, float learningRate) : TrainerBase(network), learningRate(learningRate) { }
 
     float learningRate;
 
+    virtual void train() override;
     void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<float> &memory) const override;
     void updateLayerParams(Tensor<> &params, Tensor<> &gradient, Tensor<> &memory) const override;
 };

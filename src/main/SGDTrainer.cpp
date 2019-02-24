@@ -1,5 +1,14 @@
 #include "SGDTrainer.hpp"
 
+void SGDTrainer::train()
+{
+    net.forward();
+    net.backward();
+
+    for (auto i = layers.rbegin(); i != layers.rend(); i++)
+        (*i)->updateParams(*this);
+}
+
 void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<float> &memory) const
 {
     size_t size = params.size();

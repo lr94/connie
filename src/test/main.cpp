@@ -29,20 +29,20 @@ int main()
     Tensor<> &target = r->target();
 
     // Initialize the trainer
-    SGDTrainer trainer(0.001f);
+    SGDTrainer trainer(network, 0.001f);
 
     // Training data
     float x[][2] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
     float y[] = {0, 1, 1, 0};
     int n = 4;
 
-    for (unsigned i = 0; i < 5000; i++)
+    for (unsigned i = 0; i < 500000; i++)
     {
         input.set(0, x[i % n][0]);
         input.set(1, x[i % n][1]);
         target.set(0, y[i % n]);
 
-        network.train(trainer);
+        trainer.train();
 
         if (i % 1000 == 0)
             std::cout << i << ": " << network.getLoss() << std::endl;

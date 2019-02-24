@@ -1,8 +1,8 @@
 #ifndef CNN_LAYER_HPP
 #define CNN_LAYER_HPP
 
-#include "TrainerBase.hpp"
 #include "Tensor.hpp"
+class TrainerBase;
 
 /**
  * Each layer is responsible of its output tensor, the input one is the output tensor of the previous layer
