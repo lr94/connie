@@ -38,6 +38,14 @@ int main(int argc, char *argv[])
            .appendLayer(std::make_shared<ReluLayer>())
            .appendLayer(std::make_shared<FullyConnectedLayer>(20))
            .appendLayer(std::make_shared<ReluLayer>())
+           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+           .appendLayer(std::make_shared<ReluLayer>())
+           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+           .appendLayer(std::make_shared<ReluLayer>())
+           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+           .appendLayer(std::make_shared<ReluLayer>())
+           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+           .appendLayer(std::make_shared<ReluLayer>())
            .appendLayer(std::make_shared<FullyConnectedLayer>(3))
            .appendLayer(std::make_shared<ReluLayer>())
            .appendLayer(regression);
@@ -47,7 +55,7 @@ int main(int argc, char *argv[])
     Tensor<> &target = regression->target();
 
     // Initialize the trainer
-    SGDTrainer trainer(network, 0.1f, 256);
+    SGDTrainer trainer(network, 0.05f, 256);
 
     SDL_Renderer *renderer;
     SDL_Window *window;
@@ -77,7 +85,7 @@ int main(int argc, char *argv[])
 
         if (k % 50000 == 0)
         {
-            float loss = network.getLoss();
+            float loss = trainer.getLoss();
             std::cout << loss << std::endl;
 
             for (y = 0; y < height; y++)

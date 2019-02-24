@@ -6,7 +6,7 @@
 class SGDTrainer : public TrainerBase
 {
 public:
-    explicit SGDTrainer(Net &network, float learningRate, unsigned batchSize) : TrainerBase(network), learningRate(learningRate), batchSize(batchSize), iteration(0)
+    explicit SGDTrainer(Net &network, float learningRate, unsigned batchSize) : TrainerBase(network), learningRate(learningRate), batchSize(batchSize)
     {
         if (batchSize == 0)
             throw std::runtime_error("Invalid batch size");
@@ -18,10 +18,13 @@ public:
     bool needToZeroOut() const override;
     void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const override;
     void updateLayerParams(Tensor<> &params, Tensor<> &gradient) const override;
+    float getLoss() const;
 
 private:
     unsigned batchSize;
-    unsigned long long iteration;
+    unsigned long long iteration = 0;
+    float loss = 0.0f;
+    float lossAccumulator = 0.0f;
 };
 
 

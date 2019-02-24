@@ -7,6 +7,13 @@ void SGDTrainer::train()
     net.forward();
     net.backward();
 
+    lossAccumulator += net.getLoss();
+    if (iteration % batchSize == 0)
+    {
+        loss = lossAccumulator;
+        lossAccumulator = 0;
+    }
+
     for (auto currentLayer = layers.rbegin(); currentLayer != layers.rend(); currentLayer++)
         (*currentLayer)->updateParams(*this);
 }
@@ -37,4 +44,9 @@ void SGDTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient) const
 
     for (unsigned i = 0; i < size; i++)
         params.addAt(i, -learningRate * gradient.get(i) / batchSize);
+}
+
+float SGDTrainer::getLoss() const
+{
+    return loss;
 }
