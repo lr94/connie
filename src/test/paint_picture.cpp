@@ -60,7 +60,8 @@ int main(int argc, char *argv[])
     SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer);
 
-    std::mt19937 engine;
+    std::random_device random_device;
+    std::mt19937 engine(random_device());
     std::uniform_int_distribution<> x_distr(0, width - 1);
     std::uniform_int_distribution<> y_distr(0, height - 1);
 
@@ -69,15 +70,18 @@ int main(int argc, char *argv[])
         unsigned x = x_distr(engine);
         unsigned y = y_distr(engine);
 
-        input.set(0, x);
-        input.set(1, y);
+        float xfloat = (x - static_cast<float>(width) / 2) / width;
+        float yfloat = (y - static_cast<float>(height) / 2) / height;
+
+        input.set(0, xfloat);
+        input.set(1, yfloat);
         target.set(0, imageTensor.get(0, y, x));
         target.set(1, imageTensor.get(1, y, x));
         target.set(2, imageTensor.get(2, y, x));
 
         network.train(trainer);
 
-        if (k % 100000 == 0)
+        if (k % 50000 == 0)
         {
             float loss = network.getLoss();
             std::cout << loss << std::endl;
@@ -85,8 +89,11 @@ int main(int argc, char *argv[])
             for (y = 0; y < height; y++)
                 for (x = 0; x < width; x++)
                 {
-                    input.set(0, x);
-                    input.set(1, y);
+                    xfloat = (x - static_cast<float>(width) / 2) / width;
+                    yfloat = (y - static_cast<float>(height) / 2) / height;
+
+                    input.set(0, xfloat);
+                    input.set(1, yfloat);
 
                     network.forward();
 
