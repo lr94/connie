@@ -11,8 +11,12 @@ public:
     float learningRate;
 
     void train() override;
-    void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<float> &memory) const override;
-    void updateLayerParams(Tensor<> &params, Tensor<> &gradient, Tensor<> &memory) const override;
+    void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const override;
+    void updateLayerParams(Tensor<> &params, Tensor<> &gradient) const override;
+
+private:
+    unsigned batchSize;
+    unsigned long long i;
 };
 
 
