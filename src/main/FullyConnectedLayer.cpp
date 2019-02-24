@@ -60,7 +60,7 @@ void FullyConnectedLayer::updateParams(const TrainerBase &trainer)
 
     unsigned neurons = numNeurons();
     for (unsigned i = 0; i < neurons; i++)
-        trainer.updateLayerParams(weights[i], dWeights[i]]);
+        trainer.updateLayerParams(weights[i], dWeights[i]);
 }
 
 inline unsigned FullyConnectedLayer::numNeurons() const
