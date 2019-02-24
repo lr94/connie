@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <memory>
 #include <gd.h>
 #include <SDL2/SDL.h>
 
@@ -29,31 +30,24 @@ int main(int argc, char *argv[])
     std::cout << width << "x" << height << std::endl;
     gdImageDestroy(img);
 
-    InputLayer inputLayer(2, 1, 1);
-    FullyConnectedLayer fc1(20);
-    FullyConnectedLayer fc2(20);
-    FullyConnectedLayer fc3(3);
-    ReluLayer relu1;
-    ReluLayer relu2;
-    ReluLayer relu3;
-    RegressionLayer regression;
+    std::shared_ptr<RegressionLayer> regression = std::make_shared<RegressionLayer>();
 
     Net network;
-    network.appendLayer(inputLayer)
-           .appendLayer(fc1)
-           .appendLayer(relu1)
-           .appendLayer(fc2)
-           .appendLayer(relu2)
-           .appendLayer(fc3)
-           .appendLayer(relu3)
+    network.appendLayer(std::make_shared<InputLayer>(2, 1, 1))
+           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+           .appendLayer(std::make_shared<ReluLayer>())
+           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+           .appendLayer(std::make_shared<ReluLayer>())
+           .appendLayer(std::make_shared<FullyConnectedLayer>(3))
+           .appendLayer(std::make_shared<ReluLayer>())
            .appendLayer(regression);
 
     Tensor<> &input = network.getInput();
     Tensor<> &output = network.getOutput();
-    Tensor<> &target = regression.target();
+    Tensor<> &target = regression->target();
 
     // Initialize the trainer
-    SGDTrainer trainer(0.000001f);
+    SGDTrainer trainer(network, 0.1f, 256);
 
     SDL_Renderer *renderer;
     SDL_Window *window;
@@ -67,8 +61,8 @@ int main(int argc, char *argv[])
 
     for (int k = 0; k < 1000000000; k++)
     {
-        unsigned x = x_distr(engine);
-        unsigned y = y_distr(engine);
+        int x = x_distr(engine);
+        int y = y_distr(engine);
 
         float xfloat = (x - static_cast<float>(width) / 2) / width;
         float yfloat = (y - static_cast<float>(height) / 2) / height;
@@ -79,7 +73,7 @@ int main(int argc, char *argv[])
         target.set(1, imageTensor.get(1, y, x));
         target.set(2, imageTensor.get(2, y, x));
 
-        network.train(trainer);
+        trainer.train();
 
         if (k % 50000 == 0)
         {
