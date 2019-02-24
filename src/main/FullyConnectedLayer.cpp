@@ -88,7 +88,8 @@ void FullyConnectedLayer::prepend(LayerBase *previousLayer)
     biases.clear();
     dBiases.clear();
 
-    std::default_random_engine generator;
+    std::random_device r;
+    std::default_random_engine generator(r());
     std::normal_distribution<float> distribution(0.0, 1.0);
 
     // For each output unit

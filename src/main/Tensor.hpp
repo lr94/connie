@@ -122,7 +122,8 @@ public:
     {
         Tensor t(depth, height, width);
 
-        std::default_random_engine generator;
+        std::random_device r;
+        std::default_random_engine generator(r());
         std::normal_distribution<T> distribution(0.0, 1.0);
 
         size_t size = t.getDataSize();
