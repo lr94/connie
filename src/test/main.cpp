@@ -21,11 +21,11 @@ int main()
     RegressionLayer r;
 
     Net network;
-    network.appendLayer(inputLayer)
-           .appendLayer(fcc1)
-           .appendLayer(activationFunction)
-           .appendLayer(fcc2)
-           .appendLayer(r);
+    network.appendLayer(&inputLayer)
+           .appendLayer(&fcc1)
+           .appendLayer(new SigmoidLayer)
+           .appendLayer(&fcc2)
+           .appendLayer(&r);
 
     Tensor<> &input = network.getInput();
     Tensor<> &output = network.getOutput();
@@ -39,7 +39,7 @@ int main()
     float y[] = {0, 1, 1, 0};
     int n = 4;
 
-    for (unsigned i = 0; i < 500000; i++)
+    for (unsigned i = 0; i < 5000; i++)
     {
         input.set(0, x[i % n][0]);
         input.set(1, x[i % n][1]);

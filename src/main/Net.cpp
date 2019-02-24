@@ -2,15 +2,15 @@
 #include "Net.hpp"
 #include "LossLayerBase.hpp"
 
-Net &Net::appendLayer(LayerBase &layer)
+Net &Net::appendLayer(LayerBase *layer)
 {
     if (layers.empty())
-        input = layer.input;
+        input = layer->input;
     else
-        layers.back()->append(&layer);
+        layers.back()->append(layer);
 
-    layers.push_back(&layer);
-    output = layer.output;
+    layers.push_back(layer);
+    output = layer->output;
 
     return *this;
 }
