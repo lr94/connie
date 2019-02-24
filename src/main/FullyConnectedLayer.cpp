@@ -86,9 +86,11 @@ void FullyConnectedLayer::prepend(LayerBase *previousLayer)
     for (unsigned i = 0; i < neurons; i++)
     {
         weights.emplace_back(Tensor<>::random(input->depth(), input->height(), input->width()));
-        dWeights.emplace_back(Tensor<>(input->depth(), input->height(), input->width()));
+        Tensor<> zeroTensor(input->depth(), input->height(), input->width());
+        zeroTensor.zero();
+        dWeights.emplace_back(zeroTensor);
         biases.emplace_back(distribution(generator));
     }
 
-    dBiases.reserve(biases.size());
+    dBiases.insert(dBiases.end(), biases.size(), 0.0f);
 }
