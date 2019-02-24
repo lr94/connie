@@ -6,7 +6,7 @@
 class SGDTrainer : public TrainerBase
 {
 public:
-    explicit SGDTrainer(Net &network, float learningRate, unsigned batchSize) : TrainerBase(network), learningRate(learningRate), batchSize(batchSize), i(0)
+    explicit SGDTrainer(Net &network, float learningRate, unsigned batchSize) : TrainerBase(network), learningRate(learningRate), batchSize(batchSize), iteration(0)
     {
         if (batchSize == 0)
             throw std::runtime_error("Invalid batch size");
@@ -21,7 +21,7 @@ public:
 
 private:
     unsigned batchSize;
-    unsigned long long i;
+    unsigned long long iteration;
 };
 
 

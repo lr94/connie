@@ -2,7 +2,7 @@
 
 void SGDTrainer::train()
 {
-    i++;
+    iteration++;
 
     net.forward();
     net.backward();
@@ -13,22 +13,28 @@ void SGDTrainer::train()
 
 bool SGDTrainer::needToZeroOut() const
 {
-    return i % batchSize == 0;
+    return iteration % batchSize == 0;
 }
 
 
 void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const
 {
+    if (iteration % batchSize != 0)
+        return;
+
     size_t size = params.size();
 
     for (unsigned i = 0; i < size; i++)
-        params[i] -= learningRate * gradient[i];
+        params[i] -= learningRate * gradient[i] / batchSize;
 }
 
 void SGDTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient) const
 {
+    if (iteration % batchSize != 0)
+        return;
+
     size_t size = params.getDataSize();
 
     for (unsigned i = 0; i < size; i++)
-        params.addAt(i, -learningRate * gradient.get(i));
+        params.addAt(i, -learningRate * gradient.get(i) / batchSize);
 }
