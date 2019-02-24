@@ -10,7 +10,7 @@ void SGDTrainer::train()
     lossAccumulator += net.getLoss();
     if (iteration % batchSize == 0)
     {
-        loss = lossAccumulator;
+        loss = lossAccumulator / batchSize;
         lossAccumulator = 0;
     }
 
@@ -22,7 +22,6 @@ bool SGDTrainer::needToZeroOut() const
 {
     return iteration % batchSize == 0;
 }
-
 
 void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const
 {
