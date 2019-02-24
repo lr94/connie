@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include "Tensor.hpp"
 
 #include "Net.hpp"
@@ -14,22 +15,18 @@
 int main()
 {
     // Build the network
-    InputLayer inputLayer(2, 1, 1);
-    FullyConnectedLayer fcc1(4);
-    SigmoidLayer activationFunction;
-    FullyConnectedLayer fcc2(1);
-    RegressionLayer r;
+    std::shared_ptr<RegressionLayer> r = std::make_shared<RegressionLayer>();
 
     Net network;
-    network.appendLayer(&inputLayer)
-           .appendLayer(&fcc1)
-           .appendLayer(new SigmoidLayer)
-           .appendLayer(&fcc2)
-           .appendLayer(&r);
+    network.appendLayer(std::make_shared<InputLayer>(2, 1, 1))
+           .appendLayer(std::make_shared<FullyConnectedLayer>(4))
+           .appendLayer(std::make_shared<SigmoidLayer>())
+           .appendLayer(std::make_shared<FullyConnectedLayer>(1))
+           .appendLayer(r);
 
     Tensor<> &input = network.getInput();
     Tensor<> &output = network.getOutput();
-    Tensor<> &target = r.target();
+    Tensor<> &target = r->target();
 
     // Initialize the trainer
     SGDTrainer trainer(0.001f);

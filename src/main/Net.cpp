@@ -1,13 +1,14 @@
+#include <memory>
 #include <stdexcept>
 #include "Net.hpp"
 #include "LossLayerBase.hpp"
 
-Net &Net::appendLayer(LayerBase *layer)
+Net &Net::appendLayer(std::shared_ptr<LayerBase> layer)
 {
     if (layers.empty())
         input = layer->input;
     else
-        layers.back()->append(layer);
+        layers.back()->append(layer.get());
 
     layers.push_back(layer);
     output = layer->output;
@@ -48,7 +49,7 @@ Tensor<> &Net::getOutput()
 
 float Net::getLoss()
 {
-    auto lossLayer = dynamic_cast<LossLayerBase*>(layers.back());
+    auto lossLayer = dynamic_cast<LossLayerBase*>(layers.back().get());
 
     if (lossLayer == nullptr)
         throw std::runtime_error("Cannot get loss from an incomplete network (the last layer must be a LossLayer!)");

@@ -2,6 +2,7 @@
 #define CNN_NET_HPP
 
 #include <vector>
+#include <memory>
 #include "Tensor.hpp"
 #include "LayerBase.hpp"
 #include "TrainerBase.hpp"
@@ -12,7 +13,7 @@ public:
     Net() = default;
     ~Net() = default;
 
-    Net &appendLayer(LayerBase *layer);
+    Net &appendLayer(std::shared_ptr<LayerBase> layer);
     void forward();
     void backward();
     void train(TrainerBase &trainer);
@@ -21,7 +22,7 @@ public:
     Tensor<> &getOutput();
     float getLoss();
 private:
-    std::vector<LayerBase*> layers;
+    std::vector<std::shared_ptr<LayerBase>> layers;
 
     Tensor<> *input;
     Tensor<> *output;
