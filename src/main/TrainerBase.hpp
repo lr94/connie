@@ -7,8 +7,8 @@
 class TrainerBase
 {
 public:
-    virtual void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const = 0;
-    virtual void updateLayerParams(Tensor<> &params, Tensor<> &gradient) const = 0;
+    virtual void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<float> &memory) const = 0;
+    virtual void updateLayerParams(Tensor<> &params, Tensor<> &gradient, Tensor<> &memory) const = 0;
 };
 
 

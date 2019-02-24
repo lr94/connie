@@ -55,11 +55,11 @@ void FullyConnectedLayer::backward()
 
 void FullyConnectedLayer::updateParams(const TrainerBase &trainer)
 {
-    trainer.updateLayerParams(biases, dBiases);
+    trainer.updateLayerParams(biases, dBiases, memBiases);
 
     unsigned neurons = numNeurons();
     for (unsigned i = 0; i < neurons; i++)
-        trainer.updateLayerParams(weights[i], dWeights[i]);
+        trainer.updateLayerParams(weights[i], dWeights[i], memWeights[i]);
 }
 
 inline unsigned FullyConnectedLayer::numNeurons() const

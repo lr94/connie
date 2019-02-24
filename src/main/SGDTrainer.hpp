@@ -10,8 +10,8 @@ public:
 
     float learningRate;
 
-    void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const override;
-    void updateLayerParams(Tensor<> &params, Tensor<> &gradient) const override;
+    void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<float> &memory) const override;
+    void updateLayerParams(Tensor<> &params, Tensor<> &gradient, Tensor<> &memory) const override;
 };
 
 
