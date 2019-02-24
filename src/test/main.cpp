@@ -48,7 +48,7 @@ int main()
         network.train(trainer);
 
         if (i % 1000 == 0)
-            std::cout << network.getLoss() << std::endl;
+            std::cout << i << ": " << network.getLoss() << std::endl;
     }
 
     for (unsigned i = 0; i < n; i++)
