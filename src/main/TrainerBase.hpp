@@ -11,6 +11,7 @@ public:
     explicit TrainerBase(Net &network) : net(network), layers(network.layers) {}
 
     virtual void train() = 0;
+    virtual bool needToZeroOut() const = 0;
     virtual void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const = 0;
     virtual void updateLayerParams(Tensor<> &params, Tensor<> &gradient) const = 0;
 

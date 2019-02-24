@@ -35,13 +35,13 @@ void FullyConnectedLayer::backward()
         float g_i = dOutput->get(i);
 
         // Compute gradient w.r.t. bias
-        dBiases[i] = g_i; // dB = gradient
+        dBiases[i] += g_i; // dB = gradient
 
         Tensor<> &dNeuronWeights = dWeights[i];
 
         // Compute gradient w.r.t. weights
         for (unsigned j = 0; j < inputSize; j++) // dW = gradient * h
-            dNeuronWeights.set(j, g_i * input->get(j));
+            dNeuronWeights.addAt(j, g_i * input->get(j));
     }
 
     // Compute gradient w.r.t. input
@@ -61,6 +61,16 @@ void FullyConnectedLayer::updateParams(const TrainerBase &trainer)
     unsigned neurons = numNeurons();
     for (unsigned i = 0; i < neurons; i++)
         trainer.updateLayerParams(weights[i], dWeights[i]);
+
+    // Zero out the gradient if needed (end of minibatch)
+    if (trainer.needToZeroOut())
+    {
+        for (auto &db : dBiases)
+            db = 0;
+
+        for (unsigned i = 0; i < neurons; i++)
+            dWeights[i].zero();
+    }
 }
 
 inline unsigned FullyConnectedLayer::numNeurons() const

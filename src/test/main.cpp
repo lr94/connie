@@ -29,7 +29,7 @@ int main()
     Tensor<> &target = r->target();
 
     // Initialize the trainer
-    SGDTrainer trainer(network, 0.001f);
+    SGDTrainer trainer(network, 0.001f, 16);
 
     // Training data
     float x[][2] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};

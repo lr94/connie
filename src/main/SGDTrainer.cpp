@@ -2,12 +2,20 @@
 
 void SGDTrainer::train()
 {
+    i++;
+
     net.forward();
     net.backward();
 
-    for (auto i = layers.rbegin(); i != layers.rend(); i++)
-        (*i)->updateParams(*this);
+    for (auto currentLayer = layers.rbegin(); currentLayer != layers.rend(); currentLayer++)
+        (*currentLayer)->updateParams(*this);
 }
+
+bool SGDTrainer::needToZeroOut() const
+{
+    return i % batchSize == 0;
+}
+
 
 void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const
 {
