@@ -25,7 +25,7 @@ protected:
     void prepend(LayerBase *previousLayer) override;
 
 private:
-    // One tensor for neuron, each tensor has the same shape of the input tensor and contains all the weights
+    // One tensor per neuron, each tensor has the same shape of the input tensor and contains all the weights
     std::vector<Tensor<>> weights;
     std::vector<float> biases;
 
