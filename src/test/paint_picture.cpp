@@ -1,4 +1,5 @@
 #include <iostream>
+#include <random>
 #include <gd.h>
 #include <SDL2/SDL.h>
 
@@ -52,38 +53,37 @@ int main(int argc, char *argv[])
     Tensor<> &target = regression.target();
 
     // Initialize the trainer
-    SGDTrainer trainer(0.001f);
+    SGDTrainer trainer(0.000001f);
 
     SDL_Renderer *renderer;
     SDL_Window *window;
     SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer);
 
-    unsigned i = 0;
-    for (int k = 0; k < 1000000; k++)
+    std::mt19937 engine;
+    std::uniform_int_distribution<> x_distr(0, width - 1);
+    std::uniform_int_distribution<> y_distr(0, height - 1);
+
+    for (int k = 0; k < 1000000000; k++)
     {
-        for (unsigned y = 0; y < height; y++)
-            for (unsigned x = 0; x < width; x++)
-            {
-                input.set(0, x);
-                input.set(1, y);
-                target.set(0, imageTensor.get(0, y, x));
-                target.set(1, imageTensor.get(1, y, x));
-                target.set(2, imageTensor.get(2, y, x));
+        unsigned x = x_distr(engine);
+        unsigned y = y_distr(engine);
 
-                network.train(trainer);
+        input.set(0, x);
+        input.set(1, y);
+        target.set(0, imageTensor.get(0, y, x));
+        target.set(1, imageTensor.get(1, y, x));
+        target.set(2, imageTensor.get(2, y, x));
 
-                if (i++ % 1000 == 0)
-                    std::cout << network.getLoss() << std::endl;
-            }
+        network.train(trainer);
 
-        float loss = network.getLoss();
-        std::cout << loss << std::endl;
-
-        if (k % 1000 == 0)
+        if (k % 100000 == 0)
         {
-            for (unsigned y = 0; y < height; y++)
-                for (unsigned x = 0; x < width; x++)
+            float loss = network.getLoss();
+            std::cout << loss << std::endl;
+
+            for (y = 0; y < height; y++)
+                for (x = 0; x < width; x++)
                 {
                     input.set(0, x);
                     input.set(1, y);
