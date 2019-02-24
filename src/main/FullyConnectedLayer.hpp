@@ -33,10 +33,5 @@ private:
     // Weight gradient tensors and bias gradients
     std::vector<Tensor<>> dWeights;
     std::vector<float> dBiases;
-
-    // Generic additional memory for weight and biases; it can be used as gradient accumulator for stochastic gradient
-    // descent and similar training methods
-    std::vector<Tensor<>> memWeights;
-    std::vector<float> memBiases;
 };
 #endif //CNN_FULLYCONNECTEDLAYER_HPP
