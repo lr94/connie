@@ -20,3 +20,4 @@ target_link_libraries(image_regression cnn ${SDL2_LIBRARY} ${GD_LIBRARY})
 
 # MNIST
 add_executable(mnist examples/mnist/mnist.cpp examples/mnist/Sample.hpp examples/mnist/Dataset.hpp)
+target_link_libraries(minst cnn)
