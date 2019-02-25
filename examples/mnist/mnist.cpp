@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     }
 
     std::cout << "Loading dataset from " << labelsFile << " and " << dataFile << std::endl;
-    Dataset dataset("../datasets/mnist/train-images-idx3-ubyte", "../datasets/mnist/train-labels-idx1-ubyte");
+    Dataset dataset(dataFile, labelsFile);
     std::cout << "Loaded " << dataset.size() << " samples." << std::endl;
 
     // Build the network
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     if (logFile != nullptr)
     {
         log.open(logFile);
-        log << "millisecondss,epoch,iteration,loss" << std::endl;
+        log << "milliseconds,epoch,iteration,loss" << std::endl;
     }
 
     std::chrono::time_point start = std::chrono::system_clock::now();
