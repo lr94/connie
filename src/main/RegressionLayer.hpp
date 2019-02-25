@@ -14,8 +14,6 @@ public:
     void forward() override;
     void backward() override;
 
-    void updateParams(const TrainerBase &trainer) override {}
-
     Tensor<> &target();
 
     float getLoss() override;

@@ -19,7 +19,7 @@ public:
     virtual void forward() = 0;
     virtual void backward() = 0;
 
-    virtual void updateParams(const TrainerBase &trainer) = 0;
+    virtual void updateParams(const TrainerBase &trainer) {}
 
     void append(LayerBase *nextLayer)
     {

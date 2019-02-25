@@ -12,8 +12,6 @@ public:
     void forward() override;
     void backward() override;
 
-    void updateParams(const TrainerBase &trainer) override {}
-
     unsigned getNumClasses();
     void setTargetClass(unsigned y);
     float getLoss() override;

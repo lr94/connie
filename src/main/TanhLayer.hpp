@@ -37,8 +37,6 @@ public:
         }
     }
 
-    void updateParams(const TrainerBase &trainer) override {}
-
 protected:
     void prepend(LayerBase *previousLayer) override
     {
