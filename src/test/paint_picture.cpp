@@ -1,6 +1,7 @@
 #include <iostream>
 #include <random>
 #include <memory>
+#include <csignal>
 #include <gd.h>
 #include <SDL2/SDL.h>
 
@@ -11,6 +12,7 @@
 #include "../main/RegressionLayer.hpp"
 #include "../main/FullyConnectedLayer.hpp"
 #include "../main/ReluLayer.hpp"
+#include "../main/TanhLayer.hpp"
 #include "../main/InputLayer.hpp"
 
 int main(int argc, char *argv[])
@@ -34,20 +36,21 @@ int main(int argc, char *argv[])
 
     Net network;
     network.appendLayer(std::make_shared<InputLayer>(2, 1, 1))
-           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
-           .appendLayer(std::make_shared<ReluLayer>())
-           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
-           .appendLayer(std::make_shared<ReluLayer>())
-           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
-           .appendLayer(std::make_shared<ReluLayer>())
-           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
-           .appendLayer(std::make_shared<ReluLayer>())
-           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
-           .appendLayer(std::make_shared<ReluLayer>())
-           .appendLayer(std::make_shared<FullyConnectedLayer>(20))
-           .appendLayer(std::make_shared<ReluLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+            .appendLayer(std::make_shared<TanhLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+            .appendLayer(std::make_shared<TanhLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+            .appendLayer(std::make_shared<TanhLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+            .appendLayer(std::make_shared<ReluLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+            .appendLayer(std::make_shared<TanhLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+            .appendLayer(std::make_shared<TanhLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+            .appendLayer(std::make_shared<TanhLayer>())
            .appendLayer(std::make_shared<FullyConnectedLayer>(3))
-           .appendLayer(std::make_shared<ReluLayer>())
            .appendLayer(regression);
 
     Tensor<> &input = network.getInput();
@@ -55,7 +58,7 @@ int main(int argc, char *argv[])
     Tensor<> &target = regression->target();
 
     // Initialize the trainer
-    SGDTrainer trainer(network, 0.05f, 256);
+    SGDTrainer trainer(network, 0.01f, 512);
 
     SDL_Renderer *renderer;
     SDL_Window *window;
@@ -66,6 +69,8 @@ int main(int argc, char *argv[])
     std::mt19937 engine(random_device());
     std::uniform_int_distribution<> x_distr(0, width - 1);
     std::uniform_int_distribution<> y_distr(0, height - 1);
+
+    signal(SIGINT, exit);
 
     for (int k = 0; k < 1000000000; k++)
     {
