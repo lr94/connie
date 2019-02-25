@@ -19,7 +19,7 @@ public:
         return h;
     }
 
-    unsigned char label()
+    unsigned label()
     {
         return lbl;
     }
