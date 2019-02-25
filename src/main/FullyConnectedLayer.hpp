@@ -1,6 +1,7 @@
 #ifndef CNN_FULLYCONNECTEDLAYER_HPP
 #define CNN_FULLYCONNECTEDLAYER_HPP
 
+#include <ios>
 #include <vector>
 
 #include "Tensor.hpp"
@@ -20,6 +21,9 @@ public:
     void updateParams(const TrainerBase &trainer) override;
 
     inline unsigned numNeurons() const;
+
+    bool save(std::ostream &stream) override;
+    bool load(std::istream &stream) override;
 
 protected:
     void prepend(LayerBase *previousLayer) override;

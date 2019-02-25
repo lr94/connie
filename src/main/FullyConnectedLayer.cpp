@@ -105,3 +105,41 @@ void FullyConnectedLayer::prepend(LayerBase *previousLayer)
 
     dBiases.insert(dBiases.end(), biases.size(), 0.0f);
 }
+
+bool FullyConnectedLayer::save(std::ostream &stream)
+{
+    for (auto &w : weights)
+    {
+        size_t size = w.getDataSize();
+        for (size_t i = 0; i < size; i++)
+            if (!writeFloat(stream, w.get(i)))
+                return false;
+    }
+
+    for (auto &b : biases)
+        if (!writeFloat(stream, b))
+            return false;
+
+    return true;
+}
+
+bool FullyConnectedLayer::load(std::istream &stream)
+{
+    for (auto &w : weights)
+    {
+        size_t size = w.getDataSize();
+        for (size_t i = 0; i < size; i++)
+        {
+            float value;
+            if (!readFloat(stream, value))
+                return false;
+            w.set(i, value);
+        }
+    }
+
+    for (auto &b : biases)
+        if (!readFloat(stream, b))
+            return false;
+
+    return true;
+}

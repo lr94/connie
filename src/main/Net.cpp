@@ -47,3 +47,21 @@ float Net::getLoss()
 
     return lossLayer->getLoss();
 }
+
+bool Net::save(std::ostream &stream)
+{
+    for (auto &layer : layers)
+        if (!layer->save(stream))
+            return false;
+
+    return true;
+}
+
+bool Net::load(std::istream &stream)
+{
+    for (auto &layer : layers)
+        if (!layer->load(stream))
+            return false;
+
+    return true;
+}

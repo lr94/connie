@@ -1,6 +1,7 @@
 #ifndef CNN_NET_HPP
 #define CNN_NET_HPP
 
+#include <iostream>
 #include <vector>
 #include <memory>
 #include "Tensor.hpp"
@@ -21,6 +22,9 @@ public:
     Tensor<> &getInput();
     Tensor<> &getOutput();
     float getLoss();
+
+    bool save(std::ostream &stream);
+    bool load(std::istream &stream);
 private:
     std::vector<std::shared_ptr<LayerBase>> layers;
 

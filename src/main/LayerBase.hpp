@@ -1,6 +1,7 @@
 #ifndef CNN_LAYER_HPP
 #define CNN_LAYER_HPP
 
+#include <iostream>
 #include "Tensor.hpp"
 class TrainerBase;
 
@@ -26,11 +27,28 @@ public:
         nextLayer->prepend(this);
     }
 
+    virtual bool save(std::ostream &stream) { return true; }
+    virtual bool load(std::istream &stream) { return true; }
+
 protected:
     virtual void prepend(LayerBase *previousLayer)
     {
         input = previousLayer->output;
         dInput = previousLayer->dOutput;
+    }
+
+    bool writeFloat(std::ostream &stream, float value)
+    {
+        stream.write(reinterpret_cast<char *>(&value), sizeof(value));
+
+        return stream.good();
+    }
+
+    bool readFloat(std::istream &stream, float &value)
+    {
+        stream.read(reinterpret_cast<char *>(&value), sizeof(value));
+
+        return stream.good();
     }
 };
 #endif
