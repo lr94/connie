@@ -24,14 +24,14 @@ public:
         return lbl;
     }
 
-    char operator[](unsigned index)
+    unsigned char operator[](unsigned index)
     {
-        return data[index];
+        return static_cast<unsigned char>(data[index]);
     }
 
-    char getPixel(unsigned x, unsigned y)
+    unsigned char getPixel(unsigned x, unsigned y)
     {
-        return data[w * y + x];
+        return static_cast<unsigned char>(data[w * y + x]);
     }
 
 private:
