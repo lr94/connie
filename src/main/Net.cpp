@@ -1,5 +1,7 @@
 #include <memory>
 #include <stdexcept>
+#include <fstream>
+#include <bits/ios_base.h>
 #include "Net.hpp"
 #include "LossLayerBase.hpp"
 
@@ -46,6 +48,22 @@ float Net::getLoss()
         throw std::runtime_error("Cannot get loss from an incomplete network (the last layer must be a LossLayer!)");
 
     return lossLayer->getLoss();
+}
+
+bool Net::save(const char *filename)
+{
+    std::ofstream outputStream(filename, std::ofstream::binary);
+    bool ret = save(outputStream);
+    outputStream.close();
+    return ret;
+}
+
+bool Net::load(const char *filename)
+{
+    std::ifstream inputStream(filename, std::ifstream::binary);
+    bool ret = load(inputStream);
+    inputStream.close();
+    return ret;
 }
 
 bool Net::save(std::ostream &stream)

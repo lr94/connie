@@ -23,7 +23,9 @@ public:
     Tensor<> &getOutput();
     float getLoss();
 
+    bool save(const char *filename);
     bool save(std::ostream &stream);
+    bool load(const char *filename);
     bool load(std::istream &stream);
 private:
     std::vector<std::shared_ptr<LayerBase>> layers;
