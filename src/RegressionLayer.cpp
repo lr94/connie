@@ -1,7 +1,3 @@
-//
-// Created by luca on 23/02/19.
-//
-
 #include <vector>
 #include "RegressionLayer.hpp"
 
