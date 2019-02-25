@@ -9,17 +9,17 @@ class Sample
 public:
     friend class Dataset;
 
-    unsigned width()
+    unsigned width() const
     {
         return w;
     }
 
-    unsigned height()
+    unsigned height() const
     {
         return h;
     }
 
-    unsigned label()
+    unsigned label() const
     {
         return lbl;
     }
@@ -29,7 +29,7 @@ public:
         return static_cast<unsigned char>(data[index]);
     }
 
-    unsigned char getPixel(unsigned x, unsigned y)
+    unsigned char getPixel(unsigned x, unsigned y) const
     {
         return static_cast<unsigned char>(data[w * y + x]);
     }
