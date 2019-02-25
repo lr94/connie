@@ -5,15 +5,15 @@
 #include <gd.h>
 #include <SDL2/SDL.h>
 
-#include "../src/Tensor.hpp"
-#include "../src/Net.hpp"
-#include "../src/SGDTrainer.hpp"
-#include "../src/SigmoidLayer.hpp"
-#include "../src/RegressionLayer.hpp"
-#include "../src/FullyConnectedLayer.hpp"
-#include "../src/ReluLayer.hpp"
-#include "../src/TanhLayer.hpp"
-#include "../src/InputLayer.hpp"
+#include "Tensor.hpp"
+#include "Net.hpp"
+#include "SGDTrainer.hpp"
+#include "SigmoidLayer.hpp"
+#include "RegressionLayer.hpp"
+#include "FullyConnectedLayer.hpp"
+#include "ReluLayer.hpp"
+#include "TanhLayer.hpp"
+#include "InputLayer.hpp"
 
 int main(int argc, char *argv[])
 {
