@@ -17,3 +17,6 @@ find_library(SDL2_LIBRARY SDL2)
 include_directories(${SDL2_INCLUDE_DIR} ${GD_INCLUDE_DIR}) # SDL2_INCLUDE_DIR = ?
 add_executable(image_regression examples/image_regression/image_regression.cpp)
 target_link_libraries(image_regression cnn ${SDL2_LIBRARY} ${GD_LIBRARY})
+
+# MNIST
+add_executable(mnist examples/mnist/mnist.cpp examples/mnist/Sample.hpp examples/mnist/Dataset.hpp)
