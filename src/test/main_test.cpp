@@ -7,6 +7,7 @@
 #include "FullyConnectedLayer.hpp"
 #include "SigmoidLayer.hpp"
 #include "ReluLayer.hpp"
+#include "TanhLayer.hpp"
 #include "SoftmaxLayer.hpp"
 #include "RegressionLayer.hpp"
 
@@ -20,7 +21,7 @@ int main()
     Net network;
     network.appendLayer(std::make_shared<InputLayer>(2, 1, 1))
            .appendLayer(std::make_shared<FullyConnectedLayer>(4))
-           .appendLayer(std::make_shared<SigmoidLayer>())
+           .appendLayer(std::make_shared<TanhLayer>())
            .appendLayer(std::make_shared<FullyConnectedLayer>(1))
            .appendLayer(r);
 
@@ -29,14 +30,14 @@ int main()
     Tensor<> &target = r->target();
 
     // Initialize the trainer
-    SGDTrainer trainer(network, 0.5f, 200);
+    SGDTrainer trainer(network, 0.05f, 4);
 
     // Training data
     float x[][2] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
     float y[] = {0, 1, 1, 0};
     int n = 4;
 
-    for (unsigned i = 0; i < 500000; i++)
+    for (unsigned i = 0; i < 60000; i++)
     {
         input.set(0, x[i % n][0]);
         input.set(1, x[i % n][1]);
