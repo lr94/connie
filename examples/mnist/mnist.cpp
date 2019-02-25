@@ -2,6 +2,7 @@
 #include <fstream>
 #include <filesystem>
 #include <memory>
+#include <chrono>
 
 #include "Tensor.hpp"
 #include "Net.hpp"
@@ -74,9 +75,10 @@ int main(int argc, char *argv[])
     if (logFile != nullptr)
     {
         log.open(logFile);
-        log << "epoch,iteration,loss" << std::endl;
+        log << "millisecondss,epoch,iteration,loss" << std::endl;
     }
 
+    std::chrono::time_point start = std::chrono::system_clock::now();
     unsigned long long iteration = 0;
     for (unsigned epoch = 0; epoch < 1000000; epoch++)
     {
@@ -93,7 +95,10 @@ int main(int argc, char *argv[])
                 float loss = trainer.getLoss();
                 std::cout << "Epoch: " << epoch << " iteration: " << iteration << " loss: " << loss << std::endl;
                 if (logFile != nullptr)
-                    log << epoch << "," << iteration << "," << loss << std::endl;
+                {
+                    long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count();
+                    log << ms << "," << epoch << "," << iteration << "," << loss << std::endl;
+                }
             }
             if (iteration % 500 == 0)
             {
