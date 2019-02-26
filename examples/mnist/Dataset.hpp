@@ -37,8 +37,6 @@ public:
     }
 
 private:
-    std::vector<Sample> samples;
-
     unsigned readUnsignedInteger(std::istream &stream)
     {
         int endianessCheck = 1;
