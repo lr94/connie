@@ -33,7 +33,7 @@ public:
         unsigned height = readUnsignedInteger(dataStream);
 
         for (unsigned i = 0; i < n; i++)
-            this->push_back(Sample(dataStream, labelsStream, width, height));
+            this->emplace_back(Sample(dataStream, labelsStream, width, height));
     }
 
 private:
