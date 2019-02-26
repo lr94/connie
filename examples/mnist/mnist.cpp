@@ -110,6 +110,8 @@ int main(int argc, char *argv[])
                     long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count();
                     log << ms << "," << epoch << "," << iteration << "," << loss << std::endl;
                 }
+                if (std::isnan(loss))
+                    exit(0);
             }
             if (iteration % 500 == 0)
             {
