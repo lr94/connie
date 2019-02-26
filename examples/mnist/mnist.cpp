@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
     }
 
     std::random_device random;
-    std::mt19937 mersenne(random);
+    std::mt19937 mersenne(random());
 
     std::chrono::time_point start = std::chrono::system_clock::now();
     unsigned long long iteration = 0;
