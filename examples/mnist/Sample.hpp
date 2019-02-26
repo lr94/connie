@@ -2,12 +2,55 @@
 #define CNN_SAMPLE_HPP
 
 #include <istream>
+#include <algorithm>
 #include <stdexcept>
 
 class Sample
 {
 public:
     friend class Dataset;
+
+    Sample(const Sample &original) : w(original.w), h(original.h), lbl(original.lbl), data(new char[w * h])
+    {
+        unsigned size = w * h;
+        std::copy(original.data, original.data + size, data);
+    }
+
+    Sample(Sample &&original) noexcept : w(original.w), h(original.h), lbl(original.lbl)
+    {
+        data = original.data;
+        original.data = nullptr;
+    }
+
+    Sample &operator=(const Sample &source)
+    {
+        if (this != &source)
+        {
+            w = source.w;
+            h = source.h;
+            lbl = source.lbl;
+
+            unsigned size = w * h;
+            std::copy(source.data, source.data + size, data);
+        }
+
+        return *this;
+    }
+
+    Sample &operator=(Sample &&source)
+    {
+        if (this != &source)
+        {
+            w = source.w;
+            h = source.h;
+            lbl = source.lbl;
+
+            data = source.data;
+            source.data = nullptr;
+        }
+
+        return *this;
+    }
 
     unsigned width() const
     {
