@@ -35,7 +35,7 @@ public:
         return SubTensor(w, w_offset + k * i, shape);
     }
 
-    operator T&()
+    operator T() const
     {
         // TODO check shape length: it must be 0
         return w[w_offset];
