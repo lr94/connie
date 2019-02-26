@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
             trainer.train();
 
             iteration++;
-            if (iteration % 10 == 0)
+            if (iteration % (batchSize * 1) == 0)
             {
                 float loss = trainer.getLoss();
                 std::cout << "Epoch: " << epoch << " iteration: " << iteration << " loss: " << loss << std::endl;
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
                 if (std::isnan(loss))
                     exit(0);
             }
-            if (iteration % 500 == 0)
+            if (iteration % (batchSize * 1 * 10) == 0)
             {
                 network.save(networkFile);
                 std::cout << "Network saved in " << networkFile << std::endl;
