@@ -66,6 +66,8 @@ int main(int argc, char *argv[])
     network.appendLayer(std::make_shared<InputLayer>(1, size, size))
             .appendLayer(std::make_shared<FullyConnectedLayer>(size * size * 2))
             .appendLayer(std::make_shared<SigmoidLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(size * size))
+            .appendLayer(std::make_shared<SigmoidLayer>())
             .appendLayer(std::make_shared<FullyConnectedLayer>(10))
             .appendLayer(softmax);
     // Load the network if necessary
