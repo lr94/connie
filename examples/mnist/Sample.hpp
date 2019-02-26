@@ -37,7 +37,7 @@ public:
         return *this;
     }
 
-    Sample &operator=(Sample &&source)
+    Sample &operator=(Sample &&source) noexcept
     {
         if (this != &source)
         {
