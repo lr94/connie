@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
         else if (current_arg == "-lr" && next_arg_index < argc)
             learningRate = std::stof(argv[++i]);
         else if (current_arg == "-bs" && next_arg_index < argc)
-            batchSize = std::stoi(argv[++i]);
+            batchSize = static_cast<unsigned int>(std::stoi(argv[++i]));
         else if (current_arg == "-l" && next_arg_index < argc)
             logFile = argv[++i];
     }
