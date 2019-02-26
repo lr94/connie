@@ -34,6 +34,11 @@ public:
         return static_cast<unsigned char>(data[w * y + x]);
     }
 
+    ~Sample()
+    {
+        delete[] data;
+    }
+
 private:
     Sample(std::istream &dataStream, std::istream &labelStream, unsigned width, unsigned height) : w(width), h(height), data(new char[w * h]), lbl(0)
     {
