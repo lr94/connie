@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <memory>
 #include <chrono>
+#include <algorithm>
+#include <random>
 
 #include "Tensor.hpp"
 #include "Net.hpp"
@@ -91,10 +93,15 @@ int main(int argc, char *argv[])
         log << "milliseconds,epoch,iteration,loss" << std::endl;
     }
 
+    std::random_device random;
+    std::mt19937 mersenne(random);
+
     std::chrono::time_point start = std::chrono::system_clock::now();
     unsigned long long iteration = 0;
     for (unsigned epoch = 0; epoch < 1000000; epoch++)
     {
+        std::cout << "Shuffle dataset..." << std::endl;
+        std::shuffle(dataset.begin(), dataset.end(), mersenne);
         for (auto &sample : dataset)
         {
             loadSample(input, sample);
