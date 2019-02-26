@@ -5,7 +5,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(src)
 
+# Library
 add_library(cnn src/Tensor.hpp src/LayerBase.hpp src/FullyConnectedLayer.cpp src/FullyConnectedLayer.hpp src/InputLayer.hpp src/SigmoidLayer.hpp src/ReluLayer.hpp src/SoftmaxLayer.cpp src/SoftmaxLayer.hpp src/RegressionLayer.cpp src/RegressionLayer.hpp src/Net.cpp src/Net.hpp src/LossLayerBase.hpp src/TrainerBase.hpp src/SGDTrainer.cpp src/SGDTrainer.hpp src/TanhLayer.hpp)
+
+add_executable(tests tests/tensor.cpp)
+target_link_libraries(tests cnn)
 
 # Main
 add_executable(main_test examples/main_test/main_test.cpp)
@@ -19,6 +23,5 @@ add_executable(image_regression examples/image_regression/image_regression.cpp)
 target_link_libraries(image_regression cnn ${SDL2_LIBRARY} ${GD_LIBRARY})
 
 # MNIST
-
 add_executable(mnist examples/mnist/mnist.cpp examples/mnist/Sample.hpp examples/mnist/Dataset.hpp)
 target_link_libraries(mnist cnn stdc++fs)
