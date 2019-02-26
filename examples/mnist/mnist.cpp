@@ -28,9 +28,13 @@ int main(int argc, char *argv[])
     const char *labelsFile = defaultLabelsFile;
     const char *networkFile = defaultNetworkFile;
     const char *logFile = nullptr;
+    float learningRate = 0.005f;
+    unsigned batchSize = 8;
 
     if (argc < 2)
-        std::cout << "Usage:\n\t" << argv[0] << " [-n NETWORK_FILE] [-tl TRAINING_LABELS_FILE] [-td TRAINING_DATA_FILE] [-l LOG_FILE]" << std::endl << std::endl;
+        std::cout << "Usage:\n\t" << argv[0] << " [-n network_file] [-tl training_labels_file]"
+                                                " [-td training_data_file] [-l log_file]"
+                                                " [-lr learning_rate] [-bs batch_size]" << std::endl << std::endl;
     for (unsigned i = 1; i < argc; i++)
     {
         int next_arg_index = i + 1;
@@ -38,11 +42,17 @@ int main(int argc, char *argv[])
 
         if (current_arg == "-n" && next_arg_index < argc)
             networkFile = argv[++i];
-        if (current_arg == "-tl" && next_arg_index < argc)
+        else if (current_arg == "-tl" && next_arg_index < argc)
             labelsFile = argv[++i];
-        if (current_arg == "-td" && next_arg_index < argc)
+        else if (current_arg == "-td" && next_arg_index < argc)
             dataFile = argv[++i];
-        if (current_arg == "-l" && next_arg_index < argc)
+        else if (current_arg == "-l" && next_arg_index < argc)
+            logFile = argv[++i];
+        else if (current_arg == "-lr" && next_arg_index < argc)
+            learningRate = std::stof(argv[++i]);
+        else if (current_arg == "-bs" && next_arg_index < argc)
+            batchSize = std::stoi(argv[++i]);
+        else if (current_arg == "-l" && next_arg_index < argc)
             logFile = argv[++i];
     }
 
@@ -68,7 +78,8 @@ int main(int argc, char *argv[])
     Tensor<> &output = network.getOutput();
 
     // Init the trainer
-    SGDTrainer trainer(network, 0.05f, 8);
+    std::cout << "Learning rate: " << learningRate << std::endl << "Batch size: " << batchSize << std::endl;
+    SGDTrainer trainer(network, learningRate, batchSize);
 
     // Init log file if necessary
     std::ofstream log;
