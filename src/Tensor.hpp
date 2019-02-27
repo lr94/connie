@@ -124,7 +124,7 @@ public:
 
         std::random_device r;
         std::default_random_engine generator(r());
-        std::normal_distribution<T> distribution(0.0, 1.0);
+        std::normal_distribution<T> distribution(0.0, std::sqrt(1.0 / (depth * height * width)));
 
         size_t size = t.getDataSize();
         for (size_t i = 0; i < size; i++)
