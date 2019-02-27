@@ -57,8 +57,10 @@ int main(int argc, char *argv[])
     Tensor<> &output = network.getOutput();
     Tensor<> &target = regression->target();
 
+    network.load("/tmp/test.bin");
+
     // Initialize the trainer
-    SGDTrainer trainer(network, 0.01f, 512);
+    SGDTrainer trainer(network, 0.01f, 5);
 
     SDL_Renderer *renderer;
     SDL_Window *window;
