@@ -15,6 +15,8 @@
 #include "TanhLayer.hpp"
 #include "InputLayer.hpp"
 
+static float truncate(float x);
+
 int main(int argc, char *argv[])
 {
     gdImagePtr img = gdImageCreateFromFile(argv[1]);
@@ -43,21 +45,19 @@ int main(int argc, char *argv[])
             .appendLayer(std::make_shared<FullyConnectedLayer>(20))
             .appendLayer(std::make_shared<TanhLayer>())
             .appendLayer(std::make_shared<FullyConnectedLayer>(20))
-            .appendLayer(std::make_shared<ReluLayer>())
-            .appendLayer(std::make_shared<FullyConnectedLayer>(20))
             .appendLayer(std::make_shared<TanhLayer>())
             .appendLayer(std::make_shared<FullyConnectedLayer>(20))
             .appendLayer(std::make_shared<TanhLayer>())
             .appendLayer(std::make_shared<FullyConnectedLayer>(20))
             .appendLayer(std::make_shared<TanhLayer>())
-           .appendLayer(std::make_shared<FullyConnectedLayer>(3))
-           .appendLayer(regression);
+            .appendLayer(std::make_shared<FullyConnectedLayer>(20))
+            .appendLayer(std::make_shared<TanhLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(3))
+            .appendLayer(regression);
 
     Tensor<> &input = network.getInput();
     Tensor<> &output = network.getOutput();
     Tensor<> &target = regression->target();
-
-    network.load("/tmp/test.bin");
 
     // Initialize the trainer
     SGDTrainer trainer(network, 0.01f, 5);
@@ -90,10 +90,13 @@ int main(int argc, char *argv[])
 
         trainer.train();
 
-        if (k % 50000 == 0)
+        if (k % 5000 == 0)
         {
-            float loss = trainer.getLoss();
-            std::cout << loss << std::endl;
+            if (k % 25000 == 0)
+            {
+                float loss = trainer.getLoss();
+                std::cout << loss << std::endl;
+            }
 
             for (y = 0; y < height; y++)
                 for (x = 0; x < width; x++)
@@ -106,11 +109,9 @@ int main(int argc, char *argv[])
 
                     network.forward();
 
-                    auto r = static_cast<uint8_t>(output.get(0) * 255);
-                    auto g = static_cast<uint8_t>(output.get(1) * 255);
-                    auto b = static_cast<uint8_t>(output.get(2) * 255);
-
-                    // std::cout << "(" << x << " , " << y << ") -> " << output << std::endl;
+                    auto r = static_cast<uint8_t>(truncate(output.get(0) * 255));
+                    auto g = static_cast<uint8_t>(truncate(output.get(1) * 255));
+                    auto b = static_cast<uint8_t>(truncate(output.get(2) * 255));
 
                     SDL_SetRenderDrawColor(renderer, r, g, b, 0xff);
                     SDL_RenderDrawPoint(renderer, x, y);
@@ -122,4 +123,15 @@ int main(int argc, char *argv[])
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+}
+
+static float truncate(float x)
+{
+    if (x < 0)
+        return 0;
+
+    if (x > 255)
+        return 255;
+
+    return x;
 }
