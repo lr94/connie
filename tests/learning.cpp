@@ -1,10 +1,10 @@
 #include <catch2/catch.hpp>
-#include <SigmoidLayer.hpp>
-#include <TanhLayer.hpp>
-#include <ReluLayer.hpp>
-#include <RegressionLayer.hpp>
-#include <SGDTrainer.hpp>
-#include <SoftmaxLayer.hpp>
+#include "SigmoidLayer.hpp"
+#include "TanhLayer.hpp"
+#include "ReluLayer.hpp"
+#include "RegressionLayer.hpp"
+#include "SGDTrainer.hpp"
+#include "SoftmaxLayer.hpp"
 #include "FullyConnectedLayer.hpp"
 #include "Net.hpp"
 #include "InputLayer.hpp"
