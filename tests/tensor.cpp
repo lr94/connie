@@ -11,6 +11,9 @@ TEST_CASE("Tensor initialization", "[tensor][init]")
     const unsigned width = 4;
 
     Tensor<> tensor(depth, height, width);
+    size_t size = tensor.getDataSize();
+    for (size_t i = 0; i < size; i++)
+        tensor.set(i, i + 1);
 
     SECTION("Tensor size")
     {
@@ -23,10 +26,6 @@ TEST_CASE("Tensor initialization", "[tensor][init]")
         REQUIRE(tensor.height() == height);
         REQUIRE(tensor.width() == width);
     }
-
-    size_t size = tensor.getDataSize();
-    for (size_t i = 0; i < size; i++)
-        tensor.set(i, i + 1);
 
     SECTION("Check tensor values")
     {
