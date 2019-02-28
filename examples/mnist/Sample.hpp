@@ -83,7 +83,7 @@ public:
     }
 
 private:
-    Sample(std::istream &dataStream, std::istream &labelStream, unsigned width, unsigned height) : w(width), h(height), data(new char[w * h]), lbl(0)
+    Sample(std::istream &dataStream, std::istream &labelStream, unsigned width, unsigned height) : w(width), h(height), lbl(0), data(new char[w * h])
     {
         unsigned totPixels = width * height;
         for (unsigned i = 0; i < totPixels; i++)

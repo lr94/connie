@@ -35,7 +35,7 @@ int main()
     // Training data
     float x[][2] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
     float y[] = {0, 1, 1, 0};
-    int n = 4;
+    unsigned n = 4;
 
     for (unsigned i = 0; i < 60000; i++)
     {

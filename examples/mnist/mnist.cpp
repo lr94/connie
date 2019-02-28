@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
         std::cout << "Usage:\n\t" << argv[0] << " [-n network_file] [-tl training_labels_file]"
                                                 " [-td training_data_file] [-l log_file]"
                                                 " [-lr learning_rate] [-bs batch_size]" << std::endl << std::endl;
-    for (unsigned i = 1; i < argc; i++)
+    for (int i = 1; i < argc; i++)
     {
         int next_arg_index = i + 1;
         std::string current_arg = argv[i];
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
         std::cout << "Loaded network from " << networkFile << std::endl;
     }
     Tensor<> &input = network.getInput();
-    Tensor<> &output = network.getOutput();
+    // Tensor<> &output = network.getOutput();
 
     // Init the trainer
     std::cout << "Learning rate: " << learningRate << std::endl << "Batch size: " << batchSize << std::endl;
