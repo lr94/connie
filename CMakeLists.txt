@@ -4,6 +4,7 @@ project(cnn)
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_FLAGS "-pedantic -Wall")
+set(CMAKE_C_FLAGS_RELEASE "-O3")
 
 include_directories(src)
 
