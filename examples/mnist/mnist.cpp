@@ -12,6 +12,7 @@
 #include "InputLayer.hpp"
 #include "FullyConnectedLayer.hpp"
 #include "TanhLayer.hpp"
+#include "ReluLayer.hpp"
 #include "SigmoidLayer.hpp"
 #include "SoftmaxLayer.hpp"
 
@@ -66,12 +67,12 @@ int main(int argc, char *argv[])
     Net network;
     std::shared_ptr<SoftmaxLayer> softmax = std::make_shared<SoftmaxLayer>();
     network.appendLayer(std::make_shared<InputLayer>(1, size, size))
-           .appendLayer(std::make_shared<FullyConnectedLayer>(size * size * 2))
-           .appendLayer(std::make_shared<SigmoidLayer>())
-           .appendLayer(std::make_shared<FullyConnectedLayer>(size * size))
-           .appendLayer(std::make_shared<SigmoidLayer>())
-           .appendLayer(std::make_shared<FullyConnectedLayer>(10))
-           .appendLayer(softmax);
+            .appendLayer(std::make_shared<FullyConnectedLayer>(size * size * 2))
+            .appendLayer(std::make_shared<ReluLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(size * size))
+            .appendLayer(std::make_shared<ReluLayer>())
+            .appendLayer(std::make_shared<FullyConnectedLayer>(10))
+            .appendLayer(softmax);
     // Load the network parameters
     if (std::filesystem::exists(networkFile))
     {
