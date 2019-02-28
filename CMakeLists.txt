@@ -8,8 +8,14 @@ include_directories(src)
 # Library
 add_library(cnn src/Tensor.hpp src/LayerBase.hpp src/FullyConnectedLayer.cpp src/FullyConnectedLayer.hpp src/InputLayer.hpp src/SigmoidLayer.hpp src/ReluLayer.hpp src/SoftmaxLayer.cpp src/SoftmaxLayer.hpp src/RegressionLayer.cpp src/RegressionLayer.hpp src/Net.cpp src/Net.hpp src/LossLayerBase.hpp src/TrainerBase.hpp src/SGDTrainer.cpp src/SGDTrainer.hpp src/TanhLayer.hpp)
 
-add_executable(tests tests/tensor.cpp)
-target_link_libraries(tests cnn)
+# Tests
+find_path(CATCH2_INCLUDE_DIR NAMES catch2/catch.hpp)
+if (NOT CATCH2_INCLUDE_DIR)
+    message(WARNING "Catch2 testing framework not found, the tests will not be compiled")
+else()
+    add_executable(tests tests/tensor.cpp)
+    target_link_libraries(tests cnn)
+endif()
 
 # Main
 add_executable(main_test examples/main_test/main_test.cpp)
