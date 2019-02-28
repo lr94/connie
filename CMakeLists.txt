@@ -3,6 +3,8 @@ project(cnn)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_CXX_FLAGS "-pedantic -Wall")
+
 include_directories(src)
 
 # Library
