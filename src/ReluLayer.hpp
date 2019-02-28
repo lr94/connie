@@ -56,7 +56,7 @@ private:
 
     static inline float relu_derivative(float x)
     {
-        if (x < 0.0f)
+        if (x <= 0.0f)
             return 0.0f;
         else
             return 1.0f;
