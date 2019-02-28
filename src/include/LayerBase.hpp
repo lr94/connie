@@ -20,35 +20,18 @@ public:
     virtual void forward() = 0;
     virtual void backward() = 0;
 
-    virtual void updateParams(const TrainerBase &trainer) {}
+    virtual void updateParams(const TrainerBase &trainer);
 
-    void append(LayerBase *nextLayer)
-    {
-        nextLayer->prepend(this);
-    }
+    void append(LayerBase *nextLayer);
 
-    virtual bool save(std::ostream &stream) { return true; }
-    virtual bool load(std::istream &stream) { return true; }
+    virtual bool save(std::ostream &stream);
+    virtual bool load(std::istream &stream);
 
 protected:
-    virtual void prepend(LayerBase *previousLayer)
-    {
-        input = previousLayer->output;
-        dInput = previousLayer->dOutput;
-    }
+    virtual void prepend(LayerBase *previousLayer);
 
-    bool writeFloat(std::ostream &stream, float value)
-    {
-        stream.write(reinterpret_cast<char *>(&value), sizeof(value));
+    bool writeFloat(std::ostream &stream, float value);
 
-        return stream.good();
-    }
-
-    bool readFloat(std::istream &stream, float &value)
-    {
-        stream.read(reinterpret_cast<char *>(&value), sizeof(value));
-
-        return stream.good();
-    }
+    bool readFloat(std::istream &stream, float &value);
 };
 #endif
