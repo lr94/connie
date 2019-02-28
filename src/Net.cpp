@@ -1,7 +1,6 @@
 #include <memory>
 #include <stdexcept>
 #include <fstream>
-#include <bits/ios_base.h>
 #include "Net.hpp"
 #include "LossLayerBase.hpp"
 
