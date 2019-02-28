@@ -9,7 +9,7 @@ set(CMAKE_C_FLAGS_RELEASE "-O3")
 include_directories(src/include)
 
 # Library
-add_library(cnn src/include/Tensor.hpp src/include/LayerBase.hpp src/FullyConnectedLayer.cpp src/include/FullyConnectedLayer.hpp src/include/InputLayer.hpp src/include/SigmoidLayer.hpp src/include/ReluLayer.hpp src/SoftmaxLayer.cpp src/include/SoftmaxLayer.hpp src/RegressionLayer.cpp src/include/RegressionLayer.hpp src/Net.cpp src/include/Net.hpp src/include/LossLayerBase.hpp src/include/TrainerBase.hpp src/SGDTrainer.cpp src/include/SGDTrainer.hpp src/include/TanhLayer.hpp)
+add_library(cnn src/include/Tensor.hpp src/include/LayerBase.hpp src/FullyConnectedLayer.cpp src/include/FullyConnectedLayer.hpp src/include/InputLayer.hpp src/include/SigmoidLayer.hpp src/include/ReluLayer.hpp src/SoftmaxLayer.cpp src/include/SoftmaxLayer.hpp src/RegressionLayer.cpp src/include/RegressionLayer.hpp src/Net.cpp src/include/Net.hpp src/include/LossLayerBase.hpp src/include/TrainerBase.hpp src/SGDTrainer.cpp src/include/SGDTrainer.hpp src/include/TanhLayer.hpp src/ReluLayer.cpp)
 
 # Tests
 find_path(CATCH2_INCLUDE_DIR NAMES catch2/catch.hpp)
