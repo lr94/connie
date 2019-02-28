@@ -1,3 +1,5 @@
+#include <cmath>
+#include "Tensor.hpp"
 #include "ReluLayer.hpp"
 
 static inline float relu(float x)

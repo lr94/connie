@@ -1,8 +1,6 @@
 #ifndef CNN_RELULAYER_HPP
 #define CNN_RELULAYER_HPP
 
-#include <cmath>
-#include "Tensor.hpp"
 #include "LayerBase.hpp"
 
 class ReluLayer : public LayerBase
