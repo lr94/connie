@@ -9,5 +9,4 @@ public:
     virtual float getLoss() = 0;
 };
 
-
 #endif //CNN_LOSSLAYERBASE_HPP
