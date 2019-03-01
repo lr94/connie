@@ -20,6 +20,9 @@ ConvolutionalLayer::~ConvolutionalLayer()
 
 void ConvolutionalLayer::forward()
 {
+    int ih = static_cast<int>(inputHeight);
+    int iw = static_cast<int>(inputWidth);
+
     // For each kernel
     for (unsigned ki = 0; ki < kernelCount; ki++)
     {
@@ -43,7 +46,7 @@ void ConvolutionalLayer::forward()
                         int xInput2 = xInput + j;
 
                         // If we are not in "padding area"
-                        if (yInput2 >= 0 && yInput2 < inputHeight && xInput2 >= 0 && xInput2 < inputWidth)
+                        if (yInput2 >= 0 && yInput2 < ih && xInput2 >= 0 && xInput2 < iw)
                         {
                             for (unsigned l = 0; l < inputDepth; l++)
                                 sum += kernels[ki].get(l, i, j) * input->get(l, static_cast<unsigned>(yInput2),
@@ -110,7 +113,7 @@ bool ConvolutionalLayer::save(std::ostream &stream)
     for (auto &k : kernels)
     {
         size_t size = k.getDataSize();
-        for (size_t i = 0; i < size; i++)
+        for (unsigned i = 0; i < size; i++)
             if (!writeFloat(stream, k.get(i)))
                 return false;
     }
@@ -127,7 +130,7 @@ bool ConvolutionalLayer::load(std::istream &stream)
     for (auto &k : kernels)
     {
         size_t size = k.getDataSize();
-        for (size_t i = 0; i < size; i++)
+        for (unsigned i = 0; i < size; i++)
         {
             float value;
             if (!readFloat(stream, value))
