@@ -13,7 +13,7 @@ public:
 protected:
     void prepend(LayerBase *previousLayer) override;
 
-private:
+protected:
     unsigned windowWidth;
     unsigned windowHeight;
     unsigned strideX;

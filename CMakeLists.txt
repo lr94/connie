@@ -9,7 +9,7 @@ set(CMAKE_C_FLAGS_RELEASE "-O3")
 include_directories(src/include)
 
 # Library
-add_library(cnn src/include/Tensor.hpp src/include/LayerBase.hpp src/FullyConnectedLayer.cpp src/include/FullyConnectedLayer.hpp src/include/InputLayer.hpp src/include/SigmoidLayer.hpp src/include/ReluLayer.hpp src/SoftmaxLayer.cpp src/include/SoftmaxLayer.hpp src/RegressionLayer.cpp src/include/RegressionLayer.hpp src/Net.cpp src/include/Net.hpp src/include/LossLayerBase.hpp src/include/TrainerBase.hpp src/SGDTrainer.cpp src/include/SGDTrainer.hpp src/include/TanhLayer.hpp src/ReluLayer.cpp src/SigmoidLayer.cpp src/TanhLayer.cpp src/InputLayer.cpp src/LayerBase.cpp src/ConvolutionalLayer.cpp src/include/ConvolutionalLayer.hpp src/PoolingLayerBase.cpp src/include/PoolingLayerBase.hpp)
+add_library(cnn src/include/Tensor.hpp src/include/LayerBase.hpp src/FullyConnectedLayer.cpp src/include/FullyConnectedLayer.hpp src/include/InputLayer.hpp src/include/SigmoidLayer.hpp src/include/ReluLayer.hpp src/SoftmaxLayer.cpp src/include/SoftmaxLayer.hpp src/RegressionLayer.cpp src/include/RegressionLayer.hpp src/Net.cpp src/include/Net.hpp src/include/LossLayerBase.hpp src/include/TrainerBase.hpp src/SGDTrainer.cpp src/include/SGDTrainer.hpp src/include/TanhLayer.hpp src/ReluLayer.cpp src/SigmoidLayer.cpp src/TanhLayer.cpp src/InputLayer.cpp src/LayerBase.cpp src/ConvolutionalLayer.cpp src/include/ConvolutionalLayer.hpp src/PoolingLayerBase.cpp src/include/PoolingLayerBase.hpp src/MaxPoolingLayer.cpp src/include/MaxPoolingLayer.hpp)
 
 # Tests
 find_path(CATCH2_INCLUDE_DIR NAMES catch2/catch.hpp)
@@ -17,7 +17,7 @@ if (NOT CATCH2_INCLUDE_DIR)
     message(WARNING "Catch2 testing framework not found, the tests will not be compiled")
 else()
     include_directories(${CATCH2_INCLUDE_DIR})
-    add_executable(tests tests/tensor.cpp tests/learning.cpp tests/MemoryStream.hpp tests/convolution.cpp)
+    add_executable(tests tests/tensor.cpp tests/learning.cpp tests/MemoryStream.hpp tests/convolution.cpp tests/pooling.cpp)
     target_link_libraries(tests cnn)
 endif()
 

@@ -5,7 +5,10 @@ PoolingLayerBase::PoolingLayerBase(unsigned windowSize, unsigned stride, unsigne
 
 PoolingLayerBase::PoolingLayerBase(unsigned windowWidth, unsigned windowHeight, unsigned strideX, unsigned strideY,
         unsigned paddingX, unsigned paddingY) : windowWidth(windowWidth), windowHeight(windowHeight), strideX(strideX),
-        strideY(strideY), padX(paddingX), padY(paddingY) {}
+        strideY(strideY), padX(paddingX), padY(paddingY)
+{
+    input = output = dInput = dOutput= nullptr;
+}
 
 void PoolingLayerBase::prepend(LayerBase *previousLayer)
 {
