@@ -14,8 +14,8 @@ ConvolutionalLayer::ConvolutionalLayer(unsigned kernels, unsigned kernelWidth, u
 ConvolutionalLayer::~ConvolutionalLayer()
 {
     kernels.clear();
-    delete[] output;
-    delete[] dOutput;
+    delete output;
+    delete dOutput;
 }
 
 void ConvolutionalLayer::forward()
@@ -41,8 +41,6 @@ void ConvolutionalLayer::forward()
                     {
                         int yInput2 = yInput + i;
                         int xInput2 = xInput + j;
-                        unsigned yOutput2 = yOutput + i;
-                        unsigned xOutput2 = xOutput + j;
 
                         // If we are not in "padding area"
                         if (yInput2 >= 0 && yInput2 < inputHeight && xInput2 >= 0 && xInput2 < inputWidth)
@@ -79,8 +77,8 @@ void ConvolutionalLayer::prepend(LayerBase *previousLayer)
     inputWidth = input->width();
     inputDepth = input->depth();
 
-    outputHeight = (inputHeight - kernelHeight) / strideY;
-    outputWidth = (inputWidth - kernelWidth) / strideX;
+    outputHeight = (inputHeight + 2 * padY - kernelHeight) / strideY + 1;
+    outputWidth = (inputWidth + 2 * padX - kernelWidth) / strideX + 1;
     outputDepth = kernelCount;
 
     output = new Tensor<>(outputDepth, outputHeight, outputWidth);

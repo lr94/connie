@@ -17,7 +17,7 @@ if (NOT CATCH2_INCLUDE_DIR)
     message(WARNING "Catch2 testing framework not found, the tests will not be compiled")
 else()
     include_directories(${CATCH2_INCLUDE_DIR})
-    add_executable(tests tests/tensor.cpp tests/learning.cpp tests/MemoryStream.hpp)
+    add_executable(tests tests/tensor.cpp tests/learning.cpp tests/MemoryStream.hpp tests/convolution.cpp)
     target_link_libraries(tests cnn)
 endif()
 
