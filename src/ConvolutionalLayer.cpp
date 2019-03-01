@@ -64,7 +64,53 @@ void ConvolutionalLayer::forward()
 
 void ConvolutionalLayer::backward()
 {
+    auto ih = static_cast<int>(inputHeight);
+    auto iw = static_cast<int>(inputWidth);
 
+    // Zero out input gradient
+    dInput->zero();
+
+    // For each kernel
+    for (unsigned ki = 0; ki < kernelCount; ki++)
+    {
+        // For each "top left" of dot product (row-column)
+        int yInput = -padY;
+        int xInput;
+        float dBiasSum = 0.0f;
+
+        for (unsigned yOutput = 0; yOutput < outputHeight; yOutput++, yInput += strideY)
+        {
+            xInput = -padX;
+            for (unsigned xOutput = 0; xOutput < outputWidth; xOutput++, xInput += strideX)
+            {
+                float outGrad = dOutput->get(ki, yOutput, xOutput);
+                dBiasSum += outGrad;
+                // For each kernel element (row-column-layer)
+                for (unsigned i = 0; i < kernelHeight; i++)
+                {
+                    int yInput2 = yInput + i;
+                    for (unsigned j = 0; j < kernelWidth; j++)
+                    {
+                        int xInput2 = xInput + j;
+
+                        // If we are not in "padding area"
+                        if (yInput2 >= 0 && yInput2 < ih && xInput2 >= 0 && xInput2 < iw)
+                        {
+                            for (unsigned l = 0; l < inputDepth; l++)
+                            {
+                                auto yInput2U = static_cast<unsigned>(yInput2);
+                                auto xInput2U = static_cast<unsigned>(xInput2);
+                                dKernels[ki].addAt(l, i, j, outGrad * input->get(l, yInput2U, xInput2U));
+                                dInput->addAt(l, yInput2U, xInput2U, outGrad * kernels[ki].get(l, i, j));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        dBiases[ki] += dBiasSum;
+    }
 }
 
 void ConvolutionalLayer::updateParams(const TrainerBase &trainer)
