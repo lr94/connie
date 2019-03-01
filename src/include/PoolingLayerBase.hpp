@@ -10,13 +10,24 @@ public:
     PoolingLayerBase(unsigned windowWidth, unsigned windowHeight, unsigned strideX, unsigned strideY,
                     unsigned paddingX, unsigned paddingY);
 
+protected:
+    void prepend(LayerBase *previousLayer) override;
+
 private:
     unsigned windowWidth;
     unsigned windowHeight;
     unsigned strideX;
     unsigned strideY;
-    unsigned paddingX;
-    unsigned paddingY;
+    unsigned padX;
+    unsigned padY;
+
+    unsigned inputHeight = 0;
+    unsigned inputWidth = 0;
+    unsigned inputDepth = 0;
+
+    unsigned outputHeight = 0;
+    unsigned outputWidth = 0;
+    unsigned outputDepth = 0;
 };
 
 
