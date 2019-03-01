@@ -3,7 +3,7 @@
 
 #include "LayerBase.hpp"
 
-class PoolingLayerBase : LayerBase
+class PoolingLayerBase : public LayerBase
 {
 public:
     PoolingLayerBase(unsigned windowSize, unsigned stride, unsigned padding);
