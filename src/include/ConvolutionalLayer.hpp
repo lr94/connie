@@ -1,7 +1,3 @@
-//
-// Created by luca on 28/02/19.
-//
-
 #ifndef CNN_CONVOLUTIONALLAYER_HPP
 #define CNN_CONVOLUTIONALLAYER_HPP
 
@@ -13,8 +9,9 @@
 class ConvolutionalLayer : public LayerBase
 {
 public:
-    ConvolutionalLayer(unsigned kernels, unsigned kernelSize, unsigned stride);
-    ConvolutionalLayer(unsigned kernels, unsigned kernelWidth, unsigned kernelHeight, unsigned strideX, unsigned strideY);
+    ConvolutionalLayer(unsigned kernels, unsigned kernelSize, unsigned stride, unsigned padding);
+    ConvolutionalLayer(unsigned kernels, unsigned kernelWidth, unsigned kernelHeight, unsigned strideX, unsigned strideY,
+                       unsigned paddingX, unsigned paddingY);
 
     ~ConvolutionalLayer();
 
@@ -23,8 +20,6 @@ public:
     void backward() override;
 
     void updateParams(const TrainerBase &trainer) override;
-
-    inline unsigned numNeurons() const;
 
     bool save(std::ostream &stream) override;
     bool load(std::istream &stream) override;
@@ -36,14 +31,24 @@ private:
     unsigned kernelCount;
     unsigned kernelWidth;
     unsigned kernelHeight;
-    unsigned inputWidth;
-    unsigned inputHeight;
     unsigned strideX;
     unsigned strideY;
+    unsigned padX;
+    unsigned padY;
 
-    unsigned outputWidth;
-    unsigned outputHeight;
+    unsigned inputHeight = 0;
+    unsigned inputWidth = 0;
+    unsigned inputDepth = 0;
+
+    unsigned outputHeight = 0;
+    unsigned outputWidth = 0;
+    unsigned outputDepth = 0;
+
     std::vector<Tensor<>> kernels;
+    std::vector<float> biases;
+
+    std::vector<Tensor<>> dKernels;
+    std::vector<float> dBiases;
 };
 
 
