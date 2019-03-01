@@ -24,9 +24,6 @@ public:
     bool save(std::ostream &stream) override;
     bool load(std::istream &stream) override;
 
-
-    std::vector<Tensor<>> kernels;
-    std::vector<float> biases;
 protected:
     void prepend(LayerBase *previousLayer) override;
 
@@ -47,7 +44,8 @@ private:
     unsigned outputWidth = 0;
     unsigned outputDepth = 0;
 
-
+    std::vector<Tensor<>> kernels;
+    std::vector<float> biases;
 
     std::vector<Tensor<>> dKernels;
     std::vector<float> dBiases;

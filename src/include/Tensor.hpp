@@ -478,6 +478,25 @@ public:
         return *this;
     }
 
+    friend bool operator==(const Tensor &left, const Tensor &right)
+    {
+        if (left.shape.size() != right.shape.size())
+            return false;
+
+        size_t rank = left.shape.size();
+        for (unsigned i = 0; i < rank; i++)
+            if (left.shape[i] != right.shape[i])
+                return false;
+
+        size_t size = left.getDataSize();
+
+        for (unsigned i = 0; i < size; i++)
+            if (left.w[i] != right.w[i])
+                return false;
+
+        return true;
+    }
+
     // TODO try to improve operators
 
     Tensor convolve(Tensor &filter, unsigned stride)
