@@ -499,64 +499,6 @@ public:
 
     // TODO try to improve operators
 
-    Tensor convolve(Tensor &filter, unsigned stride)
-    {
-        unsigned resultHeight = (height() - filter.height()) / stride + 1;
-        unsigned resultWidth = (width() - filter.width()) / stride + 1;
-
-        Tensor result(1, resultHeight, resultWidth);
-
-        convolve(result, 0, filter, stride);
-
-        return result;
-    }
-
-    /**
-     * Performs a convolution and stores the resulting feature map in the specified layer of result
-     *
-     * @param result
-     * @param resultLayer
-     * @param filter
-     * @param stride
-     */
-    void convolve(Tensor &result, unsigned resultLayer, Tensor &filter, unsigned stride)
-    {
-        unsigned resultHeight = (height() - filter.height()) / stride + 1;
-        unsigned resultWidth = (width() - filter.width()) / stride + 1;
-
-        unsigned filterDepth = filter.depth();
-        unsigned filterHeight = filter.height();
-        unsigned filterWidth = filter.width();
-
-        for (unsigned resultY = 0; resultY < resultHeight; resultY++)
-            for (unsigned resultX = 0; resultX < resultWidth; resultX++)
-                result.set(resultLayer, resultY, resultX, 0);
-
-        for (unsigned layer = 0; layer < filterDepth; layer++)
-        {
-            for (unsigned resultY = 0, sourceTLCornerY = 0; resultY < resultHeight; resultY++, sourceTLCornerY += stride)
-            {
-                for (unsigned resultX = 0, sourceTLCornerX = 0; resultX < resultWidth; resultX++, sourceTLCornerX += stride)
-                {
-                    T sum = 0;
-
-                    for (unsigned filterY = 0; filterY < filterHeight; filterY++)
-                    {
-                        for (unsigned filterX = 0; filterX < filterWidth; filterX++)
-                        {
-                            unsigned sourceX = sourceTLCornerX + filterX;
-                            unsigned sourceY = sourceTLCornerY + filterY;
-
-                            sum += get(layer, sourceY, sourceX) * filter.get(layer, filterY, filterX);
-                        }
-                    }
-
-                    result.addAt(resultLayer, resultY, resultX, sum);
-                }
-            }
-        }
-    }
-
     void zero()
     {
         std::fill_n(w, getDataSize(), 0);
