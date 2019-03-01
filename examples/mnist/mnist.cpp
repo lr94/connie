@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <filesystem>
 #include <memory>
@@ -13,6 +14,8 @@
 #include "FullyConnectedLayer.hpp"
 #include "TanhLayer.hpp"
 #include "ReluLayer.hpp"
+#include "ConvolutionalLayer.hpp"
+#include "MaxPoolingLayer.hpp"
 #include "SigmoidLayer.hpp"
 #include "SoftmaxLayer.hpp"
 
@@ -67,10 +70,12 @@ int main(int argc, char *argv[])
     Net network;
     std::shared_ptr<SoftmaxLayer> softmax = std::make_shared<SoftmaxLayer>();
     network.appendLayer(std::make_shared<InputLayer>(1, size, size))
-            .appendLayer(std::make_shared<FullyConnectedLayer>(size * size * 2))
+            .appendLayer(std::make_shared<ConvolutionalLayer>(8, 5, 1, 0))
             .appendLayer(std::make_shared<ReluLayer>())
-            .appendLayer(std::make_shared<FullyConnectedLayer>(size * size))
+            .appendLayer(std::make_shared<MaxPoolingLayer>(2, 2, 0))
+            .appendLayer(std::make_shared<ConvolutionalLayer>(16, 5, 1, 0))
             .appendLayer(std::make_shared<ReluLayer>())
+            .appendLayer(std::make_shared<MaxPoolingLayer>(3, 3, 0))
             .appendLayer(std::make_shared<FullyConnectedLayer>(10))
             .appendLayer(softmax);
     // Load the network parameters
@@ -81,6 +86,8 @@ int main(int argc, char *argv[])
     }
     Tensor<> &input = network.getInput();
     // Tensor<> &output = network.getOutput();
+
+
 
     // Init the trainer
     std::cout << "Learning rate: " << learningRate << std::endl << "Batch size: " << batchSize << std::endl;
@@ -96,6 +103,20 @@ int main(int argc, char *argv[])
 
     std::random_device random;
     std::mt19937 mersenne(random());
+
+    std::shuffle(dataset.begin(), dataset.end(), mersenne);
+    unsigned ok =0, tot = 0;
+    for (unsigned i = 0; i < dataset.size(); i++)
+    {
+        Sample &sample = dataset[i];
+        loadSample(input, sample);
+        network.forward();
+        tot++;
+        if (softmax->getPredictedClass() == sample.label())
+            ok++;
+    }
+    std::cout << "Accuracy: " << std::setprecision(4) << static_cast<float>(ok) / tot * 100.0f << " %" << std::endl;
+    std::cin.get();
 
     std::chrono::time_point start = std::chrono::system_clock::now();
     unsigned long long iteration = 0;
