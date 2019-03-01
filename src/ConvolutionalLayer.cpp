@@ -83,6 +83,7 @@ void ConvolutionalLayer::backward()
             xInput = -padX;
             for (unsigned xOutput = 0; xOutput < outputWidth; xOutput++, xInput += strideX)
             {
+                // Gradient from the next layer
                 float outGrad = dOutput->get(ki, yOutput, xOutput);
                 dBiasSum += outGrad;
                 // For each kernel element (row-column-layer)
