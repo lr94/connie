@@ -48,9 +48,10 @@ void ConvolutionalLayer::forward()
                         // If we are not in "padding area"
                         if (yInput2 >= 0 && yInput2 < ih && xInput2 >= 0 && xInput2 < iw)
                         {
+                            auto yInput2U = static_cast<unsigned>(yInput2);
+                            auto xInput2U = static_cast<unsigned>(xInput2);
                             for (unsigned l = 0; l < inputDepth; l++)
-                                sum += kernels[ki].get(l, i, j) * input->get(l, static_cast<unsigned>(yInput2),
-                                                                             static_cast<unsigned>(xInput2));
+                                sum += kernels[ki].get(l, i, j) * input->get(l, yInput2U, xInput2U);
 
                         }
                     }
@@ -97,10 +98,10 @@ void ConvolutionalLayer::backward()
                         // If we are not in "padding area"
                         if (yInput2 >= 0 && yInput2 < ih && xInput2 >= 0 && xInput2 < iw)
                         {
+                            auto yInput2U = static_cast<unsigned>(yInput2);
+                            auto xInput2U = static_cast<unsigned>(xInput2);
                             for (unsigned l = 0; l < inputDepth; l++)
                             {
-                                auto yInput2U = static_cast<unsigned>(yInput2);
-                                auto xInput2U = static_cast<unsigned>(xInput2);
                                 dKernels[ki].addAt(l, i, j, outGrad * input->get(l, yInput2U, xInput2U));
                                 dInput->addAt(l, yInput2U, xInput2U, outGrad * kernels[ki].get(l, i, j));
                             }
