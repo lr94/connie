@@ -1,5 +1,5 @@
-#ifndef CNN_MAXPOOLINGLAYER_HPP
-#define CNN_MAXPOOLINGLAYER_HPP
+#ifndef CNN_POOLINGLAYERBASE_HPP
+#define CNN_POOLINGLAYERBASE_HPP
 
 #include "LayerBase.hpp"
 
@@ -31,4 +31,4 @@ private:
 };
 
 
-#endif //CNN_MAXPOOLINGLAYER_HPP
+#endif //CNN_POOLINGLAYERBASE_HPP
