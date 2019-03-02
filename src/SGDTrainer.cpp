@@ -1,10 +1,6 @@
 #include "SGDTrainer.hpp"
 
-SGDTrainer::SGDTrainer(Net &network, float learningRate, unsigned batchSize)
-    : SGDTrainer(network, learningRate, batchSize, 0.0f) {}
-
-SGDTrainer::SGDTrainer(Net &network, float learningRate, unsigned batchSize, float momentum)
-        : TrainerBase(network), learningRate(learningRate), batchSize(batchSize), momentum(momentum)
+SGDTrainer::SGDTrainer(Net &network, float learningRate, unsigned batchSize) : TrainerBase(network), learningRate(learningRate), batchSize(batchSize)
 {
     if (batchSize == 0)
         throw std::runtime_error("Invalid batch size");

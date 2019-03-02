@@ -6,11 +6,9 @@
 class SGDTrainer : public TrainerBase
 {
 public:
-    SGDTrainer(Net &network, float learningRate, unsigned batchSize);
-    SGDTrainer(Net &network, float learningRate, unsigned batchSize, float momentum);
+    explicit SGDTrainer(Net &network, float learningRate, unsigned batchSize);
 
     float learningRate;
-    float momentum;
 
     void train() override;
     bool needToZeroOut() const override;
