@@ -111,7 +111,7 @@ bool FullyConnectedLayer::save(std::ostream &stream)
     for (auto &w : weights)
     {
         size_t size = w.getDataSize();
-        for (size_t i = 0; i < size; i++)
+        for (unsigned i = 0; i < size; i++)
             if (!writeFloat(stream, w.get(i)))
                 return false;
     }
@@ -128,7 +128,7 @@ bool FullyConnectedLayer::load(std::istream &stream)
     for (auto &w : weights)
     {
         size_t size = w.getDataSize();
-        for (size_t i = 0; i < size; i++)
+        for (unsigned i = 0; i < size; i++)
         {
             float value;
             if (!readFloat(stream, value))
