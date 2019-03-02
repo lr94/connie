@@ -41,4 +41,4 @@ add_executable(mnist examples/mnist/mnist.cpp examples/mnist/Sample.hpp examples
 target_link_libraries(mnist connie stdc++fs)
 
 install(TARGETS connie DESTINATION lib)
-install(DIRECTORY src/include DESTINATION include/connie FILES_MATCHING PATTERN "*.hpp")
+install(DIRECTORY src/include/ DESTINATION include/connie/ FILES_MATCHING PATTERN "*.hpp")
