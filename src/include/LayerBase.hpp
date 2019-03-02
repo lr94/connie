@@ -52,22 +52,63 @@ public:
      * This method is called by the trainer (instance of TrainerBase) which pass itself as an argument.
      * The default implementation doesn't do anything, but layers with trainable parameters need to override it.
      * When this method is invoked the layer should invoke the method updateLayerParams() of the trainer, passing
-     * the parameters and their gradients (it can be called multiple times). The trainer will update the prameters.
+     * the parameters and their gradients (it can be called multiple times). The trainer will update the prameters and
+     * if necessary zero out the gradient w.r.t them
      *
-     * @param trainer
+     * @param trainer The trainer, obviously
      */
     virtual void updateParams(const TrainerBase &trainer);
 
+    /**
+     * Add a layer after this one. Internally it works calling prepend() on the next layer
+     *
+     * @param nextLayer The layer to be added
+     */
     void append(LayerBase *nextLayer);
 
+    /**
+     * This method allows layers to save their parameters into a binary stream (this should be done using writeFloat())
+     * The default implementation doesn't do anything.
+     *
+     * @param stream The stream
+     * @return       True in case of success, otherwise false
+     */
     virtual bool save(std::ostream &stream);
+
+    /**
+     * This method allows the layer to load its parameters previously saved with save(). It should use readFloat() and
+     * read the exact number of bytes written by save()
+     *
+     * @param stream The stream
+     * @return       True in case of success, otherwise false
+     */
     virtual bool load(std::istream &stream);
 
 protected:
+    /**
+     * Appends this layer to a specified one. This method can be overriden to allow layers to prepare their structures
+     * containing parameters, but any implementation should always call the parent method
+     *
+     * @param previousLayer
+     */
     virtual void prepend(LayerBase *previousLayer);
 
+    /**
+     * Writes a float into the stream (it should do it with little endian byte order, but for now it is machine dependent)
+     *
+     * @param stream
+     * @param value
+     * @return       True in case of success, otherwise false
+     */
     bool writeFloat(std::ostream &stream, float value);
 
+    /**
+     * Reads a float from the stream (it should do it with little endian byte order, but for now it is machine dependent)
+     *
+     * @param stream
+     * @param value
+     * @return       True in case of success, otherwise false
+     */
     bool readFloat(std::istream &stream, float &value);
 };
 #endif
