@@ -7,6 +7,7 @@ class ReluLayer : public LayerBase
 {
 public:
     ReluLayer();
+    ReluLayer(float leak);
 
     ~ReluLayer();
 
@@ -16,6 +17,9 @@ public:
 
 protected:
     void prepend(LayerBase *previousLayer) override;
+
+private:
+    float leak;
 };
 
 
