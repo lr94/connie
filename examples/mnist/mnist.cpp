@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 
     std::shuffle(dataset.begin(), dataset.end(), mersenne);
     unsigned ok =0, tot = 0;
-    for (unsigned i = 0; i < dataset.size(); i++)
+    for (unsigned i = 0; i < 5000; i++)
     {
         Sample &sample = dataset[i];
         loadSample(input, sample);
@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
             trainer.train();
 
             iteration++;
-            if (iteration % (batchSize * 1) == 0)
+            if (iteration % (batchSize * 10) == 0)
             {
                 float loss = trainer.getLoss();
                 std::cout << "Epoch: " << epoch << " iteration: " << iteration << " loss: " << loss << std::endl;
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
                 if (std::isnan(loss))
                     exit(0);
             }
-            if (iteration % (batchSize * 1 * 10) == 0)
+            if (iteration % (batchSize * 10 * 10) == 0)
             {
                 network.save(networkFile);
                 std::cout << "Network saved in " << networkFile << std::endl;
