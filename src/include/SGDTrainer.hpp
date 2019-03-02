@@ -10,7 +10,6 @@ public:
 
     float learningRate;
 
-    bool needToZeroOut() const override;
     void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const override;
     void updateLayerParams(Tensor<> &params, Tensor<> &gradient) const override;
     float getLoss() const;

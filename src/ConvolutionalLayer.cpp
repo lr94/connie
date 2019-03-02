@@ -121,16 +121,6 @@ void ConvolutionalLayer::updateParams(const TrainerBase &trainer)
 
     for (unsigned i = 0; i < kernelCount; i++)
         trainer.updateLayerParams(kernels[i], dKernels[i]);
-
-    // Zero out the gradient if needed (end of minibatch)
-    if (trainer.needToZeroOut())
-    {
-        for (auto &db : dBiases)
-            db = 0;
-
-        for (unsigned i = 0; i < kernelCount; i++)
-            dKernels[i].zero();
-    }
 }
 
 void ConvolutionalLayer::prepend(LayerBase *previousLayer)

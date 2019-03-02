@@ -61,16 +61,6 @@ void FullyConnectedLayer::updateParams(const TrainerBase &trainer)
     unsigned neurons = numNeurons();
     for (unsigned i = 0; i < neurons; i++)
         trainer.updateLayerParams(weights[i], dWeights[i]);
-
-    // Zero out the gradient if needed (end of minibatch)
-    if (trainer.needToZeroOut())
-    {
-        for (auto &db : dBiases)
-            db = 0;
-
-        for (unsigned i = 0; i < neurons; i++)
-            dWeights[i].zero();
-    }
 }
 
 inline unsigned FullyConnectedLayer::numNeurons() const

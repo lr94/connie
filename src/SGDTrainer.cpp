@@ -8,11 +8,6 @@ SGDTrainer::SGDTrainer(Net &network, float learningRate, unsigned batchSize) : T
         throw std::runtime_error("Invalid batch size");
 }
 
-bool SGDTrainer::needToZeroOut() const
-{
-    return iteration % batchSize == 0;
-}
-
 void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const
 {
     if (iteration % batchSize != 0)
@@ -22,6 +17,10 @@ void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float
 
     for (unsigned i = 0; i < size; i++)
         params[i] -= learningRate * gradient[i] / batchSize;
+
+    // Zero out the gradient if needed (end of minibatch)
+    for (auto &g : gradient)
+        g = 0;
 }
 
 void SGDTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient) const
@@ -33,6 +32,9 @@ void SGDTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient) const
 
     for (unsigned i = 0; i < size; i++)
         params.addAt(i, -learningRate * gradient.get(i) / batchSize);
+
+    // Zero out the gradient if needed (end of minibatch)
+    gradient.zero();
 }
 
 float SGDTrainer::getLoss() const
