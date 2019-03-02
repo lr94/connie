@@ -11,6 +11,8 @@ class TrainerBase;
 class LayerBase
 {
 public:
+    friend class TrainerBase;
+
     /**
      * Input tensor of the layer (allocated by the previous layer, with the InputLayer exception)
      */
@@ -92,6 +94,14 @@ protected:
      * @param previousLayer
      */
     virtual void prepend(LayerBase *previousLayer);
+
+    /**
+     * Allows the trainer (this method is protected but it's alled by TrainerBase which is a friend) to setup additional
+     * parameters useful for the specific optimization algorithm. The default implementation doesn't do anything.
+     *
+     * @param additionalMemory Number of extra float values to be stored for each parameter
+     */
+    virtual void initAdditionalMemory(unsigned additionalMemory);
 
     /**
      * Writes a float into the stream (it should do it with little endian byte order, but for now it is machine dependent)

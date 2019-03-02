@@ -36,3 +36,5 @@ bool LayerBase::readFloat(std::istream &stream, float &value)
 }
 
 void LayerBase::updateParams(const TrainerBase &trainer) {}
+
+void LayerBase::initAdditionalMemory(unsigned additionalMemory) {}

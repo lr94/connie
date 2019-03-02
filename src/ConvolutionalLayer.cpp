@@ -117,10 +117,10 @@ void ConvolutionalLayer::backward()
 
 void ConvolutionalLayer::updateParams(const TrainerBase &trainer)
 {
-    trainer.updateLayerParams(biases, dBiases);
+    trainer.updateLayerParams(biases, dBiases, additionalMemBiases);
 
     for (unsigned i = 0; i < kernelCount; i++)
-        trainer.updateLayerParams(kernels[i], dKernels[i]);
+        trainer.updateLayerParams(kernels[i], dKernels[i], additionalMemKernels[i]);
 }
 
 void ConvolutionalLayer::prepend(LayerBase *previousLayer)

@@ -37,5 +37,12 @@ private:
     // Weight gradient tensors and bias gradients
     std::vector<Tensor<>> dWeights;
     std::vector<float> dBiases;
+
+    // Additional memory for the trainer, which could want to store other info for each parameter
+    // For example SGD with momentum needs to store the old delta vector, so it needs one vector for the bias
+    // and one vector of tensors for the weights. For example additionalMemBiases[0] is a vector of additional values for the
+    // bias 0
+    std::vector<std::vector<Tensor<>>> additionalMemWeights;
+    std::vector<std::vector<float>> additionalMemBiases;
 };
 #endif //CNN_FULLYCONNECTEDLAYER_HPP

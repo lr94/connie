@@ -1,6 +1,6 @@
 #include "SGDTrainer.hpp"
 
-SGDTrainer::SGDTrainer(Net &network, float learningRate, unsigned batchSize) : TrainerBase(network), learningRate(learningRate)
+SGDTrainer::SGDTrainer(Net &network, float learningRate, unsigned batchSize) : TrainerBase(network, 0), learningRate(learningRate)
 {
     this->batchSize = batchSize;
 
@@ -8,7 +8,7 @@ SGDTrainer::SGDTrainer(Net &network, float learningRate, unsigned batchSize) : T
         throw std::runtime_error("Invalid batch size");
 }
 
-void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const
+void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<std::vector<float>> &addMem) const
 {
     if (iteration % batchSize != 0)
         return;
@@ -23,7 +23,7 @@ void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float
         g = 0;
 }
 
-void SGDTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient) const
+void SGDTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, std::vector<Tensor<>> &addMem) const
 {
     if (iteration % batchSize != 0)
         return;
