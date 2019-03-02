@@ -1,27 +1,11 @@
 #include "SGDTrainer.hpp"
 
-SGDTrainer::SGDTrainer(Net &network, float learningRate, unsigned batchSize) : TrainerBase(network), learningRate(learningRate), batchSize(batchSize)
+SGDTrainer::SGDTrainer(Net &network, float learningRate, unsigned batchSize) : TrainerBase(network), learningRate(learningRate)
 {
+    this->batchSize = batchSize;
+
     if (batchSize == 0)
         throw std::runtime_error("Invalid batch size");
-}
-
-void SGDTrainer::train()
-{
-    iteration++;
-
-    net.forward();
-    net.backward();
-
-    lossAccumulator += net.getLoss();
-    if (iteration % batchSize == 0)
-    {
-        loss = lossAccumulator / batchSize;
-        lossAccumulator = 0;
-    }
-
-    for (auto currentLayer = layers.rbegin(); currentLayer != layers.rend(); currentLayer++)
-        (*currentLayer)->updateParams(*this);
 }
 
 bool SGDTrainer::needToZeroOut() const
