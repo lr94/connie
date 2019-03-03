@@ -14,6 +14,8 @@
 #include "FullyConnectedLayer.hpp"
 #include "TanhLayer.hpp"
 #include "ReluLayer.hpp"
+#include "ConvolutionalLayer.hpp"
+#include "MaxPoolingLayer.hpp"
 #include "SigmoidLayer.hpp"
 #include "SoftmaxLayer.hpp"
 
@@ -68,11 +70,18 @@ int main(int argc, char *argv[])
     Net network;
     std::shared_ptr<SoftmaxLayer> softmax = std::make_shared<SoftmaxLayer>();
     network.appendLayer(std::make_shared<InputLayer>(1, size, size))
-            .appendLayer(std::make_shared<FullyConnectedLayer>(size * size * 2))
+            .appendLayer(std::make_shared<ConvolutionalLayer>(6, 5, 1, 2))
             .appendLayer(std::make_shared<ReluLayer>())
-            .appendLayer(std::make_shared<FullyConnectedLayer>(size * size))
+            .appendLayer(std::make_shared<MaxPoolingLayer>(2, 2, 0))
+            .appendLayer(std::make_shared<ConvolutionalLayer>(16, 5, 1, 0))
+            .appendLayer(std::make_shared<ReluLayer>())
+            .appendLayer(std::make_shared<MaxPoolingLayer>(2, 2, 0))
+            .appendLayer(std::make_shared<ConvolutionalLayer>(120, 5, 1, 0))
+            //.appendLayer(std::make_shared<MaxPoolingLayer>(3, 3, 0)) // ???? IT HANGS
+            .appendLayer(std::make_shared<FullyConnectedLayer>(84))
             .appendLayer(std::make_shared<ReluLayer>())
             .appendLayer(std::make_shared<FullyConnectedLayer>(10))
+            .appendLayer(std::make_shared<ReluLayer>())
             .appendLayer(softmax);
     // Load the network parameters
     if (std::filesystem::exists(networkFile))
@@ -126,7 +135,7 @@ int main(int argc, char *argv[])
             trainer.train();
 
             iteration++;
-            if (iteration % (batchSize * 1) == 0)
+            if (iteration % (batchSize * 10) == 0)
             {
                 float loss = trainer.getLoss();
                 std::cout << "Epoch: " << epoch << " iteration: " << iteration << " loss: " << loss << std::endl;
@@ -138,7 +147,7 @@ int main(int argc, char *argv[])
                 if (std::isnan(loss))
                     exit(0);
             }
-            if (iteration % (batchSize * 1 * 10) == 0)
+            if (iteration % (batchSize * 10 * 10) == 0)
             {
                 network.save(networkFile);
                 std::cout << "Network saved in " << networkFile << std::endl;
