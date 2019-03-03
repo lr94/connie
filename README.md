@@ -13,7 +13,7 @@ make
 The library itself does not depend on third party libraries, however the tests need Catch2 to be installed and some of the examples need external libraries (image_regression depends on SDL2 and libgd).
 
 ## Features
-- Several nonlinearities supported (Sigmoid, Tanh, ReLU and LeakyReLU)
+- Several nonlinearities supported (Sigmoid, Tanh, ReLU and Leaky ReLU)
 - Convolutional networks
 - Stochastic Gradient Descent (optionally with momentum)
 
