@@ -14,7 +14,7 @@ The library itself does not depend on third party libraries, however the tests n
 
 ## Features
 - Several nonlinearities supported (Sigmoid, Tanh, ReLU and Leaky ReLU)
-- Convolutional networks
+- Convolutional networks with Max Pooling
 - Stochastic Gradient Descent (optionally with momentum)
 
 ## License
