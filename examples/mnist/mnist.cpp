@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     std::mt19937 mersenne(random());
 
     std::shuffle(dataset.begin(), dataset.end(), mersenne);
-    unsigned ok = 0, tot = std::min<unsigned>(100, static_cast<unsigned>(dataset.size()));
+    unsigned ok = 0, tot = std::min<unsigned>(2500, static_cast<unsigned>(dataset.size()));
     for (unsigned i = 0; i < tot; i++)
     {
         Sample &sample = dataset[i];
@@ -110,6 +110,7 @@ int main(int argc, char *argv[])
 
     // Init the trainer
     std::cout << "Learning rate: " << learningRate << std::endl << "Batch size: " << batchSize << std::endl;
+    std::cout << "Initializing Nesterov optimizer..." << std::endl;
     NesterovTrainer trainer(network, learningRate, 0.9f, batchSize);
 
     // Init log file if necessary
