@@ -76,12 +76,11 @@ int main(int argc, char *argv[])
             .appendLayer(std::make_shared<ConvolutionalLayer>(16, 5, 1, 0))
             .appendLayer(std::make_shared<ReluLayer>())
             .appendLayer(std::make_shared<MaxPoolingLayer>(2, 2, 0))
-            .appendLayer(std::make_shared<ConvolutionalLayer>(120, 5, 1, 0))
-            //.appendLayer(std::make_shared<MaxPoolingLayer>(3, 3, 0)) // ???? IT HANGS
+            .appendLayer(std::make_shared<ConvolutionalLayer>(120, 1, 1, 0))
+            .appendLayer(std::make_shared<ReluLayer>())
             .appendLayer(std::make_shared<FullyConnectedLayer>(84))
             .appendLayer(std::make_shared<ReluLayer>())
             .appendLayer(std::make_shared<FullyConnectedLayer>(10))
-            .appendLayer(std::make_shared<ReluLayer>())
             .appendLayer(softmax);
     // Load the network parameters
     if (std::filesystem::exists(networkFile))
@@ -96,7 +95,7 @@ int main(int argc, char *argv[])
     std::mt19937 mersenne(random());
 
     std::shuffle(dataset.begin(), dataset.end(), mersenne);
-    unsigned ok = 0, tot = std::min<unsigned>(10000, static_cast<unsigned>(dataset.size()));
+    unsigned ok = 0, tot = std::min<unsigned>(100, static_cast<unsigned>(dataset.size()));
     for (unsigned i = 0; i < tot; i++)
     {
         Sample &sample = dataset[i];
