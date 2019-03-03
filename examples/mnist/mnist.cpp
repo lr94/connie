@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <filesystem>
 #include <memory>
@@ -8,7 +9,7 @@
 
 #include "Tensor.hpp"
 #include "Net.hpp"
-#include "SGDTrainer.hpp"
+#include "NesterovTrainer.hpp"
 #include "InputLayer.hpp"
 #include "FullyConnectedLayer.hpp"
 #include "TanhLayer.hpp"
@@ -82,9 +83,26 @@ int main(int argc, char *argv[])
     Tensor<> &input = network.getInput();
     // Tensor<> &output = network.getOutput();
 
+    std::random_device random;
+    std::mt19937 mersenne(random());
+
+    std::shuffle(dataset.begin(), dataset.end(), mersenne);
+    unsigned ok = 0, tot = 10000;
+    for (unsigned i = 0; i < tot; i++)
+    {
+        Sample &sample = dataset[i];
+        loadSample(input, sample);
+        network.forward();
+
+        if (softmax->getPredictedClass() == sample.label())
+            ok++;
+    }
+    float accuracy = static_cast<float>(ok) / tot * 100.0f;
+    std::cout << "Initial accuracy: " << std::setprecision(4) << accuracy << " %" << std::endl;
+
     // Init the trainer
     std::cout << "Learning rate: " << learningRate << std::endl << "Batch size: " << batchSize << std::endl;
-    SGDTrainer trainer(network, learningRate, batchSize);
+    NesterovTrainer trainer(network, learningRate, 0.9f, batchSize);
 
     // Init log file if necessary
     std::ofstream log;
@@ -93,9 +111,6 @@ int main(int argc, char *argv[])
         log.open(logFile);
         log << "milliseconds,epoch,iteration,loss" << std::endl;
     }
-
-    std::random_device random;
-    std::mt19937 mersenne(random());
 
     std::chrono::time_point start = std::chrono::system_clock::now();
     unsigned long long iteration = 0;
