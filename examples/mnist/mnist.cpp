@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 
     std::shuffle(dataset.begin(), dataset.end(), mersenne);
     unsigned ok =0, tot = 0;
-    for (unsigned i = 0; i < dataset.size(); i++)
+    for (unsigned i = 0; i < 1000; i++)
     {
         Sample &sample = dataset[i];
         loadSample(input, sample);
