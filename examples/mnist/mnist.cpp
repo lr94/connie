@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     std::mt19937 mersenne(random());
 
     std::shuffle(dataset.begin(), dataset.end(), mersenne);
-    unsigned ok = 0, tot = 10000;
+    unsigned ok = 0, tot = std::min<unsigned>(10000, static_cast<unsigned>(dataset.size()));
     for (unsigned i = 0; i < tot; i++)
     {
         Sample &sample = dataset[i];
