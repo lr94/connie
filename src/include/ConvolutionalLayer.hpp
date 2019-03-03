@@ -28,6 +28,8 @@ protected:
     void prepend(LayerBase *previousLayer) override;
 
 private:
+    void initAdditionalMemory(unsigned additionalMemory) override;
+
     unsigned kernelCount;
     unsigned kernelWidth;
     unsigned kernelHeight;

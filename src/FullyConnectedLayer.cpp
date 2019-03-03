@@ -96,6 +96,28 @@ void FullyConnectedLayer::prepend(LayerBase *previousLayer)
     dBiases.insert(dBiases.end(), biases.size(), 0.0f);
 }
 
+void FullyConnectedLayer::initAdditionalMemory(unsigned additionalMemory)
+{
+    unsigned n = numNeurons();
+
+    // For each unit
+    for (unsigned i = 0; i < n; i++)
+    {
+        // Add the amount of additional memory required
+        additionalMemWeights.emplace_back(std::vector<Tensor<>>());
+        additionalMemBiases.emplace_back(std::vector<float>());
+
+        for (unsigned j = 0; j < additionalMemory; j++)
+        {
+            Tensor<> zeroTensor(input->depth(), input->height(), input->width());
+            zeroTensor.zero();
+            additionalMemWeights[i].emplace_back(zeroTensor);
+
+            additionalMemBiases[i].push_back(0.0f);
+        }
+    }
+}
+
 bool FullyConnectedLayer::save(std::ostream &stream)
 {
     for (auto &w : weights)

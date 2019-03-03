@@ -29,6 +29,8 @@ protected:
     void prepend(LayerBase *previousLayer) override;
 
 private:
+    void initAdditionalMemory(unsigned additionalMemory) override;
+
     // One weight tensor per neuron, each tensor has the same shape of the input tensor and contains all the weights
     // Weights and biases
     std::vector<Tensor<>> weights;
