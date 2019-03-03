@@ -5,24 +5,24 @@
 #include <algorithm>
 #include <stdexcept>
 
-class Sample
+class MnistSample
 {
 public:
     friend class Dataset;
 
-    Sample(const Sample &original) : w(original.w), h(original.h), lbl(original.lbl), data(new char[w * h])
+    MnistSample(const MnistSample &original) : w(original.w), h(original.h), lbl(original.lbl), data(new char[w * h])
     {
         unsigned size = w * h;
         std::copy(original.data, original.data + size, data);
     }
 
-    Sample(Sample &&original) noexcept : w(original.w), h(original.h), lbl(original.lbl)
+    MnistSample(MnistSample &&original) noexcept : w(original.w), h(original.h), lbl(original.lbl)
     {
         data = original.data;
         original.data = nullptr;
     }
 
-    Sample &operator=(const Sample &source)
+    MnistSample &operator=(const MnistSample &source)
     {
         if (this != &source)
         {
@@ -37,7 +37,7 @@ public:
         return *this;
     }
 
-    Sample &operator=(Sample &&source) noexcept
+    MnistSample &operator=(MnistSample &&source) noexcept
     {
         if (this != &source)
         {
@@ -77,13 +77,13 @@ public:
         return static_cast<unsigned char>(data[w * y + x]);
     }
 
-    ~Sample()
+    ~MnistSample()
     {
         delete[] data;
     }
 
 private:
-    Sample(std::istream &dataStream, std::istream &labelStream, unsigned width, unsigned height) : w(width), h(height), lbl(0), data(new char[w * h])
+    MnistSample(std::istream &dataStream, std::istream &labelStream, unsigned width, unsigned height) : w(width), h(height), lbl(0), data(new char[w * h])
     {
         unsigned totPixels = width * height;
         for (unsigned i = 0; i < totPixels; i++)

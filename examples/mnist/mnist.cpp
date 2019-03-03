@@ -19,9 +19,9 @@
 #include "SigmoidLayer.hpp"
 #include "SoftmaxLayer.hpp"
 
-#include "Dataset.hpp"
+#include "MnistDataset.hpp"
 
-static void loadSample(Tensor<> &tensor, const Sample &sample);
+static void loadSample(Tensor<> &tensor, const MnistSample &sample);
 
 static const unsigned size = 28;
 static const char defaultDataFile[] = "../datasets/mnist/train-images-idx3-ubyte";
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     }
 
     std::cout << "Loading dataset from " << labelsFile << " and " << dataFile << std::endl;
-    Dataset dataset(dataFile, labelsFile);
+    MnistDataset dataset(dataFile, labelsFile);
     std::cout << "Loaded " << dataset.size() << " samples." << std::endl;
 
     // Build the network
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
     unsigned ok = 0, tot = std::min<unsigned>(2500, static_cast<unsigned>(dataset.size()));
     for (unsigned i = 0; i < tot; i++)
     {
-        Sample &sample = dataset[i];
+        MnistSample &sample = dataset[i];
         loadSample(input, sample);
         network.forward();
 
@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
     }
 }
 
-static void loadSample(Tensor<> &tensor, const Sample &sample)
+static void loadSample(Tensor<> &tensor, const MnistSample &sample)
 {
     unsigned w = sample.width();
     unsigned h = sample.height();

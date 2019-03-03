@@ -4,14 +4,14 @@
 #include <vector>
 #include <fstream>
 #include <stdexcept>
-#include "Sample.hpp"
+#include "MnistSample.hpp"
 
-class Dataset : public std::vector<Sample>
+class MnistDataset : public std::vector<MnistSample>
 {
 public:
-    Dataset() = delete;
+    MnistDataset() = delete;
 
-    Dataset(const char *dataFile, const char *labelsFile)
+    MnistDataset(const char *dataFile, const char *labelsFile)
     {
         std::ifstream dataStream(dataFile, std::ifstream::binary);
         std::ifstream labelsStream(labelsFile, std::ifstream::binary);
@@ -33,7 +33,7 @@ public:
         unsigned height = readUnsignedInteger(dataStream);
 
         for (unsigned i = 0; i < n; i++)
-            this->emplace_back(Sample(dataStream, labelsStream, width, height));
+            this->emplace_back(MnistSample(dataStream, labelsStream, width, height));
     }
 
 private:

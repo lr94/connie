@@ -37,7 +37,7 @@ else()
 endif()
 
 # MNIST
-add_executable(mnist examples/mnist/mnist.cpp examples/mnist/Sample.hpp examples/mnist/Dataset.hpp)
+add_executable(mnist examples/mnist/mnist.cpp examples/mnist/MnistSample.hpp examples/mnist/MnistDataset.hpp)
 target_link_libraries(mnist connie stdc++fs)
 
 install(TARGETS connie DESTINATION lib)
