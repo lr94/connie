@@ -163,22 +163,20 @@ void ConvolutionalLayer::initAdditionalMemory(unsigned additionalMemory)
 {
     unsigned n = kernelCount;
 
-    // For each kernel
+    // For each unit
+    additionalMemKernels.clear();
     for (unsigned i = 0; i < n; i++)
     {
-        // Add the amount of additional memory required
-        additionalMemKernels.emplace_back(std::vector<Tensor<>>());
-        additionalMemBiases.emplace_back(std::vector<float>());
-
-        for (unsigned j = 0; j < additionalMemory; j++)
-        {
-            Tensor<> zeroTensor(input->depth(), input->height(), input->width());
-            zeroTensor.zero();
-            additionalMemKernels[i].emplace_back(zeroTensor);
-
-            additionalMemBiases[i].push_back(0.0f);
-        }
+        // Add the amount of additional memory slots required
+        Tensor<> zeroTensor(input->depth(), input->height(), input->width());
+        zeroTensor.zero();
+        additionalMemKernels.emplace_back(std::vector<Tensor<>>(additionalMemory, zeroTensor));
     }
+
+    additionalMemBiases.clear();
+    // For each additional memory slot
+    for (unsigned i = 0; i < additionalMemory; i++)
+        additionalMemBiases.emplace_back(std::vector<float>(n, 0.0f));
 }
 
 bool ConvolutionalLayer::save(std::ostream &stream)

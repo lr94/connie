@@ -44,6 +44,11 @@ private:
     // For example SGD with momentum needs to store the old delta vector, so it needs one vector for the bias
     // and one vector of tensors for the weights. For example additionalMemBiases[0] is a vector of additional values for the
     // bias 0
+    // additionalMemWeights:
+    //      Index order: weightIndex, additionalMemoryIndex
+    // additionalMemBiases:
+    //      Index order: additionalMemoryIndex, unitIndex
+    // They look reversed but they are not: additionalMemBiases[.] is in fact a monodimensional tensor (std::vector<float>)
     std::vector<std::vector<Tensor<>>> additionalMemWeights;
     std::vector<std::vector<float>> additionalMemBiases;
 };

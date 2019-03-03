@@ -20,8 +20,9 @@ void MomentumTrainer::updateLayerParams(std::vector<float> &params, std::vector<
 
     for (unsigned i = 0; i < size; i++)
     {
-        v[i] = momentum * v[i] - learningRate * gradient[i] / batchSize;
-        params[i] += v[i];
+        float vi = momentum * v[i] - learningRate * gradient[i] / batchSize;
+        v[i] = vi;
+        params[i] += vi;
     }
 
     // Zero out the gradient if needed (end of minibatch)
@@ -40,8 +41,9 @@ void MomentumTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, st
 
     for (unsigned i = 0; i < size; i++)
     {
-        v.set(i, momentum * v.get(i) - learningRate * gradient.get(i) / batchSize);
-        params.addAt(i, v[i]);
+        float vi = momentum * v.get(i) - learningRate * gradient.get(i) / batchSize;
+        v.set(i, vi);
+        params.addAt(i, vi);
     }
 
     // Zero out the gradient if needed (end of minibatch)
