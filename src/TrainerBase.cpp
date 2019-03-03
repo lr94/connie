@@ -1,5 +1,11 @@
 #include "TrainerBase.hpp"
 
+TrainerBase::TrainerBase(Net &network, unsigned additionalMemory) : net(network), layers(network.layers)
+{
+    for (auto &layerPtr : layers)
+        layerPtr->initAdditionalMemory(additionalMemory);
+}
+
 void TrainerBase::train()
 {
     iteration++;

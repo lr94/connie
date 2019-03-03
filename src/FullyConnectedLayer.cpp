@@ -56,11 +56,11 @@ void FullyConnectedLayer::backward()
 
 void FullyConnectedLayer::updateParams(const TrainerBase &trainer)
 {
-    trainer.updateLayerParams(biases, dBiases);
+    trainer.updateLayerParams(biases, dBiases, additionalMemBiases);
 
     unsigned neurons = numNeurons();
     for (unsigned i = 0; i < neurons; i++)
-        trainer.updateLayerParams(weights[i], dWeights[i]);
+        trainer.updateLayerParams(weights[i], dWeights[i], additionalMemWeights[i]);
 }
 
 inline unsigned FullyConnectedLayer::numNeurons() const
@@ -94,6 +94,26 @@ void FullyConnectedLayer::prepend(LayerBase *previousLayer)
     }
 
     dBiases.insert(dBiases.end(), biases.size(), 0.0f);
+}
+
+void FullyConnectedLayer::initAdditionalMemory(unsigned additionalMemory)
+{
+    unsigned n = numNeurons();
+
+    // For each unit
+    additionalMemWeights.clear();
+    for (unsigned i = 0; i < n; i++)
+    {
+        // Add the amount of additional memory slots required
+        Tensor<> zeroTensor(input->depth(), input->height(), input->width());
+        zeroTensor.zero();
+        additionalMemWeights.emplace_back(std::vector<Tensor<>>(additionalMemory, zeroTensor));
+    }
+
+    additionalMemBiases.clear();
+    // For each additional memory slot
+    for (unsigned i = 0; i < additionalMemory; i++)
+        additionalMemBiases.emplace_back(std::vector<float>(n, 0.0f));
 }
 
 bool FullyConnectedLayer::save(std::ostream &stream)

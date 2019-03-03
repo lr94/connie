@@ -117,10 +117,10 @@ void ConvolutionalLayer::backward()
 
 void ConvolutionalLayer::updateParams(const TrainerBase &trainer)
 {
-    trainer.updateLayerParams(biases, dBiases);
+    trainer.updateLayerParams(biases, dBiases, additionalMemBiases);
 
     for (unsigned i = 0; i < kernelCount; i++)
-        trainer.updateLayerParams(kernels[i], dKernels[i]);
+        trainer.updateLayerParams(kernels[i], dKernels[i], additionalMemKernels[i]);
 }
 
 void ConvolutionalLayer::prepend(LayerBase *previousLayer)
@@ -157,6 +157,26 @@ void ConvolutionalLayer::prepend(LayerBase *previousLayer)
     }
 
     dBiases.insert(dBiases.end(), biases.size(), 0.0f);
+}
+
+void ConvolutionalLayer::initAdditionalMemory(unsigned additionalMemory)
+{
+    unsigned n = kernelCount;
+
+    // For each unit
+    additionalMemKernels.clear();
+    for (unsigned i = 0; i < n; i++)
+    {
+        // Add the amount of additional memory slots required
+        Tensor<> zeroTensor(input->depth(), input->height(), input->width());
+        zeroTensor.zero();
+        additionalMemKernels.emplace_back(std::vector<Tensor<>>(additionalMemory, zeroTensor));
+    }
+
+    additionalMemBiases.clear();
+    // For each additional memory slot
+    for (unsigned i = 0; i < additionalMemory; i++)
+        additionalMemBiases.emplace_back(std::vector<float>(n, 0.0f));
 }
 
 bool ConvolutionalLayer::save(std::ostream &stream)

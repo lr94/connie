@@ -1,17 +1,15 @@
-#ifndef CNN_SGDTRAINER_HPP
-#define CNN_SGDTRAINER_HPP
+#ifndef CONNIE_MOMENTUMTRAINER_HPP
+#define CONNIE_MOMENTUMTRAINER_HPP
 
 #include "TrainerBase.hpp"
 
-/**
- * Plain Stochastic Gradient Descent implementation
- */
-class SGDTrainer : public TrainerBase
+class MomentumTrainer : public TrainerBase
 {
 public:
-    SGDTrainer(Net &network, float learningRate, unsigned batchSize);
+    MomentumTrainer(Net &network, float learningRate, float momentum, unsigned batchSize);
 
     float learningRate;
+    float momentum;
 
     void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<std::vector<float>> &addMem) const override;
     void updateLayerParams(Tensor<> &params, Tensor<> &gradient, std::vector<Tensor<>> &addMem) const override;
@@ -19,4 +17,4 @@ public:
 };
 
 
-#endif //CNN_SGDTRAINER_HPP
+#endif //CONNIE_MOMENTUMTRAINER_HPP

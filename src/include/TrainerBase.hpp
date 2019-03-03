@@ -8,7 +8,7 @@
 class TrainerBase
 {
 public:
-    explicit TrainerBase(Net &network) : net(network), layers(network.layers) {}
+    explicit TrainerBase(Net &network, unsigned additionalMemory);
 
     /**
      * Performs a step of the optimization algorithm. The input and the expected output (target) must have already been
@@ -22,15 +22,16 @@ public:
      * @param params
      * @param gradient
      */
-    virtual void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient) const = 0;
+    virtual void updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<std::vector<float>> &addMem) const = 0;
 
     /**
      * Allows a layer to update its parameters using the optimizer
      *
      * @param params
      * @param gradient
+     * @param addMemWeights Vector of additional memory tensors (0 for SGD, 1 for momentum SGD...)
      */
-    virtual void updateLayerParams(Tensor<> &params, Tensor<> &gradient) const = 0;
+    virtual void updateLayerParams(Tensor<> &params, Tensor<> &gradient, std::vector<Tensor<>> &addMem) const = 0;
 
 protected:
     /**
