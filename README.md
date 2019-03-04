@@ -23,6 +23,7 @@ The library itself does not depend on third party libraries, however the tests n
   - "Vanilla" Stochastic Gradient Descent (SGD)
   - Momentum SGD
   - Nesterov
+  - AdaGrad
 
 ## License
 As mentioned before the library was developed for didactic purposes, however it is released under LGPL 2.1 license
