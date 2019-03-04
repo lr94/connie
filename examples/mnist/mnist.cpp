@@ -9,7 +9,13 @@
 
 #include "Tensor.hpp"
 #include "Net.hpp"
+
+#include "SGDTrainer.hpp"
+#include "MomentumTrainer.hpp"
+#include "NesterovTrainer.hpp"
+#include "AdaGradTrainer.hpp"
 #include "RMSPropTrainer.hpp"
+
 #include "InputLayer.hpp"
 #include "FullyConnectedLayer.hpp"
 #include "TanhLayer.hpp"
@@ -22,6 +28,11 @@
 #include "MnistDataset.hpp"
 
 static void loadSample(Tensor<> &tensor, const MnistSample &sample);
+std::shared_ptr<TrainerBase> initTrainer(Net &network, int argc, char *argv[]);
+
+float readFloatArg(const std::string &argumentName, float defaultValue, int argc, char *argv[]);
+int readIntArg(const std::string &argumentName, int defaultValue, int argc, char *argv[]);
+std::string readStringArg(const std::string &argumentName, const std::string &defaultValue, int argc, char *argv[]);
 
 static const unsigned size = 28;
 static const char defaultDataFile[] = "../datasets/mnist/train-images-idx3-ubyte";
@@ -34,7 +45,6 @@ int main(int argc, char *argv[])
     const char *labelsFile = defaultLabelsFile;
     const char *networkFile = defaultNetworkFile;
     const char *logFile = nullptr;
-    float learningRate = 0.005f;
     unsigned batchSize = 8;
 
     if (argc < 2)
@@ -54,8 +64,6 @@ int main(int argc, char *argv[])
             dataFile = argv[++i];
         else if (current_arg == "-l" && next_arg_index < argc)
             logFile = argv[++i];
-        else if (current_arg == "-lr" && next_arg_index < argc)
-            learningRate = std::stof(argv[++i]);
         else if (current_arg == "-bs" && next_arg_index < argc)
             batchSize = static_cast<unsigned int>(std::stoi(argv[++i]));
         else if (current_arg == "-l" && next_arg_index < argc)
@@ -109,9 +117,7 @@ int main(int argc, char *argv[])
     std::cout << "Initial accuracy: " << std::setprecision(4) << accuracy << " %" << std::endl;
 
     // Init the trainer
-    std::cout << "Learning rate: " << learningRate << std::endl << "Batch size: " << batchSize << std::endl;
-    std::cout << "Initializing RMSPropTrainer optimizer..." << std::endl;
-    RMSPropTrainer trainer(network, learningRate, 0.9f, 0.9f, batchSize);
+    std::shared_ptr<TrainerBase> trainer = initTrainer(network, argc, argv);
 
     // Init log file if necessary
     std::ofstream log;
@@ -132,12 +138,12 @@ int main(int argc, char *argv[])
             loadSample(input, sample);
             softmax->setTargetClass(sample.label());
 
-            trainer.train();
+            trainer->train();
 
             iteration++;
             if (iteration % (batchSize * 10) == 0)
             {
-                float loss = trainer.getLoss();
+                float loss = trainer->getLoss();
                 std::cout << "Epoch: " << epoch << " iteration: " << iteration << " loss: " << loss << std::endl;
                 if (logFile != nullptr)
                 {
@@ -156,6 +162,57 @@ int main(int argc, char *argv[])
     }
 }
 
+std::shared_ptr<TrainerBase> initTrainer(Net &network, int argc, char *argv[])
+{
+    std::string trainerString = readStringArg("trainer", "sgd", argc, argv);
+
+    float learningRate = readFloatArg("learning-rate", 0.01f, argc, argv);
+    float momentum = readFloatArg("momentum", 0.9f, argc, argv);
+    float decayRate = readFloatArg("decay-rate", 0.9, argc, argv);
+    unsigned batchSize = static_cast<unsigned>(readIntArg("batch-size", 16, argc, argv));
+
+    std::shared_ptr<TrainerBase> trainer;
+    std::string trainerName;
+
+    if (trainerString == "momentum")
+    {
+        trainer = std::make_shared<MomentumTrainer>(network, learningRate, momentum, batchSize);
+        trainerName = "Stochastic Gradient Descent with momentum";
+    }
+    else if (trainerString == "nesterov")
+    {
+        trainer = std::make_shared<NesterovTrainer>(network, learningRate, momentum, batchSize);
+        trainerName = "Nesterov Accelerated Gradient";
+    }
+    else if (trainerString == "adagrad")
+    {
+        trainer = std::make_shared<AdaGradTrainer>(network, learningRate, batchSize);
+        trainerName = "AdaGrad";
+    }
+    else if (trainerString == "rmsprop")
+    {
+        trainer = std::make_shared<RMSPropTrainer>(network, learningRate, decayRate, momentum, batchSize);
+        trainerName = "RMSProp";
+    }
+    else
+    {
+        trainer = std::make_shared<SGDTrainer>(network, learningRate, batchSize);
+        trainerName = "Stochastic Gradient Descent";
+    }
+
+        std::cout << "Optimization algorithm: " << trainerName << std::endl;
+    std::cout << "Learning rate: " << learningRate << std::endl;
+    if (trainerString == "momentum" || trainerString == "nesterov" || trainerString == "rmsprop")
+    {
+        std::cout << "Momentum: " << momentum << std::endl;
+
+        if (trainerString == "rmsprop")
+            std::cout << "Decay rate: " << decayRate << std::endl;
+    }
+
+    return trainer;
+}
+
 static void loadSample(Tensor<> &tensor, const MnistSample &sample)
 {
     unsigned w = sample.width();
@@ -164,4 +221,52 @@ static void loadSample(Tensor<> &tensor, const MnistSample &sample)
     for (unsigned r = 0; r < h; r++)
         for (unsigned c = 0; c < w; c++)
             tensor.set(0, r, c, static_cast<float>(sample.getPixel(c, r)) / 255.0f);
+}
+
+float readFloatArg(const std::string &argumentName, float defaultValue, int argc, char *argv[])
+{
+    std::string fullName = "--" + argumentName;
+
+    for (int i = 1; i < argc; i++)
+    {
+        int next_arg_index = i + 1;
+        std::string current_arg = argv[i];
+
+        if (current_arg == fullName && next_arg_index < argc)
+            return std::stof(argv[++i]);
+    }
+
+    return defaultValue;
+}
+
+int readIntArg(const std::string &argumentName, int defaultValue, int argc, char *argv[])
+{
+    std::string fullName = "--" + argumentName;
+
+    for (int i = 1; i < argc; i++)
+    {
+        int next_arg_index = i + 1;
+        std::string current_arg = argv[i];
+
+        if (current_arg == fullName && next_arg_index < argc)
+            return std::stoi(argv[++i]);
+    }
+
+    return defaultValue;
+}
+
+std::string readStringArg(const std::string &argumentName, const std::string &defaultValue, int argc, char *argv[])
+{
+    std::string fullName = "--" + argumentName;
+
+    for (int i = 1; i < argc; i++)
+    {
+        int next_arg_index = i + 1;
+        std::string current_arg = argv[i];
+
+        if (current_arg == fullName && next_arg_index < argc)
+            return std::string(argv[++i]);
+    }
+
+    return defaultValue;
 }
