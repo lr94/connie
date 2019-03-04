@@ -22,3 +22,5 @@ To test the results:
 
 This command will load the LeNet-5 network stored in ```network.bin``` and test its accuracy.
 The input file can be specified with the optoin ```--network-file```
+
+If called without arguments the program will print the list of supported options.
