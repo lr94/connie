@@ -11,9 +11,6 @@ MomentumTrainer::MomentumTrainer(Net &network, float learningRate, float momentu
 
 void MomentumTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<std::vector<float>> &addMem) const
 {
-    if (iteration % batchSize != 0)
-        return;
-
     size_t size = params.size();
 
     std::vector<float> &v = addMem[0];
@@ -32,9 +29,6 @@ void MomentumTrainer::updateLayerParams(std::vector<float> &params, std::vector<
 
 void MomentumTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, std::vector<Tensor<>> &addMem) const
 {
-    if (iteration % batchSize != 0)
-        return;
-
     size_t size = params.getDataSize();
 
     Tensor<> &v = addMem[0];

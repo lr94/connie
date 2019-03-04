@@ -10,9 +10,6 @@ SGDTrainer::SGDTrainer(Net &network, float learningRate, unsigned batchSize) : T
 
 void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<std::vector<float>> &addMem) const
 {
-    if (iteration % batchSize != 0)
-        return;
-
     size_t size = params.size();
 
     for (unsigned i = 0; i < size; i++)
@@ -25,9 +22,6 @@ void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float
 
 void SGDTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, std::vector<Tensor<>> &addMem) const
 {
-    if (iteration % batchSize != 0)
-        return;
-
     size_t size = params.getDataSize();
 
     for (unsigned i = 0; i < size; i++)

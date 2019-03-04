@@ -14,12 +14,15 @@ void TrainerBase::train()
     net.backward();
 
     lossAccumulator += net.getLoss();
+    // At the end of each minibatch
     if (iteration % batchSize == 0)
     {
+        // Compute average loss
         loss = lossAccumulator / batchSize;
         lossAccumulator = 0;
-    }
 
-    for (auto currentLayer = layers.rbegin(); currentLayer != layers.rend(); currentLayer++)
-        (*currentLayer)->updateParams(*this);
+        // Update the parameters
+        for (auto currentLayer = layers.rbegin(); currentLayer != layers.rend(); currentLayer++)
+            (*currentLayer)->updateParams(*this);
+    }
 }
