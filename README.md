@@ -11,6 +11,15 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 ```
 The library itself does not depend on third party libraries, however the tests need Catch2 to be installed and some of the examples need external libraries (image_regression depends on SDL2 and libgd).
+Once compiled the library can be installed with
+```
+sudo make install
+```
+The default installation prefix is /usr/local, but one can choose to install the library in a different location:
+```
+sudo make DESTDIR=/usr install
+```
+I haven't tried yet to compile Connie on Windows, but I think it should work without problems.
 
 ## Features  
 - Several nonlinearities supported:  
