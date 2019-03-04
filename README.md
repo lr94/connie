@@ -24,6 +24,7 @@ The library itself does not depend on third party libraries, however the tests n
   - Momentum SGD
   - Nesterov
   - AdaGrad
+  - RMSProp (optionally with Nesterov momentum)
 
 ## License
 As mentioned before the library was developed for didactic purposes, however it is released under LGPL 2.1 license
