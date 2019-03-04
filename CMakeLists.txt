@@ -22,7 +22,7 @@ else()
 endif()
 
 # Main
-add_executable(main_test examples/main_test/main_test.cpp)
+add_executable(main_test examples/xor/xor.cpp)
 target_link_libraries(main_test connie)
 
 # Image regression
