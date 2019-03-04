@@ -6,7 +6,6 @@
 #include <chrono>
 #include <algorithm>
 #include <random>
-#include <AdaGradTrainer.hpp>
 
 #include "Tensor.hpp"
 #include "Net.hpp"
