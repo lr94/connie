@@ -6,10 +6,11 @@
 #include <chrono>
 #include <algorithm>
 #include <random>
+#include <AdaGradTrainer.hpp>
 
 #include "Tensor.hpp"
 #include "Net.hpp"
-#include "NesterovTrainer.hpp"
+#include "RMSPropTrainer.hpp"
 #include "InputLayer.hpp"
 #include "FullyConnectedLayer.hpp"
 #include "TanhLayer.hpp"
@@ -110,8 +111,8 @@ int main(int argc, char *argv[])
 
     // Init the trainer
     std::cout << "Learning rate: " << learningRate << std::endl << "Batch size: " << batchSize << std::endl;
-    std::cout << "Initializing Nesterov optimizer..." << std::endl;
-    NesterovTrainer trainer(network, learningRate, 0.9f, batchSize);
+    std::cout << "Initializing RMSPropTrainer optimizer..." << std::endl;
+    RMSPropTrainer trainer(network, learningRate, 0.9f, 0.9f, batchSize);
 
     // Init log file if necessary
     std::ofstream log;
