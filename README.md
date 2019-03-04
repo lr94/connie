@@ -35,5 +35,13 @@ I haven't tried yet to compile Connie on Windows, but I think it should work wit
   - AdaGrad
   - RMSProp (optionally with Nesterov momentum)
 
+## Examples
+The folder `examples` contains three sample programs:
+- **XOR problem** solution using a very very simple fully connected network
+- **MNIST digit classification** using a network similar to LeNet-5 or a fully connected one
+- **Image regression**: we use a deep fully connected network to solve a regression problem, with x and y the two input variables and r, g, b (i.e. the color of the pixel) the output variables.
+
+![image](http://www.lucarobbiano.net/host/permanenti/compare_image_regression_connie_1.png)
+
 ## License
 As mentioned before the library was developed for didactic purposes, however it is released under LGPL 2.1 license
