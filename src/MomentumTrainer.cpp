@@ -37,8 +37,3 @@ void MomentumTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, st
     // Zero out the gradient if needed (end of minibatch)
     gradient.zero();
 }
-
-float MomentumTrainer::getLoss() const
-{
-    return loss;
-}

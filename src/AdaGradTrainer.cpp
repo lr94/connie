@@ -41,8 +41,3 @@ void AdaGradTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, std
     // Zero out the gradient if needed (end of minibatch)
     gradient.zero();
 }
-
-float AdaGradTrainer::getLoss() const
-{
-    return loss;
-}

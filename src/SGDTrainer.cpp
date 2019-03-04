@@ -25,8 +25,3 @@ void SGDTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, std::ve
     // Zero out the gradient if needed (end of minibatch)
     gradient.zero();
 }
-
-float SGDTrainer::getLoss() const
-{
-    return loss;
-}

@@ -34,6 +34,13 @@ public:
      */
     virtual void updateLayerParams(Tensor<> &params, Tensor<> &gradient, std::vector<Tensor<>> &addMem) const = 0;
 
+    /**
+     * Returns the average loss computed during the last update
+     *
+     * @return
+     */
+    float getLoss() const;
+
 protected:
     /**
      * The network associated with the trainer

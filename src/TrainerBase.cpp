@@ -32,3 +32,8 @@ void TrainerBase::train()
             (*currentLayer)->updateParams(*this);
     }
 }
+
+float TrainerBase::getLoss() const
+{
+    return loss;
+}

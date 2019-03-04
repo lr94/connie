@@ -48,8 +48,3 @@ void NesterovTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, st
     // Zero out the gradient if needed (end of minibatch)
     gradient.zero();
 }
-
-float NesterovTrainer::getLoss() const
-{
-    return loss;
-}

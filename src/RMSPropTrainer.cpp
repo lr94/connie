@@ -53,8 +53,3 @@ void RMSPropTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, std
     // Zero out the gradient if needed (end of minibatch)
     gradient.zero();
 }
-
-float RMSPropTrainer::getLoss() const
-{
-    return loss;
-}
