@@ -8,7 +8,7 @@
 class MnistSample
 {
 public:
-    friend class Dataset;
+    friend class MnistDataset;
 
     MnistSample(const MnistSample &original) : w(original.w), h(original.h), lbl(original.lbl), data(new char[w * h])
     {
