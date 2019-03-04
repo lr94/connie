@@ -1,7 +1,13 @@
 #include "TrainerBase.hpp"
 
-TrainerBase::TrainerBase(Net &network, unsigned additionalMemory) : net(network), layers(network.layers)
+TrainerBase::TrainerBase(Net &network, unsigned batchSize) : TrainerBase(network, batchSize, 0) {}
+
+TrainerBase::TrainerBase(Net &network, unsigned batchSize, unsigned additionalMemory)
+        : net(network), layers(network.layers), batchSize(batchSize)
 {
+    if (batchSize == 0)
+        throw std::runtime_error("Invalid batch size");
+
     for (auto &layerPtr : layers)
         layerPtr->initAdditionalMemory(additionalMemory);
 }

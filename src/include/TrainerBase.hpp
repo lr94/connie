@@ -8,7 +8,8 @@
 class TrainerBase
 {
 public:
-    explicit TrainerBase(Net &network, unsigned additionalMemory);
+    TrainerBase(Net &network, unsigned batchSize);
+    TrainerBase(Net &network, unsigned batchSize, unsigned additionalMemory);
 
     /**
      * Performs a step of the optimization algorithm. The input and the expected output (target) must have already been

@@ -5,13 +5,7 @@ AdaGradTrainer::AdaGradTrainer(Net &network, float learningRate, unsigned batchS
         : AdaGradTrainer(network, learningRate, 10e-7f, batchSize) {}
 
 AdaGradTrainer::AdaGradTrainer(Net &network, float learningRate, float delta, unsigned batchSize)
-        : TrainerBase(network, 1), learningRate(learningRate), delta(delta)
-{
-    this->batchSize = batchSize;
-
-    if (batchSize == 0)
-        throw std::runtime_error("Invalid batch size");
-}
+        : TrainerBase(network, batchSize, 1), learningRate(learningRate), delta(delta) {}
 
 void AdaGradTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<std::vector<float>> &addMem) const
 {

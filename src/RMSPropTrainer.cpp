@@ -2,14 +2,8 @@
 #include "RMSPropTrainer.hpp"
 
 RMSPropTrainer::RMSPropTrainer(Net &network, float learningRate, float decayRate, float momentum, float delta,
-        unsigned batchSize) : TrainerBase(network, 2), learningRate(learningRate), decayRate(decayRate),
-        momentum(momentum), delta(delta)
-{
-    this->batchSize = batchSize;
-
-    if (batchSize == 0)
-        throw std::runtime_error("Invalid batch size");
-}
+        unsigned batchSize) : TrainerBase(network, batchSize, 2), learningRate(learningRate), decayRate(decayRate),
+        momentum(momentum), delta(delta) {}
 
 RMSPropTrainer::RMSPropTrainer(Net &network, float learningRate, float decayRate, unsigned batchSize)
         : RMSPropTrainer(network, learningRate, decayRate, 0.0f, 10e-6f, batchSize) {}

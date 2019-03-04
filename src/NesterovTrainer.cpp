@@ -1,13 +1,7 @@
 #include "NesterovTrainer.hpp"
 
 NesterovTrainer::NesterovTrainer(Net &network, float learningRate, float momentum, unsigned batchSize)
-        : TrainerBase(network, 1), learningRate(learningRate), momentum(momentum)
-{
-    this->batchSize = batchSize;
-
-    if (batchSize == 0)
-        throw std::runtime_error("Invalid batch size");
-}
+        : TrainerBase(network, batchSize, 1), learningRate(learningRate), momentum(momentum) {}
 
 void NesterovTrainer::updateLayerParams(std::vector<float> &params, std::vector<float> &gradient, std::vector<std::vector<float>> &addMem) const
 {
