@@ -21,9 +21,9 @@ else()
     target_link_libraries(tests connie)
 endif()
 
-# Main
-add_executable(main_test examples/xor/xor.cpp)
-target_link_libraries(main_test connie)
+# XOR
+add_executable(xor examples/xor/xor.cpp)
+target_link_libraries(xor connie)
 
 # Image regression
 find_library(GD_LIBRARY gd)
