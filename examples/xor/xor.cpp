@@ -37,7 +37,7 @@ int main()
     float y[] = {0, 1, 1, 0};
     unsigned n = 4;
 
-    for (unsigned i = 0; i < 60000; i++)
+    for (unsigned i = 0; i < 15000; i++)
     {
         input.set(0, x[i % n][0]);
         input.set(1, x[i % n][1]);
