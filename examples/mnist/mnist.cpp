@@ -18,16 +18,18 @@
 
 #include "InputLayer.hpp"
 #include "FullyConnectedLayer.hpp"
-#include "TanhLayer.hpp"
 #include "ReluLayer.hpp"
 #include "ConvolutionalLayer.hpp"
 #include "MaxPoolingLayer.hpp"
-#include "SigmoidLayer.hpp"
 #include "SoftmaxLayer.hpp"
 
 #include "MnistDataset.hpp"
 
 static void loadSample(Tensor<> &tensor, const MnistSample &sample);
+void train(MnistDataset &dataset, Net &network, std::shared_ptr<SoftmaxLayer> &softmax,
+           std::shared_ptr<TrainerBase> &trainer, std::string &logFile, std::string &preTrainedNetworkFile);
+void test(MnistDataset &dataset, Net &network, std::shared_ptr<SoftmaxLayer> &softmax, unsigned examples);
+void printHelp(char *argv[]);
 Net initNetwork(std::shared_ptr<SoftmaxLayer> &softmaxLayer, int argc, char *argv[]);
 std::shared_ptr<TrainerBase> initTrainer(Net &network, int argc, char *argv[]);
 
@@ -42,34 +44,19 @@ static const char defaultNetworkFile[] = "network.bin";
 
 int main(int argc, char *argv[])
 {
-    const char *dataFile = defaultDataFile;
-    const char *labelsFile = defaultLabelsFile;
-    const char *networkFile = defaultNetworkFile;
-    std::string logFile = readStringArg("log", "", argc, argv);
-
     if (argc < 2)
-        std::cout << "Usage:\n\t" << argv[0] << " [-n network_file] [-tl training_labels_file]"
-                                                " [-td training_data_file] [-l log_file]"
-                                                " [-lr learning_rate] [-bs batch_size]" << std::endl << std::endl;
-    for (int i = 1; i < argc; i++)
     {
-        int next_arg_index = i + 1;
-        std::string current_arg = argv[i];
-
-        if (current_arg == "-n" && next_arg_index < argc)
-            networkFile = argv[++i];
-        else if (current_arg == "-tl" && next_arg_index < argc)
-            labelsFile = argv[++i];
-        else if (current_arg == "-td" && next_arg_index < argc)
-            dataFile = argv[++i];
-        else if (current_arg == "-l" && next_arg_index < argc)
-            logFile = argv[++i];
-        else if (current_arg == "-l" && next_arg_index < argc)
-            logFile = argv[++i];
+        printHelp(argv);
+        return EXIT_SUCCESS;
     }
 
+    std::string dataFile = readStringArg("data-file", defaultDataFile, argc, argv);
+    std::string labelsFile = readStringArg("label-file", defaultLabelsFile, argc, argv);
+    std::string preTrainedNetworkFile = readStringArg("network-file", defaultNetworkFile, argc, argv);
+    std::string action = readStringArg("action", "train", argc, argv);
+
     std::cout << "Loading dataset from " << labelsFile << " and " << dataFile << std::endl;
-    MnistDataset dataset(dataFile, labelsFile);
+    MnistDataset dataset(dataFile.c_str(), labelsFile.c_str());
     std::cout << "Loaded " << dataset.size() << " samples." << std::endl;
 
     // Build the network
@@ -77,37 +64,42 @@ int main(int argc, char *argv[])
     Net network = initNetwork(softmax, argc, argv);
 
     // Load the network parameters
-    if (std::filesystem::exists(networkFile))
+    if (std::filesystem::exists(preTrainedNetworkFile))
     {
-        network.load(networkFile);
-        std::cout << "Loaded network from " << networkFile << std::endl;
+        network.load(preTrainedNetworkFile.c_str());
+        std::cout << "Loaded network from " << preTrainedNetworkFile << std::endl;
     }
+
+    if (action == "test")
+    {
+        unsigned nExamples = static_cast<unsigned>(readIntArg("sample-size", 2500, argc, argv));
+        test(dataset, network, softmax, nExamples);
+    }
+    else
+    {
+        if (action != "train")
+            std::cout << "Unknown action \"" << action << R"(", falling back on "train")" << std::endl;
+
+        std::string logFile = readStringArg("log", "", argc, argv);
+
+        // Init the trainer
+        std::shared_ptr<TrainerBase> trainer = initTrainer(network, argc, argv);
+
+        train(dataset, network, softmax, trainer, logFile, preTrainedNetworkFile);
+    }
+}
+
+void train(MnistDataset &dataset, Net &network, std::shared_ptr<SoftmaxLayer> &softmax,
+        std::shared_ptr<TrainerBase> &trainer, std::string &logFile, std::string &preTrainedNetworkFile)
+{
     Tensor<> &input = network.getInput();
-    // Tensor<> &output = network.getOutput();
 
     std::random_device random;
     std::mt19937 mersenne(random());
 
-    std::shuffle(dataset.begin(), dataset.end(), mersenne);
-    unsigned ok = 0, tot = std::min<unsigned>(25, static_cast<unsigned>(dataset.size()));
-    for (unsigned i = 0; i < tot; i++)
-    {
-        MnistSample &sample = dataset[i];
-        loadSample(input, sample);
-        network.forward();
-
-        if (softmax->getPredictedClass() == sample.label())
-            ok++;
-    }
-    float accuracy = static_cast<float>(ok) / tot * 100.0f;
-    std::cout << "Initial accuracy: " << std::setprecision(4) << accuracy << " %" << std::endl;
-
-    // Init the trainer
-    std::shared_ptr<TrainerBase> trainer = initTrainer(network, argc, argv);
-
     // Init log file if necessary
     std::ofstream log;
-    if (logFile != "")
+    if (!logFile.empty())
     {
         log.open(logFile);
         log << "milliseconds,epoch,iteration,loss" << std::endl;
@@ -115,7 +107,7 @@ int main(int argc, char *argv[])
 
     std::chrono::time_point start = std::chrono::system_clock::now();
     unsigned long long iteration = 0;
-    for (unsigned epoch = 0; epoch < 1000000; epoch++)
+    for (unsigned epoch = 0; epoch < std::numeric_limits<unsigned>::max(); epoch++)
     {
         std::cout << "Shuffle dataset..." << std::endl;
         std::shuffle(dataset.begin(), dataset.end(), mersenne);
@@ -141,11 +133,36 @@ int main(int argc, char *argv[])
             }
             if (iteration % (16 * 10 * 10) == 0)
             {
-                network.save(networkFile);
-                std::cout << "Network saved in " << networkFile << std::endl;
+                network.save(preTrainedNetworkFile.c_str());
+                std::cout << "Network saved in " << preTrainedNetworkFile << std::endl;
             }
         }
     }
+}
+
+void test(MnistDataset &dataset, Net &network, std::shared_ptr<SoftmaxLayer> &softmax, unsigned examples)
+{
+    std::random_device random;
+    std::mt19937 mersenne(random());
+
+    Tensor<> &input = network.getInput();
+
+    std::shuffle(dataset.begin(), dataset.end(), mersenne);
+    unsigned ok = 0, tot = std::min<unsigned>(examples, static_cast<unsigned>(dataset.size()));
+    for (unsigned i = 0; i < tot; i++)
+    {
+        MnistSample &sample = dataset[i];
+        loadSample(input, sample);
+        network.forward();
+
+        if (softmax->getPredictedClass() == sample.label())
+            ok++;
+    }
+    float accuracy = static_cast<float>(ok) / tot * 100.0f;
+    std::cout << "Accuracy: " << std::setprecision(4) << accuracy << " %" << std::endl;
+    std::cout << "Correct classifications: " << ok << std::endl;
+    std::cout << "Errors: " << tot - ok << std::endl;
+    std::cout << "Total: " << tot << std::endl;
 }
 
 Net initNetwork(std::shared_ptr<SoftmaxLayer> &softmaxLayer, int argc, char *argv[])
@@ -258,6 +275,25 @@ static void loadSample(Tensor<> &tensor, const MnistSample &sample)
     for (unsigned r = 0; r < h; r++)
         for (unsigned c = 0; c < w; c++)
             tensor.set(0, r, c, static_cast<float>(sample.getPixel(c, r)) / 255.0f);
+}
+
+void printHelp(char *argv[])
+{
+    std::cout << "Usage:" << std::endl;
+    std::cout << "\t" << argv[0] << std::endl << std::endl;
+    std::cout << "\t\t --action\t\tSelect the action to perform. Possible values: train, test" << std::endl;
+    std::cout << "\t\t --sample-size\t\tSpecifies the number of examples to use for the test" << std::endl;
+    std::cout << "\t\t --network\t\tSelect the type of network. Possible values: lenet or fc" << std::endl;
+    std::cout << "\t\t --trainer\t\tSelect the optimizer. Possible values: sgd, momentum, nesterov, adagrad or rmsprop" << std::endl;
+    std::cout << "\t\t --learning-rate\tThe learning rate. Default value: 0.01" << std::endl;
+    std::cout << "\t\t --momentum\t\tSpecifies the momentum for optimizers supporting it. Default value: 0.9" << std::endl;
+    std::cout << "\t\t --decay-rate\t\tDecay rate for RMSProp" << std::endl;
+    std::cout << "\t\t --batch-size\t\tMinibatch size; default value: 16" << std::endl;
+    std::cout << "\t\t --network\t\tSelect the type of network. Possible values: lenet or fc" << std::endl;
+    std::cout << "\t\t --data-file\t\tPath of the MNIST dataset data file" << std::endl;
+    std::cout << "\t\t --label-file\t\tPath of the MNIST dataset label file" << std::endl;
+    std::cout << "\t\t --network-file\t\tPath of the file used to load and store the network weights. Default: network.bin" << std::endl;
+    std::cout << "\t\t --log\t\t\tPath of a CSV file to store training progress. Default: none" << std::endl;
 }
 
 float readFloatArg(const std::string &argumentName, float defaultValue, int argc, char *argv[])
