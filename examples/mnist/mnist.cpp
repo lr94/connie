@@ -28,6 +28,7 @@
 #include "MnistDataset.hpp"
 
 static void loadSample(Tensor<> &tensor, const MnistSample &sample);
+Net initNetwork(std::shared_ptr<SoftmaxLayer> &softmaxLayer, int argc, char *argv[]);
 std::shared_ptr<TrainerBase> initTrainer(Net &network, int argc, char *argv[]);
 
 float readFloatArg(const std::string &argumentName, float defaultValue, int argc, char *argv[]);
@@ -44,8 +45,7 @@ int main(int argc, char *argv[])
     const char *dataFile = defaultDataFile;
     const char *labelsFile = defaultLabelsFile;
     const char *networkFile = defaultNetworkFile;
-    const char *logFile = nullptr;
-    unsigned batchSize = 8;
+    std::string logFile = readStringArg("log", "", argc, argv);
 
     if (argc < 2)
         std::cout << "Usage:\n\t" << argv[0] << " [-n network_file] [-tl training_labels_file]"
@@ -64,8 +64,6 @@ int main(int argc, char *argv[])
             dataFile = argv[++i];
         else if (current_arg == "-l" && next_arg_index < argc)
             logFile = argv[++i];
-        else if (current_arg == "-bs" && next_arg_index < argc)
-            batchSize = static_cast<unsigned int>(std::stoi(argv[++i]));
         else if (current_arg == "-l" && next_arg_index < argc)
             logFile = argv[++i];
     }
@@ -75,21 +73,9 @@ int main(int argc, char *argv[])
     std::cout << "Loaded " << dataset.size() << " samples." << std::endl;
 
     // Build the network
-    Net network;
     std::shared_ptr<SoftmaxLayer> softmax = std::make_shared<SoftmaxLayer>();
-    network.appendLayer(std::make_shared<InputLayer>(1, size, size))
-            .appendLayer(std::make_shared<ConvolutionalLayer>(6, 5, 1, 2))
-            .appendLayer(std::make_shared<ReluLayer>())
-            .appendLayer(std::make_shared<MaxPoolingLayer>(2, 2, 0))
-            .appendLayer(std::make_shared<ConvolutionalLayer>(16, 5, 1, 0))
-            .appendLayer(std::make_shared<ReluLayer>())
-            .appendLayer(std::make_shared<MaxPoolingLayer>(2, 2, 0))
-            .appendLayer(std::make_shared<ConvolutionalLayer>(120, 1, 1, 0))
-            .appendLayer(std::make_shared<ReluLayer>())
-            .appendLayer(std::make_shared<FullyConnectedLayer>(84))
-            .appendLayer(std::make_shared<ReluLayer>())
-            .appendLayer(std::make_shared<FullyConnectedLayer>(10))
-            .appendLayer(softmax);
+    Net network = initNetwork(softmax, argc, argv);
+
     // Load the network parameters
     if (std::filesystem::exists(networkFile))
     {
@@ -103,7 +89,7 @@ int main(int argc, char *argv[])
     std::mt19937 mersenne(random());
 
     std::shuffle(dataset.begin(), dataset.end(), mersenne);
-    unsigned ok = 0, tot = std::min<unsigned>(2500, static_cast<unsigned>(dataset.size()));
+    unsigned ok = 0, tot = std::min<unsigned>(25, static_cast<unsigned>(dataset.size()));
     for (unsigned i = 0; i < tot; i++)
     {
         MnistSample &sample = dataset[i];
@@ -121,7 +107,7 @@ int main(int argc, char *argv[])
 
     // Init log file if necessary
     std::ofstream log;
-    if (logFile != nullptr)
+    if (logFile != "")
     {
         log.open(logFile);
         log << "milliseconds,epoch,iteration,loss" << std::endl;
@@ -141,11 +127,11 @@ int main(int argc, char *argv[])
             trainer->train();
 
             iteration++;
-            if (iteration % (batchSize * 10) == 0)
+            if (iteration % (16 * 10) == 0)
             {
                 float loss = trainer->getLoss();
                 std::cout << "Epoch: " << epoch << " iteration: " << iteration << " loss: " << loss << std::endl;
-                if (logFile != nullptr)
+                if (!logFile.empty())
                 {
                     long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count();
                     log << ms << "," << epoch << "," << iteration << "," << loss << std::endl;
@@ -153,13 +139,58 @@ int main(int argc, char *argv[])
                 if (std::isnan(loss))
                     exit(0);
             }
-            if (iteration % (batchSize * 10 * 10) == 0)
+            if (iteration % (16 * 10 * 10) == 0)
             {
                 network.save(networkFile);
                 std::cout << "Network saved in " << networkFile << std::endl;
             }
         }
     }
+}
+
+Net initNetwork(std::shared_ptr<SoftmaxLayer> &softmaxLayer, int argc, char *argv[])
+{
+    std::string networkString = readStringArg("network-type", "lenet", argc, argv);
+    Net network;
+
+    network.appendLayer(std::make_shared<InputLayer>(1, size, size));
+
+    if (networkString == "lenet")
+    {
+        network.appendLayer(std::make_shared<ConvolutionalLayer>(6, 5, 1, 2))
+               .appendLayer(std::make_shared<ReluLayer>())
+               .appendLayer(std::make_shared<MaxPoolingLayer>(2, 2, 0))
+               .appendLayer(std::make_shared<ConvolutionalLayer>(16, 5, 1, 0))
+               .appendLayer(std::make_shared<ReluLayer>())
+               .appendLayer(std::make_shared<MaxPoolingLayer>(2, 2, 0))
+               .appendLayer(std::make_shared<ConvolutionalLayer>(120, 1, 1, 0))
+               .appendLayer(std::make_shared<ReluLayer>())
+               .appendLayer(std::make_shared<FullyConnectedLayer>(84))
+               .appendLayer(std::make_shared<ReluLayer>())
+               .appendLayer(std::make_shared<FullyConnectedLayer>(10));
+
+        std::cout << "Network: LeNet-5 convolutional network" << std::endl;
+    }
+    else if (networkString == "fc")
+    {
+        network.appendLayer(std::make_shared<FullyConnectedLayer>(size * size * 2))
+               .appendLayer(std::make_shared<ReluLayer>())
+               .appendLayer(std::make_shared<FullyConnectedLayer>(size * size))
+               .appendLayer(std::make_shared<ReluLayer>())
+               .appendLayer(std::make_shared<FullyConnectedLayer>(10));
+
+        std::cout << "Network: Fully connected network" << std::endl;
+    }
+    else
+    {
+        std::cout << "Unknown network " << networkString << std::endl;
+        std::cout << "Valid networks are: lenet, fc" << std::endl;
+        exit(1);
+    }
+
+    network.appendLayer(softmaxLayer);
+
+    return network;
 }
 
 std::shared_ptr<TrainerBase> initTrainer(Net &network, int argc, char *argv[])
@@ -174,7 +205,12 @@ std::shared_ptr<TrainerBase> initTrainer(Net &network, int argc, char *argv[])
     std::shared_ptr<TrainerBase> trainer;
     std::string trainerName;
 
-    if (trainerString == "momentum")
+    if (trainerString == "sgd")
+    {
+        trainer = std::make_shared<SGDTrainer>(network, learningRate, batchSize);
+        trainerName = "Stochastic Gradient Descent";
+    }
+    else if (trainerString == "momentum")
     {
         trainer = std::make_shared<MomentumTrainer>(network, learningRate, momentum, batchSize);
         trainerName = "Stochastic Gradient Descent with momentum";
@@ -196,8 +232,9 @@ std::shared_ptr<TrainerBase> initTrainer(Net &network, int argc, char *argv[])
     }
     else
     {
-        trainer = std::make_shared<SGDTrainer>(network, learningRate, batchSize);
-        trainerName = "Stochastic Gradient Descent";
+        std::cout << "Unknown optimizer " << trainerString << std::endl;
+        std::cout << "Valid optimizers are: sgd, momentm, nesterov, adagrad, rmsprop" << std::endl;
+        exit(1);
     }
 
         std::cout << "Optimization algorithm: " << trainerName << std::endl;
