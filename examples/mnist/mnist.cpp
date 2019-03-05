@@ -254,7 +254,7 @@ std::shared_ptr<TrainerBase> initTrainer(Net &network, int argc, char *argv[])
         exit(1);
     }
 
-        std::cout << "Optimization algorithm: " << trainerName << std::endl;
+    std::cout << "Optimization algorithm: " << trainerName << std::endl;
     std::cout << "Learning rate: " << learningRate << std::endl;
     if (trainerString == "momentum" || trainerString == "nesterov" || trainerString == "rmsprop")
     {
@@ -263,6 +263,7 @@ std::shared_ptr<TrainerBase> initTrainer(Net &network, int argc, char *argv[])
         if (trainerString == "rmsprop")
             std::cout << "Decay rate: " << decayRate << std::endl;
     }
+    std::cout << "Batch size: " << batchSize << std::endl;
 
     return trainer;
 }
@@ -289,7 +290,6 @@ void printHelp(char *argv[])
     std::cout << "\t\t --momentum\t\tSpecifies the momentum for optimizers supporting it. Default value: 0.9" << std::endl;
     std::cout << "\t\t --decay-rate\t\tDecay rate for RMSProp" << std::endl;
     std::cout << "\t\t --batch-size\t\tMinibatch size; default value: 16" << std::endl;
-    std::cout << "\t\t --network\t\tSelect the type of network. Possible values: lenet or fc" << std::endl;
     std::cout << "\t\t --data-file\t\tPath of the MNIST dataset data file" << std::endl;
     std::cout << "\t\t --label-file\t\tPath of the MNIST dataset label file" << std::endl;
     std::cout << "\t\t --network-file\t\tPath of the file used to load and store the network weights. Default: network.bin" << std::endl;
