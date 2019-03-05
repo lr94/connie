@@ -8,7 +8,7 @@ class DropoutLayer : public LayerBase
 {
 public:
     DropoutLayer();
-    DropoutLayer(float p);
+    DropoutLayer(float keepProb);
 
     ~DropoutLayer();
 
