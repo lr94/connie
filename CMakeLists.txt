@@ -40,5 +40,14 @@ endif()
 add_executable(mnist examples/mnist/mnist.cpp examples/mnist/MnistSample.hpp examples/mnist/MnistDataset.hpp)
 target_link_libraries(mnist connie stdc++fs)
 
+# Digit classifier
+if(NOT GD_LIBRARY)
+    message(WARNING "The digit classifier example needs libgd, which could not be found. It will not be compiled")
+else()
+    include_directories(${GD_INCLUDE_DIR})
+    add_executable(digit_classifier examples/digit_classifier/digit_classifier.cpp)
+    target_link_libraries(digit_classifier connie ${GD_LIBRARY})
+endif()
+
 install(TARGETS connie DESTINATION lib)
 install(DIRECTORY src/include/ DESTINATION include/connie FILES_MATCHING PATTERN "*.hpp")
