@@ -2,7 +2,7 @@
 Connie is a simple library for convolutional neural networks.
 It was developed mainly as a personal exercise to test my understanding of artificial neural networks, so obviously don't expect something like Tensorflow...however it works and being very lightweight maybe it could even be useful in some particular cases.
 
-## Getting started
+## Build
 To compile Connie using CMake:
 ```
 mkdir build
