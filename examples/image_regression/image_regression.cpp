@@ -20,11 +20,11 @@ static float truncate(float x);
 int main(int argc, char *argv[])
 {
     gdImagePtr img = gdImageCreateFromFile(argv[1]);
-    int width = gdImageSX(img);
-    int height = gdImageSY(img);
+    auto width = static_cast<unsigned>(gdImageSX(img));
+    auto height = static_cast<unsigned>(gdImageSY(img));
     Tensor<> imageTensor(3, height, width);
-    for (int x = 0; x < width; x++)
-        for (int y = 0; y < height; y++)
+    for (unsigned x = 0; x < width; x++)
+        for (unsigned y = 0; y < height; y++)
         {
             int color = gdImageGetPixel(img, x, y);
             imageTensor[0][y][x] = static_cast<float>((color >> 16) & 0xff) / 255.0f;
@@ -76,11 +76,11 @@ int main(int argc, char *argv[])
 
     for (int k = 0; k < 1000000000; k++)
     {
-        int x = x_distr(engine);
-        int y = y_distr(engine);
+        auto x = static_cast<unsigned>(x_distr(engine));
+        auto y = static_cast<unsigned>(y_distr(engine));
 
-        float xfloat = (x - static_cast<float>(width) / 2) / width;
-        float yfloat = (y - static_cast<float>(height) / 2) / height;
+        float xfloat = (static_cast<float>(x) - static_cast<float>(width) / 2) / width;
+        float yfloat = (static_cast<float>(y) - static_cast<float>(height) / 2) / height;
 
         input.set(0, xfloat);
         input.set(1, yfloat);
@@ -101,8 +101,8 @@ int main(int argc, char *argv[])
             for (y = 0; y < height; y++)
                 for (x = 0; x < width; x++)
                 {
-                    xfloat = (x - static_cast<float>(width) / 2) / width;
-                    yfloat = (y - static_cast<float>(height) / 2) / height;
+                    xfloat = (static_cast<float>(x) - static_cast<float>(width) / 2) / width;
+                    yfloat = (static_cast<float>(y) - static_cast<float>(height) / 2) / height;
 
                     input.set(0, xfloat);
                     input.set(1, yfloat);
