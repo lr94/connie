@@ -284,7 +284,7 @@ void printHelp(char *argv[])
     std::cout << "\t" << argv[0] << std::endl << std::endl;
     std::cout << "\t\t --action\t\tSelect the action to perform. Possible values: train, test" << std::endl;
     std::cout << "\t\t --sample-size\t\tSpecifies the number of examples to use for the test" << std::endl;
-    std::cout << "\t\t --network\t\tSelect the type of network. Possible values: lenet or fc" << std::endl;
+    std::cout << "\t\t --network-type\t\tSelect the type of network. Possible values: lenet or fc" << std::endl;
     std::cout << "\t\t --trainer\t\tSelect the optimizer. Possible values: sgd, momentum, nesterov, adagrad or rmsprop" << std::endl;
     std::cout << "\t\t --learning-rate\tThe learning rate. Default value: 0.01" << std::endl;
     std::cout << "\t\t --momentum\t\tSpecifies the momentum for optimizers supporting it. Default value: 0.9" << std::endl;
