@@ -26,7 +26,7 @@ void NesterovTrainer::updateLayerParams(std::vector<float> &params, std::vector<
         params[i] += momentum * vi - val;
     }
 
-    // Zero out the gradient if needed (end of minibatch)
+    // Zero out the gradient (end of minibatch)
     for (auto &g : gradient)
         g = 0;
 }
@@ -45,6 +45,6 @@ void NesterovTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, st
         params.addAt(i, momentum * vi - val);
     }
 
-    // Zero out the gradient if needed (end of minibatch)
+    // Zero out the gradient (end of minibatch)
     gradient.zero();
 }

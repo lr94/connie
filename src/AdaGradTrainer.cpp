@@ -20,7 +20,7 @@ void AdaGradTrainer::updateLayerParams(std::vector<float> &params, std::vector<f
         params[i] -= learningRate / (delta + std::sqrt(r[i])) * g / batchSize;
     }
 
-    // Zero out the gradient if needed (end of minibatch)
+    // Zero out the gradient (end of minibatch)
     for (auto &g : gradient)
         g = 0;
 }
@@ -38,6 +38,6 @@ void AdaGradTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, std
         params.addAt(i, -learningRate / (delta + std::sqrt(r.get(i))) * g / batchSize);
     }
 
-    // Zero out the gradient if needed (end of minibatch)
+    // Zero out the gradient (end of minibatch)
     gradient.zero();
 }

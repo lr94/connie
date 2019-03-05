@@ -16,7 +16,7 @@ void MomentumTrainer::updateLayerParams(std::vector<float> &params, std::vector<
         params[i] += vi;
     }
 
-    // Zero out the gradient if needed (end of minibatch)
+    // Zero out the gradient (end of minibatch)
     for (auto &g : gradient)
         g = 0;
 }
@@ -34,6 +34,6 @@ void MomentumTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, st
         params.addAt(i, vi);
     }
 
-    // Zero out the gradient if needed (end of minibatch)
+    // Zero out the gradient (end of minibatch)
     gradient.zero();
 }

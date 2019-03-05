@@ -28,7 +28,7 @@ void RMSPropTrainer::updateLayerParams(std::vector<float> &params, std::vector<f
         params[i] += vi;
     }
 
-    // Zero out the gradient if needed (end of minibatch)
+    // Zero out the gradient (end of minibatch)
     for (auto &g : gradient)
         g = 0;
 }
@@ -50,6 +50,6 @@ void RMSPropTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, std
         params.addAt(i, vi);
     }
 
-    // Zero out the gradient if needed (end of minibatch)
+    // Zero out the gradient (end of minibatch)
     gradient.zero();
 }

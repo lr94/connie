@@ -10,7 +10,7 @@ void SGDTrainer::updateLayerParams(std::vector<float> &params, std::vector<float
     for (unsigned i = 0; i < size; i++)
         params[i] -= learningRate * gradient[i] / batchSize;
 
-    // Zero out the gradient if needed (end of minibatch)
+    // Zero out the gradient (end of minibatch)
     for (auto &g : gradient)
         g = 0;
 }
@@ -22,6 +22,6 @@ void SGDTrainer::updateLayerParams(Tensor<> &params, Tensor<> &gradient, std::ve
     for (unsigned i = 0; i < size; i++)
         params.addAt(i, -learningRate * gradient.get(i) / batchSize);
 
-    // Zero out the gradient if needed (end of minibatch)
+    // Zero out the gradient (end of minibatch)
     gradient.zero();
 }
