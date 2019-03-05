@@ -43,5 +43,7 @@ The folder `examples` contains three sample programs:
 
 ![image](http://www.lucarobbiano.net/host/permanenti/compare_image_regression_connie_1.png)
 
+Comparison between the original images (first row) and the images rebuilt by the network
+
 ## License
 As mentioned before the library was developed for didactic purposes, however it is released under LGPL 2.1 license
