@@ -145,11 +145,11 @@ void ConvolutionalLayer::prepend(LayerBase *previousLayer)
 
     std::random_device r;
     std::default_random_engine generator(r());
-    std::normal_distribution<float> distribution(0.0, 1.0);
+    std::normal_distribution<float> distribution(0.0, 1.0f / (inputDepth * kernelWidth * kernelHeight));
 
     for (unsigned i = 0; i < kernelCount; i++)
     {
-        kernels.emplace_back(Tensor<>::random(inputDepth, kernelHeight, kernelWidth));
+        kernels.emplace_back(Tensor<>::random(inputDepth, kernelHeight, kernelWidth, generator, distribution));
         Tensor<> zeroTensor(inputDepth, kernelHeight, kernelWidth);
         zeroTensor.zero();
         dKernels.emplace_back(zeroTensor);

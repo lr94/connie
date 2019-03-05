@@ -78,15 +78,18 @@ void FullyConnectedLayer::prepend(LayerBase *previousLayer)
     biases.clear();
     dBiases.clear();
 
+    unsigned neurons = numNeurons();
+
+    // Weight initialization suggested by Xavier Glorot and Yoshua Bengio, 2010
     std::random_device r;
     std::default_random_engine generator(r());
-    std::normal_distribution<float> distribution(0.0, 1.0);
+    float boundary = std::sqrt(6.0f / ((input->depth() * input->height() * input->width()) + neurons));
+    std::uniform_real_distribution<float> distribution(-boundary, boundary);
 
     // For each output unit
-    unsigned neurons = numNeurons();
     for (unsigned i = 0; i < neurons; i++)
     {
-        weights.emplace_back(Tensor<>::random(input->depth(), input->height(), input->width()));
+        weights.emplace_back(Tensor<>::random(input->depth(), input->height(), input->width(), generator, distribution));
         Tensor<> zeroTensor(input->depth(), input->height(), input->width());
         zeroTensor.zero();
         dWeights.emplace_back(zeroTensor);
