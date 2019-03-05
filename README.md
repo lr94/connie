@@ -27,7 +27,8 @@ I haven't tried yet to compile Connie on Windows, but I think it should work wit
   - Tanh  
   - ReLU  
   - Leaky ReLU  
-- Convolutional networks with Max Pooling  
+- Convolutional networks with max pooling
+- Dropout
 - Several optimization methods:
   - "Vanilla" Stochastic Gradient Descent (SGD)
   - Momentum SGD
