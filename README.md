@@ -39,6 +39,7 @@ I haven't tried yet to compile Connie on Windows, but I think it should work wit
 The folder `examples` contains three sample programs:
 - **XOR problem** solution using a very very simple fully connected network
 - **MNIST digit classification** using a network similar to LeNet-5 or a fully connected one
+- **Digit classification** from an image file, using the network trained with the MNIST example
 - **Image regression**: we use a deep fully connected network to solve a regression problem, with x and y the two input variables and r, g, b (i.e. the color of the pixel) the output variables.
 
 ![image](http://www.lucarobbiano.net/host/permanenti/compare_image_regression_connie_1.png)
