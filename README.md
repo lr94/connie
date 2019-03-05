@@ -36,7 +36,7 @@ I haven't tried yet to compile Connie on Windows, but I think it should work wit
   - RMSProp (optionally with Nesterov momentum)
 
 ## Examples
-The folder `examples` contains three sample programs:
+The folder `examples` contains four sample programs:
 - **XOR problem** solution using a very very simple fully connected network
 - **MNIST digit classification** using a network similar to LeNet-5 or a fully connected one
 - **Digit classification** from an image file, using the network trained with the MNIST example
