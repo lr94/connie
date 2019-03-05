@@ -10,8 +10,6 @@ DropoutLayer::DropoutLayer(float p) : p(p), randomEngine(std::random_device()())
 
 DropoutLayer::~DropoutLayer()
 {
-    delete input;
-    delete dInput;
     delete output;
     delete dOutput;
     delete mask;
