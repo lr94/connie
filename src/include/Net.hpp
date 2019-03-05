@@ -48,6 +48,13 @@ public:
     Tensor<> &getOutput();
 
     /**
+     * Set or unset training mode
+     *
+     * @param trainingMode
+     */
+    void setTrainingMode(bool trainingMode);
+
+    /**
      * Returns the loss computed by calling backward()
      *
      * @return
@@ -100,6 +107,8 @@ private:
      * Output tensor (allocated by the output layer)
      */
     Tensor<> *output;
+
+    bool trainingMode = false;
 };
 
 

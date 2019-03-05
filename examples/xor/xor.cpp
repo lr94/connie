@@ -32,6 +32,8 @@ int main()
     // Initialize the trainer
     SGDTrainer trainer(network, 0.05f, 4);
 
+    network.setTrainingMode(true);
+
     // Training data
     float x[][2] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
     float y[] = {0, 1, 1, 0};
@@ -48,6 +50,8 @@ int main()
         if (i % 1000 == 0)
             std::cout << i << ": " << network.getLoss() << std::endl;
     }
+
+    network.setTrainingMode(false);
 
     for (unsigned i = 0; i < n; i++)
     {

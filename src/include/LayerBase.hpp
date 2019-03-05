@@ -12,6 +12,7 @@ class LayerBase
 {
 public:
     friend class TrainerBase;
+    friend class Net;
 
     /**
      * Input tensor of the layer (allocated by the previous layer, with the InputLayer exception)
@@ -120,5 +121,7 @@ protected:
      * @return       True in case of success, otherwise false
      */
     bool readFloat(std::istream &stream, float &value);
+
+    bool trainingMode = false;
 };
 #endif

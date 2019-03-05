@@ -39,6 +39,14 @@ Tensor<> &Net::getOutput()
     return *output;
 }
 
+void Net::setTrainingMode(bool trainingMode)
+{
+    this->trainingMode = trainingMode;
+
+    for (auto &l : layers)
+        l->trainingMode = trainingMode;
+}
+
 float Net::getLoss()
 {
     auto lossLayer = dynamic_cast<LossLayerBase*>(layers.back().get());

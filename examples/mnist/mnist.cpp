@@ -92,6 +92,8 @@ int main(int argc, char *argv[])
 void train(MnistDataset &dataset, Net &network, std::shared_ptr<SoftmaxLayer> &softmax,
         std::shared_ptr<TrainerBase> &trainer, std::string &logFile, std::string &preTrainedNetworkFile)
 {
+    network.setTrainingMode(true);
+
     Tensor<> &input = network.getInput();
 
     std::random_device random;
@@ -142,6 +144,8 @@ void train(MnistDataset &dataset, Net &network, std::shared_ptr<SoftmaxLayer> &s
 
 void test(MnistDataset &dataset, Net &network, std::shared_ptr<SoftmaxLayer> &softmax, unsigned examples)
 {
+    network.setTrainingMode(false);
+
     std::random_device random;
     std::mt19937 mersenne(random());
 
