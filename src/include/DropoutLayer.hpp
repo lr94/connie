@@ -4,7 +4,7 @@
 #include <random>
 #include "LayerBase.hpp"
 
-class DropoutLayer : LayerBase
+class DropoutLayer : public LayerBase
 {
 public:
     DropoutLayer();
