@@ -1,5 +1,5 @@
-#ifndef CNN_LAYER_HPP
-#define CNN_LAYER_HPP
+#ifndef CONNIE_LAYER_HPP
+#define CONNIE_LAYER_HPP
 
 #include <iostream>
 #include "Tensor.hpp"

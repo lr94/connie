@@ -1,5 +1,5 @@
-#ifndef CNN_INPUTLAYER_HPP
-#define CNN_INPUTLAYER_HPP
+#ifndef CONNIE_INPUTLAYER_HPP
+#define CONNIE_INPUTLAYER_HPP
 
 #include "LayerBase.hpp"
 
@@ -17,4 +17,4 @@ protected:
     void prepend(LayerBase *previousLayer) override;
 };
 
-#endif //CNN_INPUTLAYER_HPP
+#endif //CONNIE_INPUTLAYER_HPP

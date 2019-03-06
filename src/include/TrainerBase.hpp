@@ -1,5 +1,5 @@
-#ifndef CNN_TRAINERBASE_HPP
-#define CNN_TRAINERBASE_HPP
+#ifndef CONNIE_TRAINERBASE_HPP
+#define CONNIE_TRAINERBASE_HPP
 
 #include <vector>
 #include "Tensor.hpp"
@@ -74,4 +74,4 @@ protected:
 };
 
 
-#endif //CNN_TRAINERBASE_HPP
+#endif //CONNIE_TRAINERBASE_HPP

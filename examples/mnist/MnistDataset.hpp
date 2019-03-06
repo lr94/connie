@@ -1,5 +1,5 @@
-#ifndef CNN_DATASET_HPP
-#define CNN_DATASET_HPP
+#ifndef CONNIE_DATASET_HPP
+#define CONNIE_DATASET_HPP
 
 #include <vector>
 #include <fstream>
@@ -64,4 +64,4 @@ private:
 };
 
 
-#endif //CNN_DATASET_HPP
+#endif //CONNIE_DATASET_HPP

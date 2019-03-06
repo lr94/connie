@@ -1,5 +1,5 @@
-#ifndef CNN_NET_HPP
-#define CNN_NET_HPP
+#ifndef CONNIE_NET_HPP
+#define CONNIE_NET_HPP
 
 #include <iostream>
 #include <vector>
@@ -112,4 +112,4 @@ private:
 };
 
 
-#endif //CNN_NET_HPP
+#endif //CONNIE_NET_HPP

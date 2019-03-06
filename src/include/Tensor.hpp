@@ -1,5 +1,5 @@
-#ifndef CNN_TENSOR_HPP
-#define CNN_TENSOR_HPP
+#ifndef CONNIE_TENSOR_HPP
+#define CONNIE_TENSOR_HPP
 
 #include <vector>
 #include <iterator>
@@ -567,4 +567,4 @@ private:
     }
 };
 
-#endif //CNN_TENSOR_HPP
+#endif //CONNIE_TENSOR_HPP

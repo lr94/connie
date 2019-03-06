@@ -1,5 +1,5 @@
-#ifndef CNN_REGRESSIONLAYER_HPP
-#define CNN_REGRESSIONLAYER_HPP
+#ifndef CONNIE_REGRESSIONLAYER_HPP
+#define CONNIE_REGRESSIONLAYER_HPP
 
 #include <vector>
 #include "Tensor.hpp"
@@ -24,4 +24,4 @@ protected:
     float loss;
 };
 
-#endif //CNN_REGRESSIONLAYER_HPP
+#endif //CONNIE_REGRESSIONLAYER_HPP

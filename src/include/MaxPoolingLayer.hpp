@@ -1,5 +1,5 @@
-#ifndef CNN_MAXPOOLINGLAYER_HPP
-#define CNN_MAXPOOLINGLAYER_HPP
+#ifndef CONNIE_MAXPOOLINGLAYER_HPP
+#define CONNIE_MAXPOOLINGLAYER_HPP
 
 #include "PoolingLayerBase.hpp"
 
@@ -16,4 +16,4 @@ public:
 };
 
 
-#endif //CNN_MAXPOOLINGLAYER_HPP
+#endif //CONNIE_MAXPOOLINGLAYER_HPP

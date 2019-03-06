@@ -1,5 +1,5 @@
-#ifndef CNN_LOSSLAYERBASE_HPP
-#define CNN_LOSSLAYERBASE_HPP
+#ifndef CONNIE_LOSSLAYERBASE_HPP
+#define CONNIE_LOSSLAYERBASE_HPP
 
 #include "LayerBase.hpp"
 
@@ -9,4 +9,4 @@ public:
     virtual float getLoss() = 0;
 };
 
-#endif //CNN_LOSSLAYERBASE_HPP
+#endif //CONNIE_LOSSLAYERBASE_HPP

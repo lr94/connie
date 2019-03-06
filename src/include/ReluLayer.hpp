@@ -1,5 +1,5 @@
-#ifndef CNN_RELULAYER_HPP
-#define CNN_RELULAYER_HPP
+#ifndef CONNIE_RELULAYER_HPP
+#define CONNIE_RELULAYER_HPP
 
 #include "LayerBase.hpp"
 
@@ -23,4 +23,4 @@ private:
 };
 
 
-#endif //CNN_RELULAYER_HPP
+#endif //CONNIE_RELULAYER_HPP

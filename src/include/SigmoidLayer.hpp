@@ -1,5 +1,5 @@
-#ifndef CNN_SIGMOIDLAYER_HPP
-#define CNN_SIGMOIDLAYER_HPP
+#ifndef CONNIE_SIGMOIDLAYER_HPP
+#define CONNIE_SIGMOIDLAYER_HPP
 
 #include "LayerBase.hpp"
 
@@ -19,4 +19,4 @@ protected:
 };
 
 
-#endif //CNN_SIGMOIDLAYER_HPP
+#endif //CONNIE_SIGMOIDLAYER_HPP

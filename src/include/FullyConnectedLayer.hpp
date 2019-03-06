@@ -1,5 +1,5 @@
-#ifndef CNN_FULLYCONNECTEDLAYER_HPP
-#define CNN_FULLYCONNECTEDLAYER_HPP
+#ifndef CONNIE_FULLYCONNECTEDLAYER_HPP
+#define CONNIE_FULLYCONNECTEDLAYER_HPP
 
 #include <ios>
 #include <vector>
@@ -52,4 +52,4 @@ private:
     std::vector<std::vector<Tensor<>>> additionalMemWeights;
     std::vector<std::vector<float>> additionalMemBiases;
 };
-#endif //CNN_FULLYCONNECTEDLAYER_HPP
+#endif //CONNIE_FULLYCONNECTEDLAYER_HPP

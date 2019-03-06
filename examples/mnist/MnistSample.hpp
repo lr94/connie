@@ -1,5 +1,5 @@
-#ifndef CNN_SAMPLE_HPP
-#define CNN_SAMPLE_HPP
+#ifndef CONNIE_SAMPLE_HPP
+#define CONNIE_SAMPLE_HPP
 
 #include <istream>
 #include <algorithm>
@@ -105,4 +105,4 @@ private:
 };
 
 
-#endif //CNN_SAMPLE_HPP
+#endif //CONNIE_SAMPLE_HPP

@@ -1,5 +1,5 @@
-#ifndef CNN_MEMORYSTREAM_HPP
-#define CNN_MEMORYSTREAM_HPP
+#ifndef CONNIE_MEMORYSTREAM_HPP
+#define CONNIE_MEMORYSTREAM_HPP
 #include <istream>
 #include <streambuf>
 
@@ -18,4 +18,4 @@ struct MemoryStream : virtual InputMemoryBuffer, std::istream
 };
 
 
-#endif //CNN_MEMORYSTREAM_HPP
+#endif //CONNIE_MEMORYSTREAM_HPP

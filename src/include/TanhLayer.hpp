@@ -1,5 +1,5 @@
-#ifndef CNN_TANHLAYER_HPP
-#define CNN_TANHLAYER_HPP
+#ifndef CONNIE_TANHLAYER_HPP
+#define CONNIE_TANHLAYER_HPP
 
 #include "LayerBase.hpp"
 
@@ -19,4 +19,4 @@ protected:
 };
 
 
-#endif //CNN_TANHLAYER_HPP
+#endif //CONNIE_TANHLAYER_HPP

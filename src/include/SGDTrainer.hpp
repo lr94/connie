@@ -1,5 +1,5 @@
-#ifndef CNN_SGDTRAINER_HPP
-#define CNN_SGDTRAINER_HPP
+#ifndef CONNIE_SGDTRAINER_HPP
+#define CONNIE_SGDTRAINER_HPP
 
 #include "TrainerBase.hpp"
 
@@ -18,4 +18,4 @@ public:
 };
 
 
-#endif //CNN_SGDTRAINER_HPP
+#endif //CONNIE_SGDTRAINER_HPP

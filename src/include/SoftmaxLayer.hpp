@@ -1,5 +1,5 @@
-#ifndef CNN_SOFTMAXLAYER_HPP
-#define CNN_SOFTMAXLAYER_HPP
+#ifndef CONNIE_SOFTMAXLAYER_HPP
+#define CONNIE_SOFTMAXLAYER_HPP
 
 #include "LossLayerBase.hpp"
 
@@ -26,4 +26,4 @@ protected:
 };
 
 
-#endif //CNN_SOFTMAXLAYER_HPP
+#endif //CONNIE_SOFTMAXLAYER_HPP
